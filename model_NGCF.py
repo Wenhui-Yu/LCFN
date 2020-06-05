@@ -59,6 +59,7 @@ class model_NGCF(object):
             # experiments show that sigmoid performs well
             embeddings = tf.nn.sigmoid(tf.matmul(embeddings_1, self.filters_1[k]) + tf.matmul(embeddings_2, self.filters_2[k]))
             # embeddings = tf.nn.relu(tf.matmul(embeddings_1, self.filters_1[k]) + tf.matmul(embeddings_2, self.filters_2[k]))
+            # In the paper, authors choose relu for deep NGCF. In our experiments, we try 1 layer+relu, 1 layer+sigmoid, n layers+relu, and n layers+sigmoid, and find 1 layer+sigmoid is the best choice.
             all_embeddings += [embeddings]
         all_embeddings = tf.concat(all_embeddings, 1)
         self.user_all_embeddings, self.item_all_embeddings = tf.split(all_embeddings, [self.n_users, self.n_items], 0)

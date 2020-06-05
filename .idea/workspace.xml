@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="ca3b17c7-ee8e-43bc-ac20-ecace2aa9db7" name="Default" comment="" />
+    <list default="true" id="ca3b17c7-ee8e-43bc-ac20-ecace2aa9db7" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <ignored path="experiment_LCF.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -21,7 +23,7 @@
     <favorites_list name="experiment_LCF" />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300" />
+    <leaf />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -47,6 +49,9 @@
     <replaceStrings>
       <replace>test_path</replace>
     </replaceStrings>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
@@ -105,17 +110,17 @@
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="1">
-    <option name="y" value="1" />
-    <option name="width" value="1946" />
+  <component name="ProjectFrameBounds">
+    <option name="y" value="3" />
+    <option name="width" value="1947" />
     <option name="height" value="1104" />
   </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -127,11 +132,12 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="D:/_experiment_transfer" />
+    <property name="last_opened_file_path" value="D:/software/git/gitbash/ranking" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
@@ -317,17 +323,18 @@
       <workItem from="1581088214506" duration="80000" />
       <workItem from="1581134021709" duration="46000" />
       <workItem from="1591090869594" duration="484000" />
-      <workItem from="1591091376096" duration="5598000" />
+      <workItem from="1591091376096" duration="6155000" />
+      <workItem from="1591160870504" duration="61000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="19312000" />
+    <option name="totallyTimeSpent" value="19930000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="1" width="1297" height="736" extended-state="1" />
+    <frame x="0" y="2" width="1298" height="736" extended-state="0" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.18079096" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.18387097" />
       <window_info auto_hide="true" id="Structure" order="1" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Database Changes" order="0" />
@@ -525,12 +532,8 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://D:/code/train_model.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
+    <entry file="file://D:/code/train_model.py" />
+    <entry file="file://$PROJECT_DIR$/test.py" />
     <entry file="file://D:/_experiment_transfer/code/3.tranfer_rec/_main.py">
       <provider selected="true" editor-type-id="text-editor">
         <state>
@@ -538,9 +541,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test_model.py.bak">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
+    <entry file="file://$PROJECT_DIR$/test_model.py.bak" />
     <entry file="file://$PROJECT_DIR$/pretraining/p_train_model.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="50">
@@ -607,13 +608,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://D:/code/test_model.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="601">
-          <caret line="48" column="55" lean-forward="true" selection-start-line="48" selection-start-column="55" selection-end-line="48" selection-end-column="55" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://D:/code/test_model.py" />
     <entry file="file://$PROJECT_DIR$/_main.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="125">
