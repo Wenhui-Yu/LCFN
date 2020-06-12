@@ -17,6 +17,7 @@ EMB_DIM = [pred_dim,int(pred_dim/2),int(pred_dim/(LAYER+1)),int(pred_dim/(LAYER+
            int(pred_dim/(LAYER+1)),int(pred_dim/(LAYER+1)),int(pred_dim/(LAYER+1))][model]
 FREQUENCY_USER = [[0,0,0,0,0,0,4000], [0,0,0,0,0,0,3000]][dataset][model]
 FREQUENCY_ITEM = [[0,0,0,0,0,0,2000], [0,0,0,0,0,0,2000]][dataset][model]
+KEEP_RATE = [[0.8],[0.5,1,1,1],[0.9],[1],[0.6],[0.9],[1,0.9,0.9,0.8]][model]
 BATCH_SIZE = 10000
 TEST_USER_BATCH = [4096, 1024][dataset]
 SAMPLE_RATE = 1

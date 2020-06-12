@@ -1,14 +1,12 @@
-## baseline: Graph convolutional matrix completion (GCMC)
-## Rianne Van Den Berg, Thomas N. Kipf, and Max Welling. Graph convolutional matrix completion. In Proceedings of the 24th ACM SIGKDD International Conference on Knowledge Discovery & Data Mining, KDD '18, 2018.
-## author@Wenhui Yu  2020.06.02
-## email: yuwh16@mails.tsinghua.edu.cn
+## baseline: Convolutional Geometric Matrix Completion (CGMC)
+## Kai-Lang Yao and Wu-Jun Li. Convolutional geometric matrix completion. CoRR, 2018.
 
 import tensorflow as tf
 import numpy as np
 
-class model_GCMC(object):
+class model_CGMC(object):
     def __init__(self, layer, graph, n_users, n_items, emb_dim, lr, lamda, optimization, pre_train_latent_factor, if_pretrain):
-        self.model_name = 'GCMC'
+        self.model_name = 'CGMC'
         self.graph = graph
         self.n_users = n_users
         self.n_items = n_items
@@ -19,6 +17,7 @@ class model_GCMC(object):
         self.optimization = optimization
         [self.U, self.V] = pre_train_latent_factor
         self.if_pretrain = if_pretrain
+        self.balance_weight = 0.2    ## hyperparameter in the paper
 
         self.A = self.adjacient_matrix()
         self.D = self.degree_matrix()
@@ -29,6 +28,7 @@ class model_GCMC(object):
         self.users = tf.placeholder(tf.int32, shape=(None,))
         self.pos_items = tf.placeholder(tf.int32, shape=(None,))
         self.neg_items = tf.placeholder(tf.int32, shape=(None,))
+        self.keep_prob = tf.placeholder(tf.float32, shape=(None))
 
         if self.if_pretrain:
             self.user_embeddings = tf.Variable(self.U, name='user_embeddings')
@@ -49,7 +49,7 @@ class model_GCMC(object):
         embeddings = tf.concat([self.user_embeddings, self.item_embeddings], axis=0)
         all_embeddings = [embeddings]
         for k in range(0, self.layer):
-            embeddings = tf.sparse_tensor_dense_matmul(self.A_hat, embeddings)
+            embeddings = (1-self.balance_weight) * tf.sparse_tensor_dense_matmul(self.A_hat, embeddings) + self.balance_weight * embeddings
             embeddings = tf.nn.sigmoid(tf.matmul(embeddings, self.filters[k]))
             all_embeddings += [embeddings]
         all_embeddings = tf.concat(all_embeddings, 1)
@@ -58,14 +58,17 @@ class model_GCMC(object):
         self.u_embeddings = tf.nn.embedding_lookup(self.user_all_embeddings, self.users)
         self.pos_i_embeddings = tf.nn.embedding_lookup(self.item_all_embeddings, self.pos_items)
         self.neg_i_embeddings = tf.nn.embedding_lookup(self.item_all_embeddings, self.neg_items)
+        self.u_embeddings_drop = tf.nn.dropout(self.u_embeddings, self.keep_prob[0])
+        self.pos_i_embeddings_drop = tf.nn.dropout(self.pos_i_embeddings, self.keep_prob[0])
+        self.neg_i_embeddings_drop = tf.nn.dropout(self.neg_i_embeddings, self.keep_prob[0])
 
         self.all_ratings = tf.matmul(self.u_embeddings, self.item_all_embeddings, transpose_a=False, transpose_b=True)
 
         self.u_embeddings_loss = tf.nn.embedding_lookup(self.user_embeddings, self.users)
         self.pos_i_embeddings_loss = tf.nn.embedding_lookup(self.item_embeddings, self.pos_items)
         self.neg_i_embeddings_loss = tf.nn.embedding_lookup(self.item_embeddings, self.neg_items)
-
-        self.loss = self.create_bpr_loss(self.u_embeddings, self.pos_i_embeddings, self.neg_i_embeddings) + \
+        
+        self.loss = self.create_bpr_loss(self.u_embeddings_drop, self.pos_i_embeddings_drop, self.neg_i_embeddings_drop) + \
                     self.lamda * self.regularization(self.u_embeddings_loss, self.pos_i_embeddings_loss,
                                                      self.neg_i_embeddings_loss, self.filters)
 
@@ -119,3 +122,4 @@ class model_GCMC(object):
         shp = tf.constant([dense.shape[0],dense.shape[1]], dtype=np.int64)
         sparse = tf.SparseTensor(indices=idx, values=val, dense_shape=shp)
         return sparse
+

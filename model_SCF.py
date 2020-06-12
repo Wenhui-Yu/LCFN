@@ -1,5 +1,5 @@
 ## baseline: Spectral Collaborative Filtering (SCF)
-## Lei Zheng, Chun-Ta Lu, Fei Jiang, Jiawei Zhang, and Philip S. Yu. Spectral collaborative filtering. In Proceedings of the 12th ACM Conference on Recommender Systems, RecSys ’18, pages 311–319, 2018.
+## Lei Zheng, Chun-Ta Lu, Fei Jiang, Jiawei Zhang, and Philip S. Yu. Spectral collaborative filtering. In Proceedings of the 12th ACM Conference on Recommender Systems, RecSys '18, pages 311-319, 2018.
 ## author@Wenhui Yu  2020.06.02
 ## email: yuwh16@mails.tsinghua.edu.cn
 

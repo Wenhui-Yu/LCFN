@@ -1,7 +1,5 @@
 ## baseline: Neural Collaborative Filtering (NCF)
-## Xiangnan He, Lizi Liao, Hanwang Zhang, Liqiang Nie, Xia Hu, and Tat-Seng Chua. Neural collaborative filtering. In Proceedings of the 26th International Conference on World Wide Web, WWW '17, pages 173-182, 2017.
-## author@Wenhui Yu  2020.06.02
-## email: yuwh16@mails.tsinghua.edu.cn
+## Xiangnan He, Lizi Liao, Hanwang Zhang, Liqiang Nie, Xia Hu, and Tat-Seng Chua. Neural collaborative filtering. In Proceedings of the 26th International Conference on World Wide Web, WWW ’17, pages 173–182, 2017.
 
 import tensorflow as tf
 import numpy as np
@@ -25,6 +23,7 @@ class model_NCF(object):
         self.users = tf.placeholder(tf.int32, shape=(None,))
         self.pos_items = tf.placeholder(tf.int32, shape=(None,))
         self.neg_items = tf.placeholder(tf.int32, shape=(None,))
+        self.keep_prob = tf.placeholder(tf.float32, shape=(None))
 
         if self.if_pretrain:
             self.user_embeddings_GMF = tf.Variable(self.U, name='user_embeddings_GMF')
@@ -42,6 +41,14 @@ class model_NCF(object):
             self.W.append(tf.Variable(tf.random_normal([self.weight_size_list[l], self.weight_size_list[l + 1]], mean=0.01, stddev=0.02, dtype=tf.float32)))
             self.b.append(tf.Variable(tf.random_normal([1, self.weight_size_list[l + 1]], mean=0.01, stddev=0.02, dtype=tf.float32)))
         self.h = tf.Variable(tf.random_normal([1, self.emb_dim + self.weight_size_list[-1]], mean=0.01, stddev=0.02, dtype=tf.float32), name='h')
+        
+        ## dropout
+        self.W_drop = []
+        self.b_drop = []
+        for l in range(self.layer):
+            self.W_drop.append(tf.nn.dropout(self.W[l], self.keep_prob[1]))
+            self.b_drop.append(tf.nn.dropout(self.b[l], self.keep_prob[2]))
+        self.h_drop = tf.nn.dropout(self.h, self.keep_prob[3])
 
         self.u_embeddings_GMF = tf.nn.embedding_lookup(self.user_embeddings_GMF, self.users)
         self.pos_i_embeddings_GMF = tf.nn.embedding_lookup(self.item_embeddings_GMF, self.pos_items)
@@ -49,12 +56,22 @@ class model_NCF(object):
         self.u_embeddings_MLP = tf.nn.embedding_lookup(self.user_embeddings_MLP, self.users)
         self.pos_i_embeddings_MLP = tf.nn.embedding_lookup(self.item_embeddings_MLP, self.pos_items)
         self.neg_i_embeddings_MLP = tf.nn.embedding_lookup(self.item_embeddings_MLP, self.neg_items)
+        
+        self.u_embeddings_GMF_drop = tf.nn.dropout(self.u_embeddings_GMF, self.keep_prob[0])
+        self.pos_i_embeddings_GMF_drop = tf.nn.dropout(self.pos_i_embeddings_GMF, self.keep_prob[0])
+        self.neg_i_embeddings_GMF_drop = tf.nn.dropout(self.neg_i_embeddings_GMF, self.keep_prob[0])
+        self.u_embeddings_MLP_drop = tf.nn.dropout(self.u_embeddings_MLP, self.keep_prob[0])
+        self.pos_i_embeddings_MLP_drop = tf.nn.dropout(self.pos_i_embeddings_MLP, self.keep_prob[0])
+        self.neg_i_embeddings_MLP_drop = tf.nn.dropout(self.neg_i_embeddings_MLP, self.keep_prob[0])
 
-        self.pos_ratings = self.predict(self.u_embeddings_GMF, self.pos_i_embeddings_GMF, self.u_embeddings_MLP, self.pos_i_embeddings_MLP)
-        self.neg_ratings = self.predict(self.u_embeddings_GMF, self.neg_i_embeddings_GMF, self.u_embeddings_MLP, self.neg_i_embeddings_MLP)
+        self.pos_ratings = self.predict(self.u_embeddings_GMF_drop, self.pos_i_embeddings_GMF_drop, self.u_embeddings_MLP_drop, self.pos_i_embeddings_MLP_drop)
+        self.neg_ratings = self.predict(self.u_embeddings_GMF_drop, self.neg_i_embeddings_GMF_drop, self.u_embeddings_MLP_drop, self.neg_i_embeddings_MLP_drop)
         self.all_ratings = self.get_all_rating(self.u_embeddings_GMF, self.item_embeddings_GMF, self.u_embeddings_MLP, self.item_embeddings_MLP)
         
         self.loss = self.create_bpr_loss(self.pos_ratings, self.neg_ratings)
+#         self.loss = self.create_bpr_loss(self.pos_ratings, self.neg_ratings) + \
+#                     self.lamda * self.regularization([self.u_embeddings_GMF, self.pos_i_embeddings_GMF, self.neg_i_embeddings_GMF, self.h,
+#                                                       self.u_embeddings_MLP, self.pos_i_embeddings_MLP, self.neg_i_embeddings_MLP] + self.W + self.b)
 
         self.opt = tf.train.GradientDescentOptimizer(learning_rate=self.lr)
         self.updates = self.opt.minimize(self.loss, var_list=[self.user_embeddings_GMF, self.item_embeddings_GMF, self.h,
@@ -77,7 +94,7 @@ class model_NCF(object):
     def MLP(self, use_emb, item_emb):
         emb = tf.concat([use_emb, item_emb], axis=1)
         for l in range(self.layer):
-            emb = tf.nn.relu(tf.matmul(emb, self.W[l]) + self.b[l])
+            emb = tf.nn.relu(tf.matmul(emb, self.W_drop[l]) + self.b_drop[l])
         return emb
 
     def predict(self, user_GMF, item_GMF, user_MLP, item_MLP):
@@ -85,7 +102,7 @@ class model_NCF(object):
         emb_MLP = self.MLP(user_MLP, item_MLP)
         emb = tf.concat([emb_GMF, emb_MLP], axis=1)
         # return tf.nn.sigmoid(tf.reshape(tf.matmul(emb, self.h, transpose_a=False, transpose_b=True), [-1]))   # there is a sigmoid in BPR thus we do not use sigmoid here
-        return tf.reshape(tf.matmul(emb, self.h, transpose_a=False, transpose_b=True), [-1])   # reshpae is not necessary with bpr loss but crutial with cross entropy loss
+        return tf.reshape(tf.matmul(emb, self.h_drop, transpose_a=False, transpose_b=True), [-1])   # reshpae is not necessary with bpr loss but crutial with cross entropy loss
 
     def get_all_rating(self, user_GMF, item_GMF, user_MLP, item_MLP):
         n_user_b = 1 if tf.shape(user_GMF)[0] == None else tf.shape(user_GMF)[0]

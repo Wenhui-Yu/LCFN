@@ -1,7 +1,5 @@
 ## baseline: Graph convolutional matrix completion (GCMC)
-## Rianne Van Den Berg, Thomas N. Kipf, and Max Welling. Graph convolutional matrix completion. In Proceedings of the 24th ACM SIGKDD International Conference on Knowledge Discovery & Data Mining, KDD '18, 2018.
-## author@Wenhui Yu  2020.06.02
-## email: yuwh16@mails.tsinghua.edu.cn
+## Rianne Van Den Berg, Thomas N. Kipf, and Max Welling. Graph convolutional matrix completion. In Proceedings of the 24th ACM SIGKDD International Conference on Knowledge Discovery & Data Mining, KDD ’18, 2018.
 
 import tensorflow as tf
 import numpy as np
@@ -29,6 +27,7 @@ class model_GCMC(object):
         self.users = tf.placeholder(tf.int32, shape=(None,))
         self.pos_items = tf.placeholder(tf.int32, shape=(None,))
         self.neg_items = tf.placeholder(tf.int32, shape=(None,))
+        self.keep_prob = tf.placeholder(tf.float32, shape=(None))
 
         if self.if_pretrain:
             self.user_embeddings = tf.Variable(self.U, name='user_embeddings')
@@ -58,6 +57,9 @@ class model_GCMC(object):
         self.u_embeddings = tf.nn.embedding_lookup(self.user_all_embeddings, self.users)
         self.pos_i_embeddings = tf.nn.embedding_lookup(self.item_all_embeddings, self.pos_items)
         self.neg_i_embeddings = tf.nn.embedding_lookup(self.item_all_embeddings, self.neg_items)
+        self.u_embeddings_drop = tf.nn.dropout(self.u_embeddings, self.keep_prob[0])
+        self.pos_i_embeddings_drop = tf.nn.dropout(self.pos_i_embeddings, self.keep_prob[0])
+        self.neg_i_embeddings_drop = tf.nn.dropout(self.neg_i_embeddings, self.keep_prob[0])
 
         self.all_ratings = tf.matmul(self.u_embeddings, self.item_all_embeddings, transpose_a=False, transpose_b=True)
 
@@ -65,7 +67,7 @@ class model_GCMC(object):
         self.pos_i_embeddings_loss = tf.nn.embedding_lookup(self.item_embeddings, self.pos_items)
         self.neg_i_embeddings_loss = tf.nn.embedding_lookup(self.item_embeddings, self.neg_items)
 
-        self.loss = self.create_bpr_loss(self.u_embeddings, self.pos_i_embeddings, self.neg_i_embeddings) + \
+        self.loss = self.create_bpr_loss(self.u_embeddings_drop, self.pos_i_embeddings_drop, self.neg_i_embeddings_drop) + \
                     self.lamda * self.regularization(self.u_embeddings_loss, self.pos_i_embeddings_loss,
                                                      self.neg_i_embeddings_loss, self.filters)
 
