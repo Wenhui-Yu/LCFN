@@ -21,7 +21,7 @@ Please follow the steps below:
     We also provide downloading for pretraining:
         https://drive.google.com/file/d/12_109fqgUUUSQDeiwopqQ_fsQMCgTTVo/view?usp=sharing
         https://pan.baidu.com/s/1z-KZLF_soCUD2LwXB_0LVg (password: ss2h)
-    You can choose one of these two URLs for downloading (we recommend the first one). Downloaded and unzip dataset.zip and use it to replace the folder dataset in our project.
+    You can choose one of these two URLs for downloading (we recommend the first one). Downloaded and unzip LCFN_dataset.zip and use it to replace the folder dataset in our project.
 
 2. Run _main.py in our project (datasets, hyperparameters can be set in params.py).
 
