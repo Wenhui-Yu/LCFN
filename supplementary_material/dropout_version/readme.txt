@@ -1,1 +1,0 @@
-Fine tuned with respect to the regularization coefficient, models fail to achieve further improvement with dropout, and many models even perform worse. Here we also provide the "dropout version" for more choices, however, we do not recommend this version.

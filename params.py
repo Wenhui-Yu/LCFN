@@ -8,15 +8,15 @@ validate_test = 1   # 0:Validate, 1: Test (Validation set for model tuning and t
 DATASET = ['Amazon', 'Movielens'][dataset]
 MODEL = ['BPR', 'NCF', 'GCMC', 'NGCF', 'SCF', 'CGMC', 'LCFN'][model]
 OPTIMIZATION = ['SGD', 'SGD', 'Adam', 'Adam', 'RMSProp', 'Adam', 'Adam'][model]
-LR = [[0.05,0.0002,0.001,0.0001,0.0001,0.0001,0.0002], [0.02,0.00001,0.0002,0.00005,0.0001,0.00002,0.005]][dataset][model]
-LAMDA = [[0.02,0,0.05,0.001,0.02,0.0002,0.05], [0.01,0,0.02,0.02,0.01,0.05,0.05]][dataset][model]
-LAYER = [[0,4,1,1,1,1,1], [0,4,1,1,1,1,3]][dataset][model]
+LR = [[0.05,0.0002,0.001,0.0001,0.0001,0.0001,0.0005], [0.02,0.00001,0.0002,0.00005,0.0001,0.00002,0.0005]][dataset][model]
+LAMDA = [[0.02,0,0.05,0.001,0.02,0.0002,0.005], [0.01,0,0.02,0.02,0.01,0.05,0.01]][dataset][model]
+LAYER = [[0,4,1,1,1,1,1], [0,4,1,1,1,1,1]][dataset][model]
 pred_dim = 128 # predictive embedding dimensionality
 # embedding layer dimensionality
 EMB_DIM = [pred_dim,int(pred_dim/2),int(pred_dim/(LAYER+1)),int(pred_dim/(LAYER+1)),
            int(pred_dim/(LAYER+1)),int(pred_dim/(LAYER+1)),int(pred_dim/(LAYER+1))][model]
-FREQUENCY_USER = [[0,0,0,0,0,0,4000], [0,0,0,0,0,0,3000]][dataset][model]
-FREQUENCY_ITEM = [[0,0,0,0,0,0,2000], [0,0,0,0,0,0,2000]][dataset][model]
+FREQUENCY_USER = [[0,0,0,0,0,0,100], [0,0,0,0,0,0,300]][dataset][model]
+FREQUENCY_ITEM = [[0,0,0,0,0,0,50], [0,0,0,0,0,0,200]][dataset][model]
 BATCH_SIZE = 10000
 TEST_USER_BATCH = [4096, 1024][dataset]
 SAMPLE_RATE = 1
