@@ -10,8 +10,8 @@ import numpy as np
 import json
 
 dataset = 0     #0 for amazon, 1 for movielens
-K_u = 20000
-K_v = 10000
+K_u = 4000
+K_v = 2000
 tolerant = 0.1 ** 5
 epsilon = 0.1 ** 10
 Dataset = ['Amazon', 'Movielens'][dataset]

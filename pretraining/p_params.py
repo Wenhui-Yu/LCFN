@@ -6,7 +6,7 @@ validate_test = 0   # 0:Validate, 1: Test
 
 DATASET = ['Amazon', 'Movielens'][dataset]
 MODEL = 'MF_BPR'
-LR = [0.02, 0.02][dataset]
+LR = [0.05, 0.02][dataset]
 LAMDA = [0.02, 0.01][dataset]
 EMB_DIM = 64
 BATCH_SIZE = 10000
