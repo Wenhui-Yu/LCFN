@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="ca3b17c7-ee8e-43bc-ac20-ecace2aa9db7" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pretraining/_hypergraph_embeddings.py" beforeDir="false" afterPath="$PROJECT_DIR$/pretraining/_hypergraph_embeddings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pretraining/p_params.py" beforeDir="false" afterPath="$PROJECT_DIR$/pretraining/p_params.py" afterDir="false" />
-    </list>
+    <list default="true" id="ca3b17c7-ee8e-43bc-ac20-ecace2aa9db7" name="Default" comment="" />
     <ignored path="experiment_LCF.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -397,12 +393,12 @@
       <workItem from="1593223384588" duration="2235000" />
       <workItem from="1593243109014" duration="4961000" />
       <workItem from="1593254512813" duration="282000" />
-      <workItem from="1593339337767" duration="1504000" />
+      <workItem from="1593339337767" duration="2104000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="50315000" />
+    <option name="totallyTimeSpent" value="50915000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1295" height="695" extended-state="6" />
