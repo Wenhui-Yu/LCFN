@@ -7,6 +7,7 @@ from p_read_data import *
 from p_params import DIR
 from p_params import TOP_K
 from p_params import TEST_VALIDATION
+from p_params import TEST_USER_BATCH
 import operator
 import random as rd
 import time
@@ -34,12 +35,12 @@ def test_one_user(x):
         try: order.remove(item)
         except: continue
     for i in range(k_num):
-        f1[i] += evaluation_F1(order, 2, test_data[user])
-        ndcg[i] += evaluation_NDCG(order, 2, test_data[user])
+        f1[i] += evaluation_F1(order, TOP_K[i], test_data[user])
+        ndcg[i] += evaluation_NDCG(order, TOP_K[i], test_data[user])
     return f1, ndcg
 
 def test_model(sess, model):
-    test_batch = rd.sample(list(range(user_num)), 4096)
+    test_batch = rd.sample(list(range(user_num)), TEST_USER_BATCH)
     user_score = sess.run(model.all_ratings, feed_dict={model.users: test_batch})
     result = []
     for u_index, user in enumerate(test_batch):

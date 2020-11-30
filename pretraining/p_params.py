@@ -10,9 +10,10 @@ LR = [0.05, 0.02][dataset]
 LAMDA = [0.02, 0.01][dataset]
 EMB_DIM = 64
 BATCH_SIZE = 10000
+TEST_USER_BATCH = [4096, 1024][dataset]
 SAMPLE_RATE = 1
 N_EPOCH = 200
 TEST_VALIDATION = ['Validation', 'Test'][validate_test]
-TOP_K = [10]
+TOP_K = [2, 5, 10, 20, 50, 100]
 DIR = '../dataset/'+DATASET+'/'
-import os
+GPU_INDEX = "0"

@@ -16,7 +16,7 @@ import gc
 import time
 
 def train_model(para, path_excel):
-    [_,MODEL,LR,LAMDA,LAYER,EMB_DIM,FREQUENCY_USER, FREQUENCY_ITEM,
+    [_,_,MODEL,LR,LAMDA,LAYER,EMB_DIM,FREQUENCY_USER, FREQUENCY_ITEM,
      BATCH_SIZE, SAMPLE_RATE,IF_PRETRAIN,N_EPOCH,_,TOP_K,OPTIMIZATION] = para
     ## Paths of data
     train_path = DIR+'train_data.json'

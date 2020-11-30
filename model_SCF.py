@@ -23,8 +23,8 @@ class model_SCF(object):
         self.A = self.adjacient_matrix()
         self.D = self.degree_matrix()
         self.L = self.laplacian_matrix(normalized=True)
-        self.F = self.filter_generation()
-        self.A_hat = self.dense_to_sparse(self.F)
+        self.C = self.conv_generation()
+        self.Conv = self.dense_to_sparse(self.C)
 
         # placeholder definition
         self.users = tf.placeholder(tf.int32, shape=(None,))
@@ -51,7 +51,7 @@ class model_SCF(object):
         embeddings = tf.concat([self.user_embeddings, self.item_embeddings], axis=0)
         all_embeddings = [embeddings]
         for k in range(0, self.layer):
-            embeddings =2 * embeddings - tf.sparse_tensor_dense_matmul(self.A_hat, embeddings)
+            embeddings = tf.sparse_tensor_dense_matmul(self.Conv, embeddings)
             embeddings = tf.nn.sigmoid(tf.matmul(embeddings, self.filters[k]))
             all_embeddings += [embeddings]
         all_embeddings = tf.concat(all_embeddings, 1)
@@ -107,9 +107,10 @@ class model_SCF(object):
         temp = np.dot(np.diag(np.power(self.D, -1)), self.A)
         return np.identity(self.n_users+self.n_items,dtype=np.float32) - temp
 
-    def filter_generation(self):
-        a_hat = np.identity(self.n_users + self.n_items) + self.L
-        return a_hat.astype(np.float32)
+    def conv_generation(self):
+        ## convolution of embedding: (U * U^T + U * \Lambda * U^T) * emb = (I + L) * emb
+        conv = np.identity(self.n_users + self.n_items) + self.L
+        return conv.astype(np.float32)
     
     def dense_to_sparse(self, dense):
         idx = np.where(dense != 0)

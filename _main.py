@@ -10,12 +10,11 @@ os.environ["CUDA_VISIBLE_DEVICES"] = GPU_INDEX
 
 if __name__ == '__main__':
     path_excel = 'experiment_result/'+DATASET+'_'+MODEL+'_'+str(int(time.time()))+str(int(random.uniform(100,900)))+'.xlsx'
-    para = [DATASET,MODEL,LR,LAMDA,LAYER,EMB_DIM,FREQUENCY_USER,FREQUENCY_ITEM,
+    para = [GPU_INDEX,DATASET,MODEL,LR,LAMDA,LAYER,EMB_DIM,FREQUENCY_USER,FREQUENCY_ITEM,
             BATCH_SIZE,SAMPLE_RATE,IF_PRETRAIN,N_EPOCH,TEST_VALIDATION,TOP_K,OPTIMIZATION]
-    para_name = ['DATASET','MODEL','LR','LAMDA','LAYER','EMB_DIM','FREQUENCY_USER','FREQUENCY_ITEM',
+    para_name = ['GPU_INDEX','DATASET','MODEL','LR','LAMDA','LAYER','EMB_DIM','FREQUENCY_USER','FREQUENCY_ITEM',
                  'BATCH_SIZE','SAMPLE_RATE','IF_PRETRAIN','N_EPOCH','TEST_VALIDATION','TOP_K','OPTIMIZATION']
     ## print and save model hyperparameters
-    print('GPU INDEX: ', GPU_INDEX)
     print_params(para_name, para)
     save_params(para_name, para, path_excel)
     ## train the model

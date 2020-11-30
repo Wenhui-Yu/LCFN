@@ -8,7 +8,7 @@ from p_read_data import *
 from p_print_save import *
 
 def train_model(para):
-    [_,MODEL,LR,LAMDA,EMB_DIM,BATCH_SIZE, SAMPLE_RATE,N_EPOCH,_,_,] = para
+    [_,_,MODEL,LR,LAMDA,EMB_DIM,BATCH_SIZE, SAMPLE_RATE,N_EPOCH,_,_,] = para
     ## paths of data
     train_path = DIR + 'train_data.json'
     if MODEL == 'MF_BPR':
