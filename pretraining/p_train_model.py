@@ -12,11 +12,11 @@ def train_model(para):
     ## paths of data
     train_path = DIR + 'train_data.json'
     if MODEL == 'MF_BPR':
-        save_embeddings_path = DIR + '/pre_train_feature'+str(EMB_DIM)+'.json'
+        save_embeddings_path = DIR + 'pre_train_feature'+str(EMB_DIM)+'.json'
     else:
-        save_embeddings_path = DIR + '/propagation_embeddings' + str(EMB_DIM) + '.json'
+        save_embeddings_path = DIR + 'propagation_embeddings' + str(EMB_DIM) + '.json'
     ## load train data
-    [train_data, train_data_interaction, user_num, item_num] = read_data(train_path,BATCH_SIZE)
+    [train_data, train_data_interaction, user_num, item_num] = read_data(train_path, BATCH_SIZE)
     ## define the model
     if MODEL == 'MF_BPR':
         model = model_MF_BPR(n_users=user_num, n_items=item_num, emb_dim=EMB_DIM, lr=LR, lamda=LAMDA)
