@@ -21,7 +21,7 @@ def save_params(para_name,para,path_excel):
     table = wb.active
     table.title = 'Parameters'
     ldata = []
-    for i in range(len(para_name)):
+    for i in range(1, len(para_name)): ## do not save GPU_index
         parameter = [para_name[i]]
         parameter_value = para[i]
         if isinstance(parameter_value, list):
