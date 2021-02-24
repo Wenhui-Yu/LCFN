@@ -1,7 +1,7 @@
 from numpy import *
 
 def evaluation_F1(order, top_k, positive_item):
-    epsilon = 0.1**10
+    epsilon = 0.1 ** 10
     top_k_items = set(order[0: top_k])
     positive_item = set(positive_item)
     precision = len(top_k_items & positive_item) / max(len(top_k_items), epsilon)

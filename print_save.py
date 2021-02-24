@@ -1,11 +1,6 @@
-## author@Wenhui Yu  2020.06.02
-## email: yuwh16@mails.tsinghua.edu.cn
-
 import pandas as pd
 from openpyxl import load_workbook
 from openpyxl import Workbook
-from xlrd import open_workbook
-from xlutils.copy import copy
 
 def print_params(para_name, para):
     for i in range(len(para)):
@@ -21,14 +16,14 @@ def save_params(para_name,para,path_excel):
     table = wb.active
     table.title = 'Parameters'
     ldata = []
-    for i in range(1, len(para_name)): ## do not save GPU_index
+    for i in range(1, len(para_name)):  # do not save GPU_index
         parameter = [para_name[i]]
         parameter_value = para[i]
         if isinstance(parameter_value, list):
             for value in parameter_value:
                 parameter.append(value)
-        else:
-            parameter.append(parameter_value)
+        elif isinstance(parameter_value, bool): parameter.append({True: 'Yes', False: 'No'}[parameter_value])
+        else: parameter.append(parameter_value)
         ldata.append(parameter)
     for i, p in enumerate(ldata):
         for j, q in enumerate(p):

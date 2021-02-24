@@ -1,29 +1,59 @@
 ## hyper-parameter setting
-## author@Wenhui Yu  2020.06.02
-## email: yuwh16@mails.tsinghua.edu.cn
+## author@Wenhui Yu  2021.02.16
+## email: jianlin.ywh@alibaba-inc.com
 
-model = 6           # 0:BPR, 1:NCF, 2:GCMC, 3:NGCF, 4:SCF, 5:CGMC, 6:LCFN (select the model, 0-5 baselines)
-dataset = 0         # 0:Amazon, 1:Movielens (select the dataset)
-validate_test = 1   # 0:Validate, 1: Test (Validation set for model tuning and test set for testing)
-DATASET = ['Amazon', 'Movielens'][dataset]
-MODEL = ['BPR', 'NCF', 'GCMC', 'NGCF', 'SCF', 'CGMC', 'LCFN'][model]
-OPTIMIZATION = ['SGD', 'SGD', 'Adam', 'Adam', 'RMSProp', 'Adam', 'Adam'][model]
-LR = [[0.05,0.0002,0.001,0.0001,0.0001,0.0001,0.0005], [0.02,0.00001,0.0002,0.00005,0.0001,0.00002,0.0005]][dataset][model]
-LAMDA = [[0.02,0,0.05,0.001,0.02,0.0002,0.005], [0.01,0,0.02,0.02,0.01,0.05,0.01]][dataset][model]
-LAYER = [[0,4,1,1,1,1,1], [0,4,1,1,1,1,1]][dataset][model]
-pred_dim = 128 # predictive embedding dimensionality
-# embedding layer dimensionality
-EMB_DIM = [pred_dim,int(pred_dim/2),int(pred_dim/(LAYER+1)),int(pred_dim/(LAYER+1)),
-           int(pred_dim/(LAYER+1)),int(pred_dim/(LAYER+1)),int(pred_dim/(LAYER+1))][model]
-FREQUENCY_USER = [[0,0,0,0,0,0,100], [0,0,0,0,0,0,300]][dataset][model]
-FREQUENCY_ITEM = [[0,0,0,0,0,0,50], [0,0,0,0,0,0,200]][dataset][model]
-BATCH_SIZE = 10000
-TEST_USER_BATCH = [4096, 1024][dataset]
-SAMPLE_RATE = 1
-IF_PRETRAIN = 1
-N_EPOCH = 200
-TEST_VALIDATION = ['Validation', 'Test'][validate_test]
-TOP_K = [2, 5, 10, 20, 50, 100]
+model = 8           # 0:MF, 1:NCF, 2:GCMC, 3:NGCF, 4:SCF, 5:CGMC, 6:Light-GCN, 7:LCFN, 8:LightLCFN, 9:SGNN
+dataset = 0         # 0:Amazon, 1:Movielens
+test_validation = 0 # 0:Validate, 1: Test
+pred_dim = 128      # predictive embedding dimensionality
+
+## parameters about experiment setting
 GPU_INDEX = "0"
+DATASET = ['Amazon', 'Movielens', 'Movielens_large'][dataset]
+MODEL = ['MF', 'NCF', 'GCMC', 'NGCF', 'SCF', 'CGMC', 'LightGCN', 'LCFN', 'LightLCFN', 'SGNN'][model]
 
-DIR = 'dataset/'+DATASET+'/'
+## hyperparameters
+LR = [[0.05, 0.0002, 0.001, 0.0001, 0.0001, 0.0001, 0.005, 0.0005, 0.0005, 0.0005],
+      [0.02, 0.00001, 0.0002, 0.00005, 0.0001, 0.00002, 0.0005, 0.0005, 0.0005, 0.0005],
+      [0.05, 0.0002, 0.001, 0.0001, 0.0001, 0.0001, 0.005, 0.0005, 0.0005, 0.0005]][dataset][model]
+LAMDA = [[0.02, 0, 0.05, 0.001, 0.02, 0.0002, 0.02, 0.005, 0.02, 0.02],
+         [0.01, 0, 0.02, 0.02, 0.01, 0.05, 0.02, 0.01, 0.05, 0.05],
+         [0.02, 0, 0.05, 0.001, 0.02, 0.0002, 0.02, 0.005, 0.02, 0.02]][dataset][model]
+LAYER = [[0, 4, 1, 1, 1, 1, 2, 1, 2, 2], [0, 4, 1, 1, 1, 1, 2, 1, 2, 2], [0, 4, 1, 1, 1, 1, 2, 1, 2, 2]][dataset][model]
+# dimensionality of the embedding layer
+EMB_DIM = [pred_dim, int(pred_dim/2), int(pred_dim/(LAYER+1)), int(pred_dim/(LAYER+1)), int(pred_dim/(LAYER+1)),
+           int(pred_dim/(LAYER+1)), pred_dim, int(pred_dim/(LAYER+1)), pred_dim, pred_dim][model]
+BATCH_SIZE = 10000
+TEST_USER_BATCH = [4096, 1024, 16384][dataset]
+N_EPOCH = 200
+IF_PRETRAIN = [False, True][1]
+TEST_VALIDATION = ['Validation', 'Test'][test_validation]
+TOP_K = [2, 5, 10, 20, 50, 100]
+
+## hyperparameters for LCFN and LightLCFN
+FREQUENCY_USER = [100, 300, 200][dataset]
+FREQUENCY_ITEM = [50, 200, 40][dataset]
+
+## hyperparameters for LightLCFN
+FREQUENCY = 128
+KEEP_PORB = 0.9
+SAMPLE_RATE = 1
+GRAPH_CONV = ['1D', '2D_graph', '2D_hyper_graph'][0]
+PREDICTION = ['InnerProduct', 'MLP3'][0]
+LOSS_FUNCTION = ['BPR', 'CrossEntropy', 'MSE'][0]
+GENERALIZATION = ['Regularization', 'DropOut', 'Regularization+DropOut', 'L2Norm'][0]
+OPTIMIZATION = ['SGD', 'Adagrad', 'RMSProp', 'Adam'][2]
+IF_TRASFORMATION = [False, True][0]                           # 0 for not having transformation matrix,1 for having
+ACTIVATION = ['None', 'Tanh', 'Sigmoid', 'ReLU'][1]          # select the activation function
+POOLING = ['Concat', 'Sum', 'Max', 'Product', 'MLP3'][1]    # select the pooling strategy, the layer of mlp is also changable
+if POOLING == 'Concat': EMB_DIM = int(pred_dim/(LAYER+1))
+
+## parameters about model setting (selective for model LightLCFN)
+PROP_DIM = 128
+PROP_EMB = ['RM', 'SF', 'PE'][1]
+IF_NORM = [False, True][0]
+
+all_para = [GPU_INDEX, DATASET, MODEL, LR, LAMDA, LAYER, EMB_DIM, BATCH_SIZE, TEST_USER_BATCH, N_EPOCH, IF_PRETRAIN,
+            TEST_VALIDATION, TOP_K, FREQUENCY_USER, FREQUENCY_ITEM, FREQUENCY, KEEP_PORB, SAMPLE_RATE, GRAPH_CONV,
+            PREDICTION, LOSS_FUNCTION, GENERALIZATION, OPTIMIZATION, IF_TRASFORMATION, ACTIVATION, POOLING, PROP_DIM,
+            PROP_EMB, IF_NORM]

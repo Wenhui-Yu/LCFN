@@ -1,69 +1,42 @@
+## author @Wenhui Yu  2021.01.24
 ## split train data into batches and train the model
-## author@Wenhui Yu  2020.06.02
-## email: yuwh16@mails.tsinghua.edu.cn
 
-from model_BPR import *
-from model_NCF import *
-from model_GCMC import *
-from model_NGCF import *
-from model_SCF import *
-from model_LCFN import *
-from model_CGMC import *
-from test_model import *
-from read_data import *
-from print_save import *
-import gc
+from model_MF import model_MF
+from model_NCF import model_NCF
+from model_GCMC import model_GCMC
+from model_NGCF import model_NGCF
+from model_SCF import model_SCF
+from model_CGMC import model_CGMC
+from model_LightGCN import model_LightGCN
+from model_LCFN import model_LCFN
+from model_LightLCFN import model_LightLCFN
+from model_SGNN import model_SGNN
+from test_model import test_model
+from print_save import print_value, save_value
+import tensorflow as tf
+import numpy as np
+import random as rd
+import pandas as pd
 import time
 
-def train_model(para, path_excel):
-    [_,_,MODEL,LR,LAMDA,LAYER,EMB_DIM,FREQUENCY_USER, FREQUENCY_ITEM,
-     BATCH_SIZE, SAMPLE_RATE,IF_PRETRAIN,N_EPOCH,_,TOP_K,OPTIMIZATION] = para
-    ## Paths of data
-    train_path = DIR+'train_data.json'
-    transformation_bases_path = DIR+'hypergraph_embeddings.json'                  # transformation bases for graph convolution
-    pre_train_feature_path = DIR+'pre_train_feature'+str(EMB_DIM)+'.json'         # to pretrain latent factors for user-item interaction
-
-    ## Load data
-    # load training data
-    [train_data, train_data_interaction, user_num, item_num] = read_data(train_path)
-    # load pre-trained embeddings for all deep models
-    try:
-        pre_train_feature = read_bases(pre_train_feature_path, EMB_DIM, EMB_DIM)
-    except:
-        print('There is no pre-trained feature found!!')
-        pre_train_feature = [0, 0]
-        IF_PRETRAIN = 0
-        
-    # load pre-trained transform bases for LCFN
-    if MODEL == 'LCFN': transformation_bases = read_bases(transformation_bases_path, FREQUENCY_USER, FREQUENCY_ITEM)
-
+def train_model(para, data, path_excel):
+    ## data and hyperparameters
+    [train_data, train_data_interaction, user_num, item_num, test_data, pre_train_feature, hypergraph_embeddings, graph_embeddings, propagation_embeddings, sparse_propagation_matrix, _] = data
+    [_, _, MODEL, LR, LAMDA, LAYER, EMB_DIM, BATCH_SIZE, TEST_USER_BATCH, N_EPOCH, IF_PRETRAIN, _, TOP_K] = para[0:13]
+    if MODEL == 'LightLCFN': [_, _, _, KEEP_PORB, SAMPLE_RATE, GRAPH_CONV, PREDICTION, LOSS_FUNCTION, GENERALIZATION, OPTIMIZATION, IF_TRASFORMATION, ACTIVATION, POOLING] = para[13:]
+    if MODEL == 'SGNN': [_, PROP_EMB, _] = para[13:]
+    para_test = [train_data, test_data, user_num, item_num, TOP_K, TEST_USER_BATCH]
     ## Define the model
-    if MODEL == 'BPR':
-        model = model_BPR(n_users=user_num, n_items=item_num, emb_dim=EMB_DIM, lr=LR, lamda=LAMDA,
-                          optimization=OPTIMIZATION)
-    if MODEL == 'NCF':
-        model = model_NCF(layer=LAYER, n_users=user_num, n_items=item_num, emb_dim=EMB_DIM, lr=LR, lamda=LAMDA,
-                          optimization=OPTIMIZATION, pre_train_latent_factor=pre_train_feature, if_pretrain=IF_PRETRAIN)
-    if MODEL == 'GCMC':
-        model = model_GCMC(layer=LAYER, graph=train_data_interaction, n_users=user_num, n_items=item_num, 
-                           emb_dim=EMB_DIM, lr=LR, lamda=LAMDA, optimization=OPTIMIZATION, 
-                           pre_train_latent_factor=pre_train_feature, if_pretrain=IF_PRETRAIN)
-    if MODEL == 'NGCF':
-        model = model_NGCF(layer=LAYER, graph=train_data_interaction, n_users=user_num, n_items=item_num, 
-                           emb_dim=EMB_DIM, lr=LR, lamda=LAMDA, optimization=OPTIMIZATION,
-                           pre_train_latent_factor=pre_train_feature, if_pretrain=IF_PRETRAIN)
-    if MODEL == 'SCF':
-        model = model_SCF(layer=LAYER, graph=train_data_interaction, n_users=user_num, n_items=item_num, 
-                          emb_dim=EMB_DIM, lr=LR, lamda=LAMDA, optimization=OPTIMIZATION, 
-                          pre_train_latent_factor=pre_train_feature, if_pretrain=IF_PRETRAIN)
-    if MODEL == 'CGMC':
-        model = model_CGMC(layer=LAYER, graph=train_data_interaction, n_users=user_num, n_items=item_num, 
-                           emb_dim=EMB_DIM, lr=LR, lamda=LAMDA, optimization=OPTIMIZATION, 
-                           pre_train_latent_factor=pre_train_feature, if_pretrain=IF_PRETRAIN)
-    if MODEL == 'LCFN':
-        model = model_LCFN(layer=LAYER, n_users=user_num, n_items=item_num, emb_dim=EMB_DIM, 
-                           graph_embeddings=transformation_bases, lr=LR, lamda=LAMDA, optimization=OPTIMIZATION, 
-                           pre_train_latent_factor=pre_train_feature, if_pretrain=IF_PRETRAIN)
+    if MODEL == 'MF': model = model_MF(n_users=user_num, n_items=item_num, emb_dim=EMB_DIM, lr=LR, lamda=LAMDA)
+    if MODEL == 'NCF': model = model_NCF(layer=LAYER, n_users=user_num, n_items=item_num, emb_dim=EMB_DIM, lr=LR, lamda=LAMDA, pre_train_latent_factor=pre_train_feature, if_pretrain=IF_PRETRAIN)
+    if MODEL == 'GCMC': model = model_GCMC(layer=LAYER, n_users=user_num, n_items=item_num, emb_dim=EMB_DIM, lr=LR, lamda=LAMDA, pre_train_latent_factor=pre_train_feature, if_pretrain=IF_PRETRAIN, sparse_graph=sparse_propagation_matrix)
+    if MODEL == 'NGCF': model = model_NGCF(layer=LAYER, n_users=user_num, n_items=item_num, emb_dim=EMB_DIM, lr=LR, lamda=LAMDA, pre_train_latent_factor=pre_train_feature, if_pretrain=IF_PRETRAIN, sparse_graph=sparse_propagation_matrix)
+    if MODEL == 'SCF': model = model_SCF(layer=LAYER, n_users=user_num, n_items=item_num, emb_dim=EMB_DIM, lr=LR, lamda=LAMDA, pre_train_latent_factor=pre_train_feature, if_pretrain=IF_PRETRAIN, sparse_graph=sparse_propagation_matrix)
+    if MODEL == 'CGMC': model = model_CGMC(layer=LAYER, n_users=user_num, n_items=item_num, emb_dim=EMB_DIM, lr=LR, lamda=LAMDA, pre_train_latent_factor=pre_train_feature, if_pretrain=IF_PRETRAIN, sparse_graph=sparse_propagation_matrix)
+    if MODEL == 'LightGCN': model = model_LightGCN(layer=LAYER, n_users=user_num, n_items=item_num, emb_dim=EMB_DIM, lr=LR, lamda=LAMDA, pre_train_latent_factor=pre_train_feature, if_pretrain=IF_PRETRAIN, sparse_graph=sparse_propagation_matrix)
+    if MODEL == 'LCFN': model = model_LCFN(layer=LAYER, n_users=user_num, n_items=item_num, emb_dim=EMB_DIM, lr=LR, lamda=LAMDA, pre_train_latent_factor=pre_train_feature, if_pretrain=IF_PRETRAIN, graph_embeddings=hypergraph_embeddings)
+    if MODEL == 'LightLCFN': model = model_LightLCFN(n_users=user_num, n_items=item_num, lr=LR, lamda=LAMDA, emb_dim=EMB_DIM, layer=LAYER, pre_train_latent_factor=pre_train_feature, graph_embeddings=graph_embeddings, graph_conv = GRAPH_CONV, prediction = PREDICTION, loss_function=LOSS_FUNCTION, generalization = GENERALIZATION, optimization=OPTIMIZATION, if_pretrain=IF_PRETRAIN, if_transformation=IF_TRASFORMATION, activation=ACTIVATION, pooling=POOLING)
+    if MODEL == 'SGNN': model = model_SGNN(n_users=user_num, n_items=item_num, lr=LR, lamda=LAMDA, emb_dim=EMB_DIM, layer=LAYER, pre_train_latent_factor=pre_train_feature, propagation_embeddings=propagation_embeddings, if_pretrain=IF_PRETRAIN, prop_emb=PROP_EMB)
 
     config = tf.ConfigProto()
     config.gpu_options.allow_growth = True
@@ -77,36 +50,31 @@ def train_model(para, path_excel):
     F1_max = 0
     F1_df = pd.DataFrame(columns=TOP_K)
     NDCG_df = pd.DataFrame(columns=TOP_K)
+    t1 = time.clock()
     for epoch in range(N_EPOCH):
-        t1 = time.clock()
-        for batch_num in range(len(batches)-1):
+        for batch_num in range(len(batches) - 1):
             train_batch_data = []
-            for sample in range(batches[batch_num], batches[batch_num+1]):
+            for sample in range(batches[batch_num], batches[batch_num + 1]):
                 (user, pos_item) = train_data_interaction[sample]
                 sample_num = 0
-                while sample_num < SAMPLE_RATE:
-                    neg_item = int(random.uniform(0, item_num))
+                while sample_num < (SAMPLE_RATE if MODEL == 'LightLCFN' else 1):
+                    neg_item = int(rd.uniform(0, item_num))
                     if not (neg_item in train_data[user]):
                         sample_num += 1
                         train_batch_data.append([user, pos_item, neg_item])
             train_batch_data = np.array(train_batch_data)
-            _, loss = sess.run([model.updates, model.loss],
-                               feed_dict={model.users: train_batch_data[:,0],
-                                          model.pos_items: train_batch_data[:,1],
-                                          model.neg_items: train_batch_data[:,2]})
-
-        # test the model each epoch
-        F1, NDCG = test_model(sess, model)
-        t2 = time.clock()
+            _, loss = sess.run([model.updates, model.loss], feed_dict={model.users: train_batch_data[:, 0], model.pos_items: train_batch_data[:, 1], model.neg_items: train_batch_data[:, 2], model.keep_prob: KEEP_PORB if MODEL == 'LightLCFN' else 1})
+        ## test the model each epoch
+        F1, NDCG = test_model(sess, model, para_test)
         F1_max = max(F1_max, F1[0])
-        # print performance
-        print_value([epoch + 1, loss, F1_max, F1, NDCG])
-        # save performance
+        ## print performance
+        # print_value([epoch + 1, loss, F1_max, F1, NDCG])
+        if epoch % 10 == 0: print('%.5f' % (F1_max), end = ' ', flush = True)
+        ## save performance
         F1_df.loc[epoch + 1] = F1
         NDCG_df.loc[epoch + 1] = NDCG
         save_value([[F1_df, 'F1'], [NDCG_df, 'NDCG']], path_excel, first_sheet=False)
-        if not loss < 10**10:
-            break
-        
-    del model, loss, _, sess
-    gc.collect()
+        if loss > 10 ** 10: break
+    t2 = time.clock()
+    print('time cost:', (t2 - t1) / 200)
+    return F1_max
