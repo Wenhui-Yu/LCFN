@@ -7,12 +7,12 @@ import scipy.sparse.linalg
 from numpy import *
 import json
 
-DATASET = 0             # 0 for Amazon, 1 for Movielens, 2 for Movielens_large
+DATASET = 0             # 0 for Amazon, 1 for Movielens
 FREQUENCY = 128         # dimensionality of the base
-FREQUENCY_U = [100, 300, 200][DATASET]   # dimensionality of the base of the user graph
-FREQUENCY_I = [50, 200, 40][DATASET]    # dimensionality of the base of the user graph
+FREQUENCY_U = [100, 300][DATASET]   # dimensionality of the base of the user graph
+FREQUENCY_I = [50, 200][DATASET]    # dimensionality of the base of the user graph
 GRAPH_CONV = ['1d', '2d'][0]            # 0 for 1d convolution and 1 for 2d
-Dataset = ['Amazon', 'Movielens', 'Movielens_large'][DATASET]
+Dataset = ['Amazon', 'Movielens'][DATASET]
 tolerant = 0.1 ** 5
 epsilon = 0.1 ** 10
 

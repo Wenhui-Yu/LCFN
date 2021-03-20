@@ -8,7 +8,7 @@ pred_dim = 128      # predictive embedding dimensionality
 
 ## parameters about experiment setting
 GPU_INDEX = "0"
-DATASET = ['Amazon', 'Movielens', 'Movielens_large'][dataset]
+DATASET = ['Amazon', 'Movielens'][dataset]
 MODEL = ['MF', 'NCF', 'GCMC', 'NGCF', 'SCF', 'CGMC', 'LightGCN', 'LCFN', 'LightLCFN', 'SGNN'][model]
 
 ## hyperparameters of all models

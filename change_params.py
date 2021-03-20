@@ -19,7 +19,7 @@ def change_params(all_para, change_dic, pred_dim):
     for para in change_dic:
         if para == 'dataset':
             dataset = change_dic[para]
-            all_para[1] = ['Amazon', 'Movielens', 'Movielens_large'][change_dic[para]]
+            all_para[1] = ['Amazon', 'Movielens'][change_dic[para]]
         if para == 'model':
             model = change_dic[para]
             all_para[2] = ['MF', 'NCF', 'GCMC', 'NGCF', 'SCF', 'CGMC', 'LightGCN', 'LCFN', 'LightLCFN', 'SGNN'][change_dic[para]]
