@@ -11,20 +11,19 @@ from read_data import read_all_data
 import os
 
 if __name__ == '__main__':
-    ## change hyperparameters here
+    ## change hyperparameters temporarily here
     change_dic = {
-        'IF_TRASFORMATION': [False, True][0],
         # 'ACTIVATION': ['None', 'Tanh', 'Sigmoid', 'ReLU'][0],
-        # 'dataset': 2,   # 0:Amazon, 1:Movielens, 2:Movielens_large
+        # 'dataset': 1,   # 0:Amazon, 1:Movielens
         # 'model': 8,     # 0:MF, 1:NCF, 2:GCMC, 3:NGCF, 4:SCF, 5:CGMC, 6:Light-GCN, 7:LCFN, 8:LightLCFN, 9:SGNN
-        'dic_end': 'dic_end'
+        # 'dic_end': 'dic_end'
     }
     all_para = change_params(all_para, change_dic, pred_dim)
 
-    ## setting tuning methods here
+    ## setting tuning strategies here
     path_excel_dir = 'experiment_result/' + all_para[1] + '_' + all_para[2] + '_'
-    tuning_method = ['tuning', 'fine_tuning', 'cross_tuning', 'coarse_tuning', 'test'][0]  #############
-    lr_coarse, lamda_coarse = 0.001, 0.01   # 0.001, 0.01  #############
+    tuning_method = ['tuning', 'fine_tuning', 'cross_tuning', 'coarse_tuning', 'test'][4]  ## set here to tune model or test model
+    lr_coarse, lamda_coarse = 0.001, 0.01
     lr_fine, lamda_fine = 0.0005, 0.1
     min_num_coarse, max_num_coarse = 3, 5
     min_num_fine, max_num_fine = 10, 50
@@ -50,5 +49,4 @@ if __name__ == '__main__':
     if tuning_method == 'fine_tuning': fine_tuning(path_excel_dir, para_name, para, data, lr_fine, lamda_fine, min_num_fine, max_num_fine)
     if tuning_method == 'cross_tuning': cross_tuning(path_excel_dir, para_name, para, data, lr_fine, lamda_fine, min_num_fine, max_num_fine)
     if tuning_method == 'coarse_tuning': coarse_tuning(path_excel_dir, para_name, para, data, lr_coarse, lamda_coarse, min_num_coarse, max_num_coarse)
-    if tuning_method == 'test': test(path_excel_dir, para_name, para, data, iter_num_test)
-
+    if tuning_method == 'test': test(path_excel_dir, para_name, para, data, iter_num_test, 'Test')

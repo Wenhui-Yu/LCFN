@@ -1,11 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="ca3b17c7-ee8e-43bc-ac20-ecace2aa9db7" name="Default" comment="">
+    <list default="true" id="2a894065-afc3-421a-80af-a29e444904fd" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/experiment_LCF.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/_main.py" beforeDir="false" afterPath="$PROJECT_DIR$/_main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/change_params.py" beforeDir="false" afterPath="$PROJECT_DIR$/change_params.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dataset/Movielens_large/movielens_large.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dataset/Movielens_large/test_data.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dataset/Movielens_large/train_data.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dataset/Movielens_large/validation_data.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/params.py" beforeDir="false" afterPath="$PROJECT_DIR$/params.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/readme.txt" beforeDir="false" afterPath="$PROJECT_DIR$/readme.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/supplementary_material/dropout_version/_main.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/supplementary_material/dropout_version/evaluation.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/supplementary_material/dropout_version/model_BPR.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/supplementary_material/dropout_version/model_CGMC.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/supplementary_material/dropout_version/model_GCMC.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/supplementary_material/dropout_version/model_LCFN.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/supplementary_material/dropout_version/model_NCF.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/supplementary_material/dropout_version/model_NGCF.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/supplementary_material/dropout_version/model_SCF.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/supplementary_material/dropout_version/params.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/supplementary_material/dropout_version/print_save.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/supplementary_material/dropout_version/read_data.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/supplementary_material/dropout_version/test_model.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/supplementary_material/dropout_version/train_model.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/supplementary_material/my_tuning_results.zip" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/supplementary_material/toy_example/GFTandFFT.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/test.py" beforeDir="false" afterPath="$PROJECT_DIR$/test.py" afterDir="false" />
     </list>
-    <ignored path="experiment_LCF.iws" />
-    <ignored path=".idea/workspace.xml" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -13,39 +39,15 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/$_main.coverage" NAME="_main Coverage Results" MODIFIED="1580831369522" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/code$data_collection__1_.coverage" NAME="data_collection (1) Coverage Results" MODIFIED="1593236114392" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/result_collection" />
-    <SUITE FILE_PATH="coverage/code$_main.coverage" NAME="_main Coverage Results" MODIFIED="1609903603543" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/$_main__1_.coverage" NAME="_main (1) Coverage Results" MODIFIED="1580818801520" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/pretraining" />
-    <SUITE FILE_PATH="coverage/code$data_process__1_.coverage" NAME="data_process (1) Coverage Results" MODIFIED="1593236131034" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/result_collection" />
-    <SUITE FILE_PATH="coverage/code$GFTandFFT.coverage" NAME="GFTandFFT Coverage Results" MODIFIED="1593246823501" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/supplementary_material/toy_example" />
-    <SUITE FILE_PATH="coverage/code$_main__1_.coverage" NAME="_main (1) Coverage Results" MODIFIED="1609903430351" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/pretraining" />
-  </component>
-  <component name="CreatePatchCommitExecutor">
-    <option name="PATCH_PATH" value="" />
-  </component>
-  <component name="FavoritesManager">
-    <favorites_list name="experiment_LCF" />
+    <SUITE FILE_PATH="coverage/code$_main.coverage" NAME="_main Coverage Results" MODIFIED="1616243297660" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+    <leaf>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/_main.py">
+        <entry file="file://$PROJECT_DIR$/pretraining/params.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="275">
-              <caret line="16" column="43" selection-start-line="16" selection-start-column="43" selection-end-line="16" selection-end-column="43" />
-              <folding>
-                <element signature="e#66#91#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/print_save.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="775">
-              <caret line="35" column="23" selection-start-line="35" selection-start-column="23" selection-end-line="35" selection-end-column="23" />
+            <state relative-caret-position="300">
+              <caret line="12" column="39" selection-start-line="12" selection-start-column="39" selection-end-line="12" selection-end-column="39" />
             </state>
           </provider>
         </entry>
@@ -53,67 +55,36 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/params.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="450">
-              <caret line="21" column="15" selection-start-line="21" selection-start-column="15" selection-end-line="21" selection-end-column="15" />
+            <state relative-caret-position="675">
+              <caret line="36" column="36" selection-start-line="36" selection-start-column="32" selection-end-line="36" selection-end-column="36" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/pretraining/_hypergraph_embeddings.py">
+        <entry file="file://$PROJECT_DIR$/_main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="200">
-              <caret line="13" column="10" selection-start-line="13" selection-start-column="10" selection-end-line="13" selection-end-column="10" />
-              <folding>
-                <element signature="e#143#152#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="125">
+              <caret line="13" column="42" selection-start-line="13" selection-start-column="42" selection-end-line="13" selection-end-column="42" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/model_LCFN.py">
+        <entry file="file://$PROJECT_DIR$/readme.txt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1900">
-              <caret line="78" column="47" selection-start-line="78" selection-start-column="47" selection-end-line="78" selection-end-column="47" />
+            <state relative-caret-position="875">
+              <caret line="35" selection-start-line="35" selection-end-line="35" />
             </state>
           </provider>
         </entry>
       </file>
     </leaf>
   </component>
-  <component name="FileTemplateManagerImpl">
-    <option name="RECENT_TEMPLATES">
-      <list>
-        <option value="Python Script" />
-      </list>
-    </option>
-  </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>FREQUENCY</find>
-      <find>print</find>
-      <find>keep_prob</find>
-      <find>_drop</find>
-      <find>KEEP</find>
-      <find>keep_</find>
-      <find>keep</find>
-      <find>_dr</find>
-      <find>KEEP_P</find>
-      <find>teat_path</find>
-      <find>self.n_users</find>
-      <find>fontsize=14</find>
-      <find>pad</find>
-      <find>filter_generation</find>
-      <find>A_hat</find>
-      <find>top</find>
-      <find>TOP_K</find>
+      <find>list</find>
     </findStrings>
-    <replaceStrings>
-      <replace>test_path</replace>
-      <replace>fontsize=15</replace>
-      <replace>Conv</replace>
-    </replaceStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -121,72 +92,23 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="D:/_experiment_transfer/code/2.review2vec/_main.py" />
-        <option value="D:/_experiment_transfer/code/2.review2vec/evaluation.py" />
-        <option value="D:/_experiment_transfer/code/2.review2vec/print_save.py" />
-        <option value="D:/_experiment_transfer/code/3.tranfer_rec/test_model.py" />
-        <option value="D:/_experiment_transfer/code/3.tranfer_rec/read_data.py" />
-        <option value="D:/_experiment_transfer/code/3.tranfer_rec/print_save.py" />
-        <option value="D:/_experiment_transfer/code/3.tranfer_rec/evaluation.py" />
-        <option value="D:/_experiment_transfer/code/2.review2vec/model_TMN.py" />
-        <option value="D:/_experiment_transfer/code/2.review2vec/model_MF.py" />
-        <option value="D:/_experiment_transfer/code/2.review2vec/model_TMF.py" />
-        <option value="D:/_experiment_transfer/code/3.tranfer_rec/train_model.py" />
-        <option value="D:/_experiment_transfer/code/3.tranfer_rec/model_TDAR.py" />
-        <option value="D:/_experiment_transfer/code/3.tranfer_rec/_main.py" />
-        <option value="D:/_experiment_transfer/code/3.tranfer_rec/params.py" />
-        <option value="D:/_experiment_transfer/code/2.review2vec/read_data.py" />
-        <option value="D:/_experiment_transfer/code/2.review2vec/train_model.py" />
-        <option value="D:/_experiment_transfer/code/2.review2vec/test_model.py" />
-        <option value="D:/_experiment_transfer/code/2.review2vec/params.py" />
-        <option value="$PROJECT_DIR$/test_model.py" />
-        <option value="$PROJECT_DIR$/model_BPR.py" />
-        <option value="$PROJECT_DIR$/read_data.py" />
-        <option value="$PROJECT_DIR$/pretraining/p_read_data.py" />
-        <option value="$PROJECT_DIR$/pretraining/p_print_save.py" />
-        <option value="$PROJECT_DIR$/pretraining/model_MF_BPR.py" />
-        <option value="$PROJECT_DIR$/pretraining/p_evaluation.py" />
-        <option value="$PROJECT_DIR$/with_dropout/params.py" />
-        <option value="$PROJECT_DIR$/with_dropout/model_BPR.py" />
-        <option value="$PROJECT_DIR$/with_dropout/_main.py" />
-        <option value="$PROJECT_DIR$/with_dropout/train_model.py" />
-        <option value="D:/software/git/gitbash/ranking/tf_on_hippo/drr_soft_label_recall_gul_allnet/drr_ls_weight_pooling_predict.py" />
-        <option value="D:/software/git/gitbash/ranking/tf_on_hippo/drr_soft_label_recall_gul_allnet/drr_soft_label_recall_gul_allnet_predict.py" />
-        <option value="D:/software/git/gitbash/ranking/tf_on_hippo/drr_ls_weight_pooling/drr_ls_weight_pooling_predict.py" />
         <option value="$PROJECT_DIR$/readme.txt" />
-        <option value="$PROJECT_DIR$/model_GCMC.py" />
-        <option value="$PROJECT_DIR$/model_NCF.py" />
-        <option value="$PROJECT_DIR$/model_CGMC.py" />
-        <option value="$PROJECT_DIR$/model_NGCF.py" />
         <option value="$PROJECT_DIR$/params.py" />
-        <option value="$PROJECT_DIR$/supplementary_material/dropout_version/params.py" />
-        <option value="$PROJECT_DIR$/supplementary_material/toy_example/GFTandFFT.py" />
-        <option value="$PROJECT_DIR$/pretraining/_hypergraph_embeddings.py" />
-        <option value="$PROJECT_DIR$/result_collection/data_process.py" />
-        <option value="$PROJECT_DIR$/model_SCF.py" />
-        <option value="$PROJECT_DIR$/train_model.py" />
         <option value="$PROJECT_DIR$/_main.py" />
-        <option value="$PROJECT_DIR$/pretraining/p_test_model.py" />
-        <option value="$PROJECT_DIR$/pretraining/_main.py" />
-        <option value="$PROJECT_DIR$/pretraining/p_params.py" />
-        <option value="$PROJECT_DIR$/pretraining/p_train_model.py" />
-        <option value="$PROJECT_DIR$/model_LCFN.py" />
-        <option value="$PROJECT_DIR$/print_save.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="948" />
-    <option name="width" value="981" />
-    <option name="height" value="1032" />
+    <option name="x" value="-12" />
+    <option name="y" value="-12" />
+    <option name="width" value="1944" />
+    <option name="height" value="1044" />
   </component>
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -203,17 +125,14 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
-  </component>
-  <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="E:\experiment_GCNRec" />
-    </key>
+    <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
+    <property name="nodejs_npm_path_reset_for_default_project" value="true" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -227,72 +146,9 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python._main">
-    <configuration default="true" type="tests" factoryName="Attests">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="experiment_LCF" />
-      <option name="SCRIPT_NAME" value="" />
-      <option name="CLASS_NAME" value="" />
-      <option name="METHOD_NAME" value="" />
-      <option name="FOLDER_NAME" value="" />
-      <option name="TEST_TYPE" value="TEST_SCRIPT" />
-      <option name="PATTERN" value="" />
-      <option name="USE_PATTERN" value="false" />
-      <method />
-    </configuration>
-    <configuration name="GFTandFFT" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <module name="experiment_LCF" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/supplementary_material/toy_example" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/supplementary_material/toy_example/GFTandFFT.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="_main (1)" type="PythonConfigurationType" factoryName="Python" singleton="false" temporary="true">
-      <module name="experiment_LCF" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/pretraining" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/pretraining/_main.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="_main" type="PythonConfigurationType" factoryName="Python" singleton="false" temporary="true">
-      <module name="experiment_LCF" />
+  <component name="RunManager">
+    <configuration name="_main" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="code" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
@@ -313,64 +169,9 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="data_collection (1)" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <module name="experiment_LCF" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/result_collection" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/result_collection/data_collection.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="data_process (1)" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <module name="experiment_LCF" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/result_collection" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/result_collection/data_process.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <list>
-      <item itemvalue="Python._main (1)" />
-      <item itemvalue="Python._main" />
-      <item itemvalue="Python.data_process (1)" />
-      <item itemvalue="Python.data_collection (1)" />
-      <item itemvalue="Python.GFTandFFT" />
-    </list>
     <recent_temporary>
       <list>
         <item itemvalue="Python._main" />
-        <item itemvalue="Python._main (1)" />
-        <item itemvalue="Python.GFTandFFT" />
-        <item itemvalue="Python.data_process (1)" />
-        <item itemvalue="Python.data_collection (1)" />
       </list>
     </recent_temporary>
   </component>
@@ -379,405 +180,80 @@
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="ca3b17c7-ee8e-43bc-ac20-ecace2aa9db7" name="Default" comment="" />
-      <created>1533026914587</created>
+      <changelist id="2a894065-afc3-421a-80af-a29e444904fd" name="Default Changelist" comment="" />
+      <created>1616242972765</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1533026914587</updated>
-      <workItem from="1580818334234" duration="11146000" />
-      <workItem from="1580839088108" duration="1396000" />
-      <workItem from="1580874597271" duration="37000" />
-      <workItem from="1580877592160" duration="406000" />
-      <workItem from="1580957740595" duration="93000" />
-      <workItem from="1580957877930" duration="26000" />
-      <workItem from="1581088214506" duration="80000" />
-      <workItem from="1581134021709" duration="46000" />
-      <workItem from="1591090869594" duration="484000" />
-      <workItem from="1591091376096" duration="6155000" />
-      <workItem from="1591160870504" duration="61000" />
-      <workItem from="1591455056629" duration="2536000" />
-      <workItem from="1591503399495" duration="1143000" />
-      <workItem from="1591583813412" duration="6145000" />
-      <workItem from="1591623338264" duration="18000" />
-      <workItem from="1591630475849" duration="1166000" />
-      <workItem from="1591668770334" duration="98000" />
-      <workItem from="1591756125980" duration="2769000" />
-      <workItem from="1591772814624" duration="2176000" />
-      <workItem from="1591799219213" duration="733000" />
-      <workItem from="1591871895344" duration="317000" />
-      <workItem from="1591884543428" duration="1436000" />
-      <workItem from="1591939572060" duration="1290000" />
-      <workItem from="1592164452047" duration="598000" />
-      <workItem from="1592190214827" duration="35000" />
-      <workItem from="1592214974746" duration="3000" />
-      <workItem from="1593181534790" duration="940000" />
-      <workItem from="1593223384588" duration="2235000" />
-      <workItem from="1593243109014" duration="4961000" />
-      <workItem from="1593254512813" duration="282000" />
-      <workItem from="1593339337767" duration="2104000" />
-      <workItem from="1595759554528" duration="643000" />
-      <workItem from="1595784064915" duration="27000" />
-      <workItem from="1596695528345" duration="298000" />
-      <workItem from="1596696018960" duration="32000" />
-      <workItem from="1596696086680" duration="14000" />
-      <workItem from="1598880092208" duration="269000" />
-      <workItem from="1606700394167" duration="582000" />
-      <workItem from="1606705841487" duration="2632000" />
-      <workItem from="1606708623178" duration="92000" />
-      <workItem from="1606728559565" duration="1031000" />
-      <workItem from="1606729710159" duration="1757000" />
-      <workItem from="1606738991804" duration="1147000" />
-      <workItem from="1606794916792" duration="2251000" />
-      <workItem from="1609903236604" duration="1154000" />
-      <workItem from="1609904431685" duration="39000" />
-      <workItem from="1609904870099" duration="14000" />
-      <workItem from="1610766887403" duration="1257000" />
-      <workItem from="1610787938223" duration="555000" />
-      <workItem from="1612432911001" duration="138000" />
-      <workItem from="1612502419480" duration="9000" />
+      <updated>1616242972765</updated>
+      <workItem from="1616242974289" duration="292000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="64856000" />
+    <option name="totallyTimeSpent" value="292000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1295" height="695" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.28051737" />
-      <window_info auto_hide="true" id="Structure" order="1" weight="0.25" />
-      <window_info id="Favorites" order="2" side_tool="true" />
-      <window_info anchor="bottom" id="Database Changes" order="0" />
-      <window_info anchor="bottom" id="Docker" order="1" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Message" order="2" />
-      <window_info anchor="bottom" id="Find" order="3" />
-      <window_info anchor="bottom" id="Run" order="4" weight="0.3516874" />
-      <window_info anchor="bottom" id="Debug" order="5" weight="0.31382316" />
-      <window_info anchor="bottom" id="Cvs" order="6" weight="0.25" />
-      <window_info anchor="bottom" id="Inspection" order="7" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="8" />
-      <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
-      <window_info anchor="bottom" id="Python Console" order="10" />
-      <window_info anchor="bottom" id="Terminal" order="11" />
-      <window_info anchor="bottom" id="Version Control" order="12" />
-      <window_info anchor="right" id="Database" order="0" />
-      <window_info anchor="right" id="Commander" order="1" weight="0.4" />
-      <window_info anchor="right" id="SciView" order="2" weight="0.2287793" />
-      <window_info anchor="right" id="Ant Build" order="3" weight="0.25" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="4" weight="0.25" />
+      <window_info id="Favorites" side_tool="true" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2497979" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info anchor="bottom" id="Docker" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Database Changes" />
+      <window_info anchor="bottom" id="Version Control" />
+      <window_info anchor="bottom" id="Python Console" />
+      <window_info anchor="bottom" id="Terminal" />
+      <window_info anchor="bottom" id="Event Log" side_tool="true" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info anchor="bottom" id="Run" order="2" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="right" id="SciView" />
+      <window_info anchor="right" id="Database" />
+      <window_info anchor="right" id="Commander" order="0" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
     </layout>
-    <layout-to-restore>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.19725141" />
-      <window_info auto_hide="true" id="Structure" order="1" weight="0.25" />
-      <window_info id="Favorites" order="2" side_tool="true" />
-      <window_info anchor="bottom" id="Database Changes" order="0" />
-      <window_info anchor="bottom" id="Docker" order="1" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Message" order="2" />
-      <window_info anchor="bottom" id="Find" order="3" />
-      <window_info anchor="bottom" id="Run" order="4" weight="0.3516874" />
-      <window_info anchor="bottom" id="Debug" order="5" weight="0.31382316" />
-      <window_info anchor="bottom" id="Cvs" order="6" weight="0.25" />
-      <window_info anchor="bottom" id="Inspection" order="7" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="8" />
-      <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
-      <window_info anchor="bottom" id="Python Console" order="10" />
-      <window_info anchor="bottom" id="Terminal" order="11" />
-      <window_info anchor="bottom" id="Version Control" order="12" />
-      <window_info anchor="right" id="Database" order="0" />
-      <window_info anchor="right" id="Commander" order="1" weight="0.4" />
-      <window_info anchor="right" id="SciView" order="2" weight="0.2287793" />
-      <window_info anchor="right" id="Ant Build" order="3" weight="0.25" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="4" weight="0.25" />
-    </layout-to-restore>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
   </component>
-  <component name="Vcs.Log.UiProperties">
-    <option name="RECENTLY_FILTERED_USER_GROUPS">
-      <collection />
-    </option>
-    <option name="RECENTLY_FILTERED_BRANCH_GROUPS">
-      <collection />
-    </option>
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="python-line">
-          <url>file://E:/SpectralCF-master/SpectralCF_GCN.py</url>
-          <line>53</line>
-          <option name="timeStamp" value="10" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
-  </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/with_dropout/print_save.py" />
-    <entry file="file://$PROJECT_DIR$/with_dropout/read_data.py" />
-    <entry file="file://$PROJECT_DIR$/with_dropout/test_model.py" />
-    <entry file="file://$PROJECT_DIR$/with_dropout/model_SCF.py" />
-    <entry file="file://$PROJECT_DIR$/with_dropout/model_NCF.py" />
-    <entry file="file://$PROJECT_DIR$/with_dropout/model_BPR.py" />
-    <entry file="file://$PROJECT_DIR$/with_dropout/_main.py" />
-    <entry file="file://$PROJECT_DIR$/with_dropout/train_model.py" />
-    <entry file="file://$PROJECT_DIR$/../备份/2.0/params.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret selection-end-line="25" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/with_dropout/params.py" />
-    <entry file="file://D:/software/git/gitbash/ranking/tf_on_hippo/drr_soft_label_recall_gul_allnet/drr_ls_weight_pooling_predict.py" />
-    <entry file="file://D:/software/git/gitbash/ranking/tf_on_hippo/drr_soft_label_recall_gul_allnet/version/drr_ls_weight_pooling_ctr_predict.py" />
-    <entry file="file://D:/software/git/gitbash/ranking/tf_on_hippo/drr_soft_label_recall_gul_allnet/version/drr_ls_weight_pooling_predict.py" />
-    <entry file="file://D:/software/git/gitbash/ranking/tf_on_hippo/drr_soft_label_recall_gul_allnet/drr_soft_label_recall_gul_allnet_0.py" />
-    <entry file="file://D:/software/git/gitbash/ranking/tf_on_hippo/drr_soft_label_recall_gul_allnet/drr_soft_label_recall_gul_allnet_predict.py" />
-    <entry file="file://D:/software/git/gitbash/ranking/tf_on_hippo/drr_ls_weight_pooling/drr_ls_weight_pooling_predict.py" />
-    <entry file="file://D:/software/git/gitbash/ranking/tf_on_hippo/drr_ls_weight_pooling/drr_ls_weight_pooling_0.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="35" column="31" lean-forward="true" selection-start-line="35" selection-start-column="31" selection-end-line="35" selection-end-column="31" />
-        </state>
-      </provider>
+    <entry file="file://D:/_experiment_SGNN/code/pretraining/params.py">
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/readme.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="300">
-          <caret line="12" column="16" selection-start-line="12" selection-start-column="16" selection-end-line="12" selection-end-column="16" />
+        <state relative-caret-position="875">
+          <caret line="35" selection-start-line="35" selection-end-line="35" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/supplementary_material/dropout_version/model_NCF.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/supplementary_material/dropout_version/model_LCFN.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/supplementary_material/dropout_version/print_save.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="e#0#19#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/supplementary_material/dropout_version/_main.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/supplementary_material/dropout_version/params.py">
+    <entry file="file://$PROJECT_DIR$/pretraining/params.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="300">
-          <caret line="18" column="51" selection-start-line="18" selection-start-column="51" selection-end-line="18" selection-end-column="51" />
+          <caret line="12" column="39" selection-start-line="12" selection-start-column="39" selection-end-line="12" selection-end-column="39" />
         </state>
       </provider>
     </entry>
-    <entry file="file://D:/software/anaconda/Anaconda3/Lib/site-packages/matplotlib/artist.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="112">
-          <caret line="858" selection-start-line="858" selection-end-line="858" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://D:/software/anaconda/Anaconda3/Lib/site-packages/matplotlib/pyplot.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="112">
-          <caret line="1536" selection-start-line="1536" selection-end-line="1536" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/supplementary_material/toy_example/GFTandFFT.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="95">
-          <caret line="30" column="4" selection-start-line="30" selection-start-column="4" selection-end-line="30" selection-end-column="4" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../备份/1.0/_experiment_LCFN/pretraining/p_params.py">
+    <entry file="file://$PROJECT_DIR$/tuning.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/pretraining/model_MF_BPR.py">
+    <entry file="file://$PROJECT_DIR$/params.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-150" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/model_BPR.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="4" selection-start-column="4" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/model_NCF.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="25">
-          <caret line="1" column="204" selection-start-line="1" selection-start-column="204" selection-end-line="1" selection-end-column="204" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../备份/1.0/_experiment_LCFN/model_SCF.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-929" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/result_collection/data_collection.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="425">
-          <caret line="26" column="75" selection-start-line="26" selection-start-column="75" selection-end-line="26" selection-end-column="75" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/result_collection/data_process.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="125">
-          <caret line="13" column="15" selection-start-line="13" selection-start-column="15" selection-end-line="13" selection-end-column="15" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/model_NGCF.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2550">
-          <caret line="103" column="8" selection-start-line="103" selection-start-column="8" selection-end-line="103" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/model_GCMC.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2350">
-          <caret line="95" column="8" selection-start-line="95" selection-start-column="8" selection-end-line="95" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://D:/_experiment_2D-LGCN/code/model_LCFN.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-525" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/model_CGMC.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="460">
-          <caret line="96" column="8" selection-start-line="96" selection-start-column="8" selection-end-line="96" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/train_model.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2175">
-          <caret line="98" column="24" selection-start-line="98" selection-start-column="24" selection-end-line="98" selection-end-column="24" />
-          <folding>
-            <element signature="e#125#148#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test_model.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="600">
-          <caret line="33" column="35" selection-start-line="33" selection-start-column="35" selection-end-line="33" selection-end-column="35" />
-          <folding>
-            <element signature="e#117#141#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pretraining/p_read_data.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pretraining/_main.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="179">
-          <caret line="15" column="13" selection-start-line="15" selection-start-column="13" selection-end-line="15" selection-end-column="13" />
-          <folding>
-            <element signature="e#109#136#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pretraining/p_train_model.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1088">
-          <caret line="7" column="26" lean-forward="true" selection-start-line="7" selection-start-column="26" selection-end-line="7" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pretraining/p_test_model.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="460">
-          <caret line="37" column="64" selection-start-line="37" selection-start-column="64" selection-end-line="37" selection-end-column="64" />
-          <folding>
-            <element signature="e#117#143#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/model_SCF.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-46">
-          <caret line="103" column="8" selection-start-line="103" selection-start-column="8" selection-end-line="103" selection-end-column="8" />
-          <folding>
-            <element signature="e#326#349#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pretraining/p_params.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="450">
-          <caret line="18" column="15" selection-start-line="18" selection-start-column="15" selection-end-line="18" selection-end-column="15" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pretraining/p_print_save.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="100">
-          <caret line="4" column="6" lean-forward="true" selection-start-line="4" selection-start-column="6" selection-end-line="4" selection-end-column="6" />
+        <state relative-caret-position="675">
+          <caret line="36" column="36" selection-start-line="36" selection-start-column="32" selection-end-line="36" selection-end-column="36" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/_main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="275">
-          <caret line="16" column="43" selection-start-line="16" selection-start-column="43" selection-end-line="16" selection-end-column="43" />
-          <folding>
-            <element signature="e#66#91#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/print_save.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="775">
-          <caret line="35" column="23" selection-start-line="35" selection-start-column="23" selection-end-line="35" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/model_LCFN.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1900">
-          <caret line="78" column="47" selection-start-line="78" selection-start-column="47" selection-end-line="78" selection-end-column="47" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/params.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="450">
-          <caret line="21" column="15" selection-start-line="21" selection-start-column="15" selection-end-line="21" selection-end-column="15" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pretraining/_hypergraph_embeddings.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="200">
-          <caret line="13" column="10" selection-start-line="13" selection-start-column="10" selection-end-line="13" selection-end-column="10" />
-          <folding>
-            <element signature="e#143#152#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="125">
+          <caret line="13" column="42" selection-start-line="13" selection-start-column="42" selection-end-line="13" selection-end-column="42" />
         </state>
       </provider>
     </entry>
