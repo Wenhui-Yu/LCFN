@@ -41,7 +41,7 @@ if __name__ == '__main__':
     if all_para[2] == 'LightLCFN': para_name += ['FREQUENCY_USER', 'FREQUENCY_ITEM', 'FREQUENCY', 'KEEP_PORB', 'SAMPLE_RATE', 'GRAPH_CONV', 'PREDICTION', 'LOSS_FUNCTION', 'GENERALIZATION', 'OPTIMIZATION', 'IF_TRASFORMATION', 'ACTIVATION', 'POOLING']
     if all_para[2] == 'SGNN': para_name += ['PROP_DIM', 'PROP_EMB', 'IF_NORM']
     # if testing the model, we need to read in test set
-    if tuning_method == 'test': all_para[11] = 'Test'
+    if tuning_method == 'test': all_para[11] = para[11] = 'Test'
 
     ## read data
     data = read_all_data(all_para)
