@@ -4,8 +4,7 @@ import tensorflow as tf
 import random as rd
 import time
 
-def test(path_excel_dir, para_name, para, data, iter_num, vali_or_test):
-    para[11] = vali_or_test
+def test(path_excel_dir, para_name, para, data, iter_num):
     for i in range(iter_num):
         print_params(para_name, para)
         path_excel = path_excel_dir + str(int(time.time())) + str(int(rd.uniform(100, 900))) + '.xlsx'
