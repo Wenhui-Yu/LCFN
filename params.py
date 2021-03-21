@@ -2,7 +2,7 @@
 ## author@Wenhui Yu  2021.02.16
 ## email: jianlin.ywh@alibaba-inc.com
 
-model = 9           # 0:MF, 1:NCF, 2:GCMC, 3:NGCF, 4:SCF, 5:CGMC, 6:Light-GCN, 7:LCFN, 8:LightLCFN, 9:SGNN
+model = 9           # 0:MF, 1:NCF, 2:GCMC, 3:NGCF, 4:SCF, 5:CGMC, 6:LightGCN, 7:LCFN, 8:LightLCFN, 9:SGNN
 dataset = 0         # 0:Amazon, 1:Movielens
 pred_dim = 128      # predictive embedding dimensionality
 
