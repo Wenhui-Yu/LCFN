@@ -1,4 +1,4 @@
-## proposed model, Low-pass Collaborative Filter Network (LCFN)
+## our model, Low-pass Collaborative Filter Network (LCFN)
 ## Wenhui Yu and Zheng Qin. 2020. Graph Convolutional Network for Recommendation with Low-pass Collaborative Filters. In ICML.
 ## author@Wenhui Yu  2020.06.02
 ## email: jianlin.ywh@alibaba-inc.com

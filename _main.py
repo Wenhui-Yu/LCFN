@@ -16,7 +16,6 @@ if __name__ == '__main__':
         # 'ACTIVATION': ['None', 'Tanh', 'Sigmoid', 'ReLU'][0],
         # 'dataset': 1,   # 0:Amazon, 1:Movielens
         # 'model': 8,     # 0:MF, 1:NCF, 2:GCMC, 3:NGCF, 4:SCF, 5:CGMC, 6:LightGCN, 7:LCFN, 8:LightLCFN, 9:SGNN
-        'dic_end': 'dic_end'
     }
     all_para = change_params(all_para, change_dic, pred_dim)
 

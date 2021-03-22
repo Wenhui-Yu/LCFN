@@ -1,4 +1,4 @@
-## our paper: LightLCFN
+## our model: Light Low-pass Collaborative Filter Network (LightLCFN)
 ## author@Wenhui Yu  2021.01.17
 ## email: jianlin.ywh@alibaba-inc.com
 

@@ -1,4 +1,4 @@
-## our paper: LightLCFN
+## our model: Self-propagation Graph Neural Network (SGNN)
 ## author@Wenhui Yu  2021.01.17
 ## email: jianlin.ywh@alibaba-inc.com
 
