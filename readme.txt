@@ -2,7 +2,7 @@ Codes for papers:
 
 1. Wenhui Yu and Zheng Qin. 2020. Graph Convolutional Network for Recommendation with Low-pass Collaborative Filters. In ICML.
 
-2. Wenhui Yu, Zixin Zhang, Junfeng Ge, Wenwu Ou, and Zheng Qin. 2021. Less is More: Exploring Simple and Powerful Low-pass Graph Convolutional Network for Recommendation. In .
+2. Wenhui Yu, Zixin Zhang, Junfeng Ge, Wenwu Ou, and Zheng Qin. 2021. Less is More: Exploring Simple and Powerful Low-pass Graph Convolutional Network for Recommendation.
 
 3. Wenhui Yu, Xiao Lin, Jinfei Liu, Junfeng Ge, Wenwu Ou, and Zheng Qin. 2021. Self-propagation Graph Neural Network for Recommendation. In TKDE.
 
@@ -30,6 +30,8 @@ Please follow the steps below:
     You can choose one of these two URLs for downloading (we recommend the first one). Downloaded and unzip LCFN_dataset.zip, and use it to replace the folder dataset in our project.
 
 2. Run _main.py in our project (datasets, hyperparameters can be set in params.py).
+    2.1 Tuning models (if you want to change datasets or hyperparameters): We provide a automatic tool to tune models with respect to learning rate \eta and regularization coefficient \lambda. Set "tuning_method" in line 24 in _main.py as 'tuning' and run _main.py. The best \eta and \lambda and corresponding performance can be returned.
+    2.2 Testing models: Set "tuning_method" as 'test' and run _main.py.
 
 3. Check results in folder experiment_result. Collect results by result_collection.
 
