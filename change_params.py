@@ -35,7 +35,7 @@ def change_params(all_para, change_dic, pred_dim):
     all_para[8] = TEST_USER_BATCH_list[dataset]
     all_para[13] = FREQUENCY_USER_list[dataset]
     all_para[14] = FREQUENCY_ITEM_list[dataset]
-    ## hyperparameters for LightLCFN
+    ## hyperparameters for LGCN
     if all_para[25] == 'Concat': all_para[6] = int(pred_dim / (all_para[5] + 1))
     for para in change_dic:
         if para not in ['model', 'dataset', 'test_validation', 'pred_dim']:

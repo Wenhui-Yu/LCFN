@@ -23,7 +23,7 @@ def test_model(sess, model, para_test):
     [train_data, test_data, user_num, item_num, TOP_K, TEST_USER_BATCH] = para_test
     para_test_one_user = [test_data, TOP_K]
     ## Since Amazon is too large to calculate user_num*item_num interactions, we select TEST_USER_BATCH users to test the model.
-    ## For some heavy models (e.g., NCF and LightLCFN with MLP as the predictor), calculating TEST_USER_BATCH*item_num interactions is still space-consuming, we split TEST_USER_BATCH users into mini batches further
+    ## For some heavy models (e.g., NCF and LGCN with MLP as the predictor), calculating TEST_USER_BATCH*item_num interactions is still space-consuming, we split TEST_USER_BATCH users into mini batches further
     user_top_items = np.zeros((TEST_USER_BATCH, max(TOP_K))).astype(dtype=int32)
     test_batch = rd.sample(list(range(user_num)), TEST_USER_BATCH)
     mini_batch_num = 100

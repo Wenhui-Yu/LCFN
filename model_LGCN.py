@@ -1,13 +1,13 @@
-## our model: Light Low-pass Collaborative Filter Network (LightLCFN)
+## our model: Low-pass Graph Convolutional Network (LGCN)
 ## author@Wenhui Yu  2021.01.17
 ## email: jianlin.ywh@alibaba-inc.com
 
 import tensorflow as tf
 
-class model_LightLCFN(object):
+class model_LGCN(object):
     def __init__(self, n_users, n_items, lr, lamda, emb_dim, layer, pre_train_latent_factor, graph_embeddings, graph_conv,
                  prediction, loss_function, generalization, optimization, if_pretrain, if_transformation, activation, pooling):
-        self.model_name = 'LightLCFN'
+        self.model_name = 'LGCN'
         self.n_users = n_users
         self.n_items = n_items
         ## hyperparameters

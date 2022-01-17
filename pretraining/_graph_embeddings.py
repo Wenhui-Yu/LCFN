@@ -1,4 +1,4 @@
-## graph embeddings as the Fourier transform bases for LightLCFN model
+## graph embeddings as the Fourier transform bases for LGCN model
 ## author@Wenhui Yu  2021.01.17
 ## email: jianlin.ywh@alibaba-inc.com
 

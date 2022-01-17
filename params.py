@@ -2,14 +2,14 @@
 ## author@Wenhui Yu  2021.02.16
 ## email: jianlin.ywh@alibaba-inc.com
 
-model = 9           # 0:MF, 1:NCF, 2:GCMC, 3:NGCF, 4:SCF, 5:CGMC, 6:LightGCN, 7:LCFN, 8:LightLCFN, 9:SGNN
+model = 8           # 0:MF, 1:NCF, 2:GCMC, 3:NGCF, 4:SCF, 5:CGMC, 6:LightGCN, 7:LCFN, 8:LGCN, 9:SGNN
 dataset = 0         # 0:Amazon, 1:Movielens
 pred_dim = 128      # predictive embedding dimensionality
 
 ## parameters about experiment setting
 GPU_INDEX = "0"
 DATASET = ['Amazon', 'Movielens'][dataset]
-MODEL_list = ['MF', 'NCF', 'GCMC', 'NGCF', 'SCF', 'CGMC', 'LightGCN', 'LCFN', 'LightLCFN', 'SGNN']
+MODEL_list = ['MF', 'NCF', 'GCMC', 'NGCF', 'SCF', 'CGMC', 'LightGCN', 'LCFN', 'LGCN', 'SGNN']
 MODEL = MODEL_list[model]
 
 ## hyperparameters of all models
@@ -32,13 +32,13 @@ IF_PRETRAIN = [False, True][1]
 TEST_VALIDATION = 'Validation'  # can be changed automatically
 TOP_K = [2, 5, 10, 20, 50, 100]
 
-## hyperparameters for LCFN and LightLCFN
+## hyperparameters for LCFN and LGCN
 FREQUENCY_USER_list = [100, 300]
 FREQUENCY_ITEM_list = [50, 200]
 FREQUENCY_USER = FREQUENCY_USER_list[dataset]
 FREQUENCY_ITEM = FREQUENCY_ITEM_list[dataset]
 
-## hyperparameters for LightLCFN
+## hyperparameters for LGCN
 FREQUENCY = 128
 KEEP_PORB = 0.9
 SAMPLE_RATE = 1
@@ -52,7 +52,7 @@ ACTIVATION = ['None', 'Tanh', 'Sigmoid', 'ReLU'][0]          # select the activa
 POOLING = ['Concat', 'Sum', 'Max', 'Product', 'MLP3'][1]    # select the pooling strategy, the layer of mlp is also changable
 if POOLING == 'Concat': EMB_DIM = int(pred_dim/(LAYER+1))
 
-## parameters about model setting (selective for model LightLCFN)
+## parameters about model setting (selective for model LGCN)
 PROP_DIM = 128
 PROP_EMB = ['RM', 'SF', 'PE'][1]
 IF_NORM = [False, True][0]

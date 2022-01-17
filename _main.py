@@ -1,5 +1,5 @@
 ## author@ Wenhui Yu  email: jianlin.ywh@alibaba-inc.com  2021.02.16
-## run models: our models (LCFN, LightLCFN, and SGNN) and baselines
+## run models: our models (LCFN, LGCN, and SGNN) and baselines
 from params import all_para, pred_dim
 from change_params import change_params
 from tuning import tuning
@@ -15,7 +15,7 @@ if __name__ == '__main__':
     change_dic = {
         # 'ACTIVATION': ['None', 'Tanh', 'Sigmoid', 'ReLU'][0],
         # 'dataset': 1,   # 0:Amazon, 1:Movielens
-        # 'model': 8,     # 0:MF, 1:NCF, 2:GCMC, 3:NGCF, 4:SCF, 5:CGMC, 6:LightGCN, 7:LCFN, 8:LightLCFN, 9:SGNN
+        # 'model': 8,     # 0:MF, 1:NCF, 2:GCMC, 3:NGCF, 4:SCF, 5:CGMC, 6:LightGCN, 7:LCFN, 8:LGCN, 9:SGNN
     }
     all_para = change_params(all_para, change_dic, pred_dim)
 
@@ -33,11 +33,11 @@ if __name__ == '__main__':
     ## select hyperparameters for different model
     para = all_para[0: 13]
     if all_para[2] == 'LCFN': para += all_para[13: 15]
-    if all_para[2] == 'LightLCFN': para += all_para[13: 26]
+    if all_para[2] == 'LGCN': para += all_para[13: 26]
     if all_para[2] == 'SGNN': para += all_para[26: 29]
     para_name = ['GPU_INDEX', 'DATASET', 'MODEL', 'LR', 'LAMDA', 'LAYER', 'EMB_DIM', 'BATCH_SIZE', 'TEST_USER_BATCH', 'N_EPOCH', 'IF_PRETRAIN', 'TEST_VALIDATION', 'TOP_K']
     if all_para[2] == 'LCFN': para_name += ['FREQUENCY_USER', 'FREQUENCY_ITEM']
-    if all_para[2] == 'LightLCFN': para_name += ['FREQUENCY_USER', 'FREQUENCY_ITEM', 'FREQUENCY', 'KEEP_PORB', 'SAMPLE_RATE', 'GRAPH_CONV', 'PREDICTION', 'LOSS_FUNCTION', 'GENERALIZATION', 'OPTIMIZATION', 'IF_TRASFORMATION', 'ACTIVATION', 'POOLING']
+    if all_para[2] == 'LGCN': para_name += ['FREQUENCY_USER', 'FREQUENCY_ITEM', 'FREQUENCY', 'KEEP_PORB', 'SAMPLE_RATE', 'GRAPH_CONV', 'PREDICTION', 'LOSS_FUNCTION', 'GENERALIZATION', 'OPTIMIZATION', 'IF_TRASFORMATION', 'ACTIVATION', 'POOLING']
     if all_para[2] == 'SGNN': para_name += ['PROP_DIM', 'PROP_EMB', 'IF_NORM']
     # if testing the model, we need to read in test set
     if tuning_method == 'test': all_para[11] = para[11] = 'Test'
