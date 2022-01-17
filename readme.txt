@@ -2,7 +2,7 @@ Codes for papers:
 
 1. Wenhui Yu and Zheng Qin. 2020. Graph Convolutional Network for Recommendation with Low-pass Collaborative Filters. In ICML.
 
-2. Wenhui Yu, Zixin Zhang, Junfeng Ge, Wenwu Ou, and Zheng Qin. 2021. Less is More: Exploring Simple and Powerful Low-pass Graph Convolutional Network for Recommendation.
+2. Wenhui Yu, Zixin Zhang, and Zheng Qin. 2022. Low-pass Graph Convolutional Network for Recommendation. In AAAI
 
 3. Wenhui Yu, Xiao Lin, Jinfei Liu, Junfeng Ge, Wenwu Ou, and Zheng Qin. 2021. Self-propagation Graph Neural Network for Recommendation. In TKDE.
 
@@ -60,9 +60,16 @@ Please cite one of our papers if you use our codes:
 	year={2020}
 }
 
+@inproceedings{LGCN,
+	title={Low-pass Graph Convolutional Network for Recommendation},
+	author={Yu, Wenhui and Zhang, Zixin and Qin, Zheng},
+	booktitle={AAAI},
+	year={2022}
+}
+
 @article{SGNN,
 	title={Self-propagation Graph Neural Network for Recommendation},
-	author={Yu, Wenhui and Lin, Xiao and Liu, Jinfei and Ge, Junfeng and Ou, Wenwu},
+	author={Yu, Wenhui and Lin, Xiao and Liu, Jinfei and Ge, Junfeng and Ou, Wenwu and Qin, Zheng},
 	journal={TKDE},
 	year={2021}
 }
