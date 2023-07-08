@@ -9,7 +9,7 @@ from model_SCF import model_SCF
 from model_CGMC import model_CGMC
 from model_LightGCN import model_LightGCN
 from model_LCFN import model_LCFN
-from model_LGCN import LGCN
+from model_LGCN import model_LGCN
 from model_SGNN import model_SGNN
 from test_model import test_model
 from print_save import print_value, save_value
