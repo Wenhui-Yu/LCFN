@@ -31,7 +31,7 @@ def save_params(para,path_excel):
         for j, q in enumerate(p):
             table.cell(row = i+1, column = j+1).value = q
     wb.save(path_excel)
-    wb.close()
+    # wb.close()
 
 def save_value(df_list,path_excel,first_sheet):
     excelWriter = pd.ExcelWriter(path_excel, engine='openpyxl',mode='a')
