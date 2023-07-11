@@ -12,7 +12,6 @@ import tensorflow as tf
 import numpy as np
 import random as rd
 import pandas as pd
-import time
 
 def train_model(para, data, path_excel):
     ## data and hyperparameters
@@ -40,7 +39,6 @@ def train_model(para, data, path_excel):
     F1_max = 0
     F1_df = pd.DataFrame(columns=para["TOP_K"])
     NDCG_df = pd.DataFrame(columns=para["TOP_K"])
-    t1 = time.perf_counter()
     for epoch in range(para["N_EPOCH"]):
         for batch_num in range(len(batches) - 1):
             train_batch_data = []
@@ -65,6 +63,4 @@ def train_model(para, data, path_excel):
         NDCG_df.loc[epoch + 1] = NDCG
         save_value([[F1_df, 'F1'], [NDCG_df, 'NDCG']], path_excel, first_sheet=False)
         if loss > 10 ** 10: break
-    t2 = time.perf_counter()
-    print('time cost:', (t2 - t1) / 200)
     return F1_max
