@@ -1,13 +1,13 @@
-## baseline: Light Graph Convolutional Network (LightGCN)
-## Xiangnan He and Kuan Deng and Xiang Wang and Yan Li and Yong-Dong Zhang and Meng Wang. LightGCN: Simplifying and Powering Graph Convolution Network for Recommendation. SIGIR, 2020.
+## baseline: Spectral Collaborative Filtering (SCF)
+## Lei Zheng, Chun-Ta Lu, Fei Jiang, Jiawei Zhang, and Philip S. Yu. Spectral collaborative filtering. In Proceedings of the 12th ACM Conference on Recommender Systems, RecSys '18, pages 311-319, 2018.
 
 import tensorflow as tf
 from utils.utils import *
 
-class model_LightGCN(object):
+class model_SCF(object):
     def __init__(self, data, para):
         ## model hyper-params
-        self.model_name = 'LightGCN'
+        self.model_name = 'SCF'
         self.emb_dim = para['EMB_DIM']
         self.lr = para['LR']
         self.lamda = para['LAMDA']
@@ -15,13 +15,11 @@ class model_LightGCN(object):
         self.if_pretrain = para['IF_PRETRAIN']
         self.loss_function = para['LOSS_FUNCTION']
         self.optimizer = para['OPTIMIZER']
-        self.sampler = para['SAMPLER']
         self.n_users = data['user_num']
         self.n_items = data['item_num']
         self.popularity = data['popularity']
         self.U, self.V = data['pre_train_embeddings']
         self.A_hat = data['sparse_propagation_matrix']
-        self.layer_weight = [1 / (l + 1) for l in range(self.layer + 1)]
 
         ## placeholder
         self.users = tf.placeholder(tf.int32, shape=(None,))
@@ -37,14 +35,19 @@ class model_LightGCN(object):
         else:
             self.user_embeddings = tf.Variable(tf.random_normal([self.n_users, self.emb_dim], mean=0.01, stddev=0.02, dtype=tf.float32), name='user_embeddings')
             self.item_embeddings = tf.Variable(tf.random_normal([self.n_items, self.emb_dim], mean=0.01, stddev=0.02, dtype=tf.float32), name='item_embeddings')
-        self.var_list = [self.user_embeddings, self.item_embeddings]
+        self.filters = []
+        for l in range(self.layer):
+            self.filters.append(tf.Variable(tf.random_normal([self.emb_dim, self.emb_dim], mean=0.01, stddev=0.02, dtype=tf.float32), name='filters_' + str(l)))
 
         ## graph convolution
         self.embeddings = tf.concat([self.user_embeddings, self.item_embeddings], axis=0)
-        self.all_embeddings = self.embeddings
+        self.all_embeddings = [self.embeddings]
         for l in range(self.layer):
-            self.embeddings = tf.sparse_tensor_dense_matmul(self.A_hat, self.embeddings)
-            self.all_embeddings += self.embeddings * self.layer_weight[l + 1]
+            ## convolution of embedding: (U*U^T+U*\Lambda*U^T)*emb = (I+L)*emb = (2*I-D^{-1}*A)*emb = 2*emb-H_hat*emb
+            self.embeddings = 2 * self.embeddings - tf.sparse_tensor_dense_matmul(self.A_hat, self.embeddings)
+            self.embeddings = tf.nn.sigmoid(tf.matmul(self.embeddings, self.filters[l]))
+            self.all_embeddings.append(self.embeddings)
+        self.all_embeddings = tf.concat(self.all_embeddings, 1)
         self.user_all_embeddings, self.item_all_embeddings = tf.split(self.all_embeddings, [self.n_users, self.n_items], 0)
 
         ## lookup
@@ -60,12 +63,6 @@ class model_LightGCN(object):
         if self.loss_function == 'BPR': self.loss = bpr_loss(self.pos_scores, self.neg_scores)
         if self.loss_function == 'CrossEntropy': self.loss = cross_entropy_loss(self.pos_scores, self.neg_scores)
         if self.loss_function == 'MSE': self.loss = mse_loss(self.pos_scores, self.neg_scores)
-        if self.loss_function == 'DLNRS':
-            self.loss, self.samp_var = dlnrs_loss([self.pos_scores, self.neg_scores],
-                                                  self.sampler,
-                                                  [self.n_users, self.n_items, self.emb_dim, self.lamda],
-                                                  [self.users, self.pos_items, self.neg_items])
-            self.var_list += self.samp_var
 
         ## regularization
         self.loss += self.lamda * regularization([self.u_embeddings, self.pos_i_embeddings, self.neg_i_embeddings])
@@ -77,6 +74,7 @@ class model_LightGCN(object):
         if self.optimizer == 'Adagrad': self.opt = tf.train.AdagradOptimizer(learning_rate=self.lr)
 
         ## update parameters
+        self.var_list = [self.user_embeddings, self.item_embeddings] + self.filters
         self.updates = self.opt.minimize(self.loss, var_list=self.var_list)
 
         ## get top k

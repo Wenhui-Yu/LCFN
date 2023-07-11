@@ -15,6 +15,7 @@ class model_SCF(object):
         self.if_pretrain = para['IF_PRETRAIN']
         self.loss_function = para['LOSS_FUNCTION']
         self.optimizer = para['OPTIMIZER']
+        self.sampler = para['SAMPLER']
         self.n_users = data['user_num']
         self.n_items = data['item_num']
         self.popularity = data['popularity']
@@ -38,6 +39,7 @@ class model_SCF(object):
         self.filters = []
         for l in range(self.layer):
             self.filters.append(tf.Variable(tf.random_normal([self.emb_dim, self.emb_dim], mean=0.01, stddev=0.02, dtype=tf.float32), name='filters_' + str(l)))
+        self.var_list = [self.user_embeddings, self.item_embeddings] + self.filters
 
         ## graph convolution
         self.embeddings = tf.concat([self.user_embeddings, self.item_embeddings], axis=0)
@@ -63,6 +65,13 @@ class model_SCF(object):
         if self.loss_function == 'BPR': self.loss = bpr_loss(self.pos_scores, self.neg_scores)
         if self.loss_function == 'CrossEntropy': self.loss = cross_entropy_loss(self.pos_scores, self.neg_scores)
         if self.loss_function == 'MSE': self.loss = mse_loss(self.pos_scores, self.neg_scores)
+        if self.loss_function == 'WBPR': self.loss = wbpr_loss(self.pos_scores, self.neg_scores, self.popularity)
+        if self.loss_function == 'DLNRS':
+            self.loss, self.samp_var = dlnrs_loss([self.pos_scores, self.neg_scores],
+                                                  self.sampler,
+                                                  [self.n_users, self.n_items, self.emb_dim, self.lamda],
+                                                  [self.users, self.pos_items, self.neg_items])
+            self.var_list += self.samp_var
 
         ## regularization
         self.loss += self.lamda * regularization([self.u_embeddings, self.pos_i_embeddings, self.neg_i_embeddings])
@@ -74,7 +83,6 @@ class model_SCF(object):
         if self.optimizer == 'Adagrad': self.opt = tf.train.AdagradOptimizer(learning_rate=self.lr)
 
         ## update parameters
-        self.var_list = [self.user_embeddings, self.item_embeddings] + self.filters
         self.updates = self.opt.minimize(self.loss, var_list=self.var_list)
 
         ## get top k

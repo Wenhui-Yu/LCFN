@@ -15,7 +15,6 @@ class model_NCF(object):
         self.if_pretrain = para['IF_PRETRAIN']
         self.loss_function = para['LOSS_FUNCTION']
         self.optimizer = para['OPTIMIZER']
-        self.sampler = para['SAMPLER']
         self.n_users = data['user_num']
         self.n_items = data['item_num']
         self.popularity = data['popularity']
@@ -48,7 +47,6 @@ class model_NCF(object):
             self.W.append(tf.Variable(tf.random_normal([self.weight_size_list[l], self.weight_size_list[l + 1]], mean=0.01, stddev=0.02, dtype=tf.float32)))
             self.b.append(tf.Variable(tf.random_normal([1, self.weight_size_list[l + 1]], mean=0.01, stddev=0.02, dtype=tf.float32)))
         self.h = tf.Variable(tf.random_normal([1, self.emb_dim + self.weight_size_list[-1]], mean=0.01, stddev=0.02, dtype=tf.float32), name='h')
-        self.var_list = [self.user_embeddings_GMF, self.item_embeddings_GMF, self.user_embeddings_MLP, self.item_embeddings_MLP, self.h] + self.W + self.b
 
         ## lookup
         self.u_embeddings_GMF = tf.nn.embedding_lookup(self.user_embeddings_GMF, self.users)
@@ -66,13 +64,6 @@ class model_NCF(object):
         if self.loss_function == 'BPR': self.loss = bpr_loss(self.pos_scores, self.neg_scores)
         if self.loss_function == 'CrossEntropy': self.loss = cross_entropy_loss(self.pos_scores, self.neg_scores)
         if self.loss_function == 'MSE': self.loss = mse_loss(self.pos_scores, self.neg_scores)
-        if self.loss_function == 'WBPR': self.loss = wbpr_loss(self.pos_scores, self.neg_scores, self.popularity)
-        if self.loss_function == 'DLNRS':
-            self.loss, self.samp_var = dlnrs_loss([self.pos_scores, self.neg_scores],
-                                                  self.sampler,
-                                                  [self.n_users, self.n_items, self.emb_dim, self.lamda],
-                                                  [self.users, self.pos_items, self.neg_items])
-            self.var_list += self.samp_var
 
         ## optimizer
         if self.optimizer == 'SGD': self.opt = tf.train.GradientDescentOptimizer(learning_rate=self.lr)
@@ -81,6 +72,7 @@ class model_NCF(object):
         if self.optimizer == 'Adagrad': self.opt = tf.train.AdagradOptimizer(learning_rate=self.lr)
 
         ## update parameters
+        self.var_list = [self.user_embeddings_GMF, self.item_embeddings_GMF, self.h, self.user_embeddings_MLP, self.item_embeddings_MLP] + self.W + self.b
         self.updates = self.opt.minimize(self.loss, var_list=self.var_list)
 
         ## get top k

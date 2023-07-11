@@ -17,6 +17,7 @@ class model_LGCN(object):
         self.loss_function = para['LOSS_FUNCTION']
         self.optimizer = para['OPTIMIZER']
         self.frequency = para['FREQUENCY']
+        self.sampler = para['SAMPLER']
         self.n_users = data['user_num']
         self.n_items = data['item_num']
         self.popularity = data['popularity']
@@ -39,6 +40,7 @@ class model_LGCN(object):
             self.user_embeddings = tf.Variable(tf.random_normal([self.n_users, self.emb_dim], mean=0.01, stddev=0.02, dtype=tf.float32), name='user_embeddings')
             self.item_embeddings = tf.Variable(tf.random_normal([self.n_items, self.emb_dim], mean=0.01, stddev=0.02, dtype=tf.float32), name='item_embeddings')
         self.kernel = [tf.Variable(tf.random_normal([self.frequency], mean=0.01, stddev=0.02, dtype=tf.float32)) for l in range(self.layer)]
+        self.var_list = [self.user_embeddings, self.item_embeddings] + self.kernel  ## learnable parameter list
 
         ## convolutional layers definition
         self.embeddings = tf.concat([self.user_embeddings, self.item_embeddings], axis=0)
@@ -65,6 +67,13 @@ class model_LGCN(object):
         if self.loss_function == 'BPR': self.loss = bpr_loss(self.pos_scores, self.neg_scores)
         if self.loss_function == 'CrossEntropy': self.loss = cross_entropy_loss(self.pos_scores, self.neg_scores)
         if self.loss_function == 'MSE': self.loss = mse_loss(self.pos_scores, self.neg_scores)
+        if self.loss_function == 'WBPR': self.loss = wbpr_loss(self.pos_scores, self.neg_scores, self.popularity)
+        if self.loss_function == 'DLNRS':
+            self.loss, self.samp_var = dlnrs_loss([self.pos_scores, self.neg_scores],
+                                                  self.sampler,
+                                                  [self.n_users, self.n_items, self.emb_dim, self.lamda],
+                                                  [self.users, self.pos_items, self.neg_items])
+            self.var_list += self.samp_var
 
         ## regularization
         self.loss += self.lamda * regularization([self.u_embeddings_reg, self.pos_i_embeddings_reg, self.neg_i_embeddings_reg])
@@ -76,7 +85,6 @@ class model_LGCN(object):
         if self.optimizer == 'Adagrad': self.opt = tf.train.AdagradOptimizer(learning_rate=self.lr)
 
         ## update parameters
-        self.var_list = [self.user_embeddings, self.item_embeddings] + self.kernel ## learnable parameter list
         self.updates = self.opt.minimize(self.loss, var_list=self.var_list)
 
         ## get top k
