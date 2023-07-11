@@ -69,7 +69,7 @@ class model_SCF(object):
         if self.loss_function == 'DLNRS':
             self.loss, self.samp_var = dlnrs_loss([self.pos_scores, self.neg_scores],
                                                   self.sampler,
-                                                  [self.n_users, self.n_items, self.emb_dim, self.lamda],
+                                                  [self.n_users, self.n_items, self.emb_dim, self.A_hat, self.lamda],
                                                   [self.users, self.pos_items, self.neg_items])
             self.var_list += self.samp_var
 

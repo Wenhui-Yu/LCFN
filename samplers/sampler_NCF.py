@@ -4,95 +4,44 @@
 import tensorflow as tf
 from utils.utils import *
 
-class model_NCF(object):
-    def __init__(self, data, para):
-        ## model hyper-params
-        self.model_name = 'NCF'
-        self.emb_dim = para['EMB_DIM']
-        self.lr = para['LR']
-        self.lamda = para['LAMDA']
-        self.layer = para['LAYER']
-        self.if_pretrain = para['IF_PRETRAIN']
-        self.loss_function = para['LOSS_FUNCTION']
-        self.optimizer = para['OPTIMIZER']
-        self.n_users = data['user_num']
-        self.n_items = data['item_num']
-        self.popularity = data['popularity']
-        [self.U, self.V] = data['pre_train_embeddings']
-        self.weight_size_list = [2 * self.emb_dim]
-        for l in range(self.layer):
-            self.weight_size_list.append(max(int(0.5 ** l * 64), 4))
+def sampler_NCF(params, index):
+    n_users, n_items, emb_dim, _ = params
+    users, pos_items, neg_items = index
+    layer = 1
+    
+    user_embeddings_GMF = tf.Variable(tf.random_normal([n_users, int(emb_dim/2)], mean=0.01, stddev=0.02, dtype=tf.float32), name='samp_user_embeddings_GMF')
+    item_embeddings_GMF = tf.Variable(tf.random_normal([n_items, int(emb_dim/2)], mean=0.01, stddev=0.02, dtype=tf.float32), name='samp_item_embeddings_GMF')
+    user_embeddings_MLP = tf.Variable(tf.random_normal([n_users, int(emb_dim/2)], mean=0.01, stddev=0.02, dtype=tf.float32), name='samp_user_embeddings_MLP')
+    item_embeddings_MLP = tf.Variable(tf.random_normal([n_items, int(emb_dim/2)], mean=0.01, stddev=0.02, dtype=tf.float32), name='samp_item_embeddings_MLP')
+    W = []
+    b = []
+    for l in range(layer):
+        W.append(tf.Variable(tf.random_normal([weight_size_list[l], weight_size_list[l + 1]], mean=0.01, stddev=0.02, dtype=tf.float32)))
+        b.append(tf.Variable(tf.random_normal([1, weight_size_list[l + 1]], mean=0.01, stddev=0.02, dtype=tf.float32)))
+    h = tf.Variable(tf.random_normal([1, emb_dim + weight_size_list[-1]], mean=0.01, stddev=0.02, dtype=tf.float32), name='h')
 
-        ## placeholder
-        self.users = tf.placeholder(tf.int32, shape=(None,))
-        self.pos_items = tf.placeholder(tf.int32, shape=(None,))
-        self.neg_items = tf.placeholder(tf.int32, shape=(None,))
-        self.items_in_train_data = tf.placeholder(tf.float32, shape=(None, None))
-        self.top_k = tf.placeholder(tf.int32, shape=(None))
+    ## lookup
+    u_embeddings_GMF = tf.nn.embedding_lookup(user_embeddings_GMF, users)
+    pos_i_embeddings_GMF = tf.nn.embedding_lookup(item_embeddings_GMF, pos_items)
+    neg_i_embeddings_GMF = tf.nn.embedding_lookup(item_embeddings_GMF, neg_items)
+    u_embeddings_MLP = tf.nn.embedding_lookup(user_embeddings_MLP, users)
+    pos_i_embeddings_MLP = tf.nn.embedding_lookup(item_embeddings_MLP, pos_items)
+    neg_i_embeddings_MLP = tf.nn.embedding_lookup(item_embeddings_MLP, neg_items)
 
-        ## define trainable parameters
-        if self.if_pretrain:
-            self.user_embeddings_GMF = tf.Variable(self.U, name='user_embeddings_GMF')
-            self.item_embeddings_GMF = tf.Variable(self.V, name='item_embeddings_GMF')
-            self.user_embeddings_MLP = tf.Variable(self.U, name='user_embeddings_MLP')
-            self.item_embeddings_MLP = tf.Variable(self.V, name='item_embeddings_MLP')
-        else:
-            self.user_embeddings_GMF = tf.Variable(tf.random_normal([self.n_users, self.emb_dim], mean=0.01, stddev=0.02, dtype=tf.float32), name='user_embeddings_GMF')
-            self.item_embeddings_GMF = tf.Variable(tf.random_normal([self.n_items, self.emb_dim], mean=0.01, stddev=0.02, dtype=tf.float32), name='item_embeddings_GMF')
-            self.user_embeddings_MLP = tf.Variable(tf.random_normal([self.n_users, self.emb_dim], mean=0.01, stddev=0.02, dtype=tf.float32), name='user_embeddings_MLP')
-            self.item_embeddings_MLP = tf.Variable(tf.random_normal([self.n_items, self.emb_dim], mean=0.01, stddev=0.02, dtype=tf.float32), name='item_embeddings_MLP')
-        self.W = []
-        self.b = []
-        for l in range(self.layer):
-            self.W.append(tf.Variable(tf.random_normal([self.weight_size_list[l], self.weight_size_list[l + 1]], mean=0.01, stddev=0.02, dtype=tf.float32)))
-            self.b.append(tf.Variable(tf.random_normal([1, self.weight_size_list[l + 1]], mean=0.01, stddev=0.02, dtype=tf.float32)))
-        self.h = tf.Variable(tf.random_normal([1, self.emb_dim + self.weight_size_list[-1]], mean=0.01, stddev=0.02, dtype=tf.float32), name='h')
+    ## var collection
+    var_set = [user_embeddings_GMF, item_embeddings_GMF, user_embeddings_MLP, item_embeddings_MLP, h] + W + b
+    reg_set = [u_embeddings_GMF, pos_i_embeddings_GMF, neg_i_embeddings_GMF,
+               u_embeddings_MLP, pos_i_embeddings_MLP, neg_i_embeddings_MLP]
 
-        ## lookup
-        self.u_embeddings_GMF = tf.nn.embedding_lookup(self.user_embeddings_GMF, self.users)
-        self.pos_i_embeddings_GMF = tf.nn.embedding_lookup(self.item_embeddings_GMF, self.pos_items)
-        self.neg_i_embeddings_GMF = tf.nn.embedding_lookup(self.item_embeddings_GMF, self.neg_items)
-        self.u_embeddings_MLP = tf.nn.embedding_lookup(self.user_embeddings_MLP, self.users)
-        self.pos_i_embeddings_MLP = tf.nn.embedding_lookup(self.item_embeddings_MLP, self.pos_items)
-        self.neg_i_embeddings_MLP = tf.nn.embedding_lookup(self.item_embeddings_MLP, self.neg_items)
+    ## logits
+    samp_pos_scores = predict(u_embeddings_GMF, pos_i_embeddings_GMF, u_embeddings_MLP, pos_i_embeddings_MLP)
+    samp_neg_scores = predict(u_embeddings_GMF, neg_i_embeddings_GMF, u_embeddings_MLP, neg_i_embeddings_MLP)
 
-        ## logits
-        self.pos_scores = self.predict(self.u_embeddings_GMF, self.pos_i_embeddings_GMF, self.u_embeddings_MLP, self.pos_i_embeddings_MLP)
-        self.neg_scores = self.predict(self.u_embeddings_GMF, self.neg_i_embeddings_GMF, self.u_embeddings_MLP, self.neg_i_embeddings_MLP)
+    return samp_pos_scores, samp_neg_scores, var_set, reg_set
 
-        ## loss function
-        if self.loss_function == 'BPR': self.loss = bpr_loss(self.pos_scores, self.neg_scores)
-        if self.loss_function == 'CrossEntropy': self.loss = cross_entropy_loss(self.pos_scores, self.neg_scores)
-        if self.loss_function == 'MSE': self.loss = mse_loss(self.pos_scores, self.neg_scores)
+def predict(self, user_GMF, item_GMF, user_MLP, item_MLP):
+    emb_GMF = tf.multiply(user_GMF, item_GMF)
+    emb_MLP = MLP(tf.concat([user_MLP, item_MLP], axis=1), W, b)
+    emb = tf.concat([emb_GMF, emb_MLP], axis=1)
+    return tf.reshape(tf.matmul(emb, h, transpose_a=False, transpose_b=True), [-1])  # reshpae is not necessary with bpr loss but crutial with cross entropy loss
 
-        ## optimizer
-        if self.optimizer == 'SGD': self.opt = tf.train.GradientDescentOptimizer(learning_rate=self.lr)
-        if self.optimizer == 'RMSProp': self.opt = tf.train.RMSPropOptimizer(learning_rate=self.lr)
-        if self.optimizer == 'Adam': self.opt = tf.train.AdamOptimizer(learning_rate=self.lr)
-        if self.optimizer == 'Adagrad': self.opt = tf.train.AdagradOptimizer(learning_rate=self.lr)
-
-        ## update parameters
-        self.var_list = [self.user_embeddings_GMF, self.item_embeddings_GMF, self.h, self.user_embeddings_MLP, self.item_embeddings_MLP] + self.W + self.b
-        self.updates = self.opt.minimize(self.loss, var_list=self.var_list)
-
-        ## get top k
-        self.all_ratings = self.get_all_rating(self.u_embeddings_GMF, self.item_embeddings_GMF, self.u_embeddings_MLP, self.item_embeddings_MLP)
-        self.all_ratings += self.items_in_train_data  ## set a very small value for the items appearing in the training set to make sure they are at the end of the sorted list
-        self.top_items = tf.nn.top_k(self.all_ratings, k=self.top_k, sorted=True).indices
-
-    def predict(self, user_GMF, item_GMF, user_MLP, item_MLP):
-        emb_GMF = tf.multiply(user_GMF, item_GMF)
-        emb_MLP = MLP(tf.concat([user_MLP, item_MLP], axis=1), self.W, self.b)
-        emb = tf.concat([emb_GMF, emb_MLP], axis=1)
-        return tf.reshape(tf.matmul(emb, self.h, transpose_a=False, transpose_b=True), [-1])  # reshpae is not necessary with bpr loss but crutial with cross entropy loss
-
-    def get_all_rating(self, user_GMF, item_GMF, user_MLP, item_MLP):
-        n_user_b = tf.shape(user_GMF)[0]
-        n_item_b = tf.shape(item_GMF)[0]
-        user_GMF_b = tf.reshape(tf.tile(user_GMF, [1, n_item_b]), [-1, self.emb_dim])
-        item_GMF_b = tf.tile(item_GMF, [n_user_b, 1])
-        user_MLP_b = tf.reshape(tf.tile(user_MLP, [1, n_item_b]), [-1, self.emb_dim])
-        item_MLP_b = tf.tile(item_MLP, [n_user_b, 1])
-        score = self.predict(user_GMF_b, item_GMF_b, user_MLP_b, item_MLP_b)
-        score = tf.reshape(score, [n_user_b, -1])
-        return score

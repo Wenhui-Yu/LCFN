@@ -38,10 +38,10 @@ class model_NCF(object):
             self.user_embeddings_MLP = tf.Variable(self.U, name='user_embeddings_MLP')
             self.item_embeddings_MLP = tf.Variable(self.V, name='item_embeddings_MLP')
         else:
-            self.user_embeddings_GMF = tf.Variable(tf.random_normal([self.n_users, self.emb_dim], mean=0.01, stddev=0.02, dtype=tf.float32), name='user_embeddings_GMF')
-            self.item_embeddings_GMF = tf.Variable(tf.random_normal([self.n_items, self.emb_dim], mean=0.01, stddev=0.02, dtype=tf.float32), name='item_embeddings_GMF')
-            self.user_embeddings_MLP = tf.Variable(tf.random_normal([self.n_users, self.emb_dim], mean=0.01, stddev=0.02, dtype=tf.float32), name='user_embeddings_MLP')
-            self.item_embeddings_MLP = tf.Variable(tf.random_normal([self.n_items, self.emb_dim], mean=0.01, stddev=0.02, dtype=tf.float32), name='item_embeddings_MLP')
+            self.user_embeddings_GMF = tf.Variable(tf.random_normal([self.n_users, int(self.emb_dim/2)], mean=0.01, stddev=0.02, dtype=tf.float32), name='user_embeddings_GMF')
+            self.item_embeddings_GMF = tf.Variable(tf.random_normal([self.n_items, int(self.emb_dim/2)], mean=0.01, stddev=0.02, dtype=tf.float32), name='item_embeddings_GMF')
+            self.user_embeddings_MLP = tf.Variable(tf.random_normal([self.n_users, int(self.emb_dim/2)], mean=0.01, stddev=0.02, dtype=tf.float32), name='user_embeddings_MLP')
+            self.item_embeddings_MLP = tf.Variable(tf.random_normal([self.n_items, int(self.emb_dim/2)], mean=0.01, stddev=0.02, dtype=tf.float32), name='item_embeddings_MLP')
         self.W = []
         self.b = []
         for l in range(self.layer):
@@ -73,6 +73,10 @@ class model_NCF(object):
                                                   [self.n_users, self.n_items, self.emb_dim, self.lamda],
                                                   [self.users, self.pos_items, self.neg_items])
             self.var_list += self.samp_var
+
+        ## regularization
+        self.loss += self.lamda * regularization([self.u_embeddings_GMF, self.pos_i_embeddings_GMF, self.neg_i_embeddings_GMF,
+                                                  self.u_embeddings_MLP, self.pos_i_embeddings_MLP, self.neg_i_embeddings_MLP])
 
         ## optimizer
         if self.optimizer == 'SGD': self.opt = tf.train.GradientDescentOptimizer(learning_rate=self.lr)

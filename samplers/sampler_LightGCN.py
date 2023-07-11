@@ -4,75 +4,33 @@
 import tensorflow as tf
 from utils.utils import *
 
-class model_LightGCN(object):
-    def __init__(self, data, para):
-        ## model hyper-params
-        self.model_name = 'LightGCN'
-        self.emb_dim = para['EMB_DIM']
-        self.lr = para['LR']
-        self.lamda = para['LAMDA']
-        self.layer = para['LAYER']
-        self.if_pretrain = para['IF_PRETRAIN']
-        self.loss_function = para['LOSS_FUNCTION']
-        self.optimizer = para['OPTIMIZER']
-        self.n_users = data['user_num']
-        self.n_items = data['item_num']
-        self.popularity = data['popularity']
-        self.U, self.V = data['pre_train_embeddings']
-        self.A_hat = data['sparse_propagation_matrix']
-        self.layer_weight = [1 / (l + 1) for l in range(self.layer + 1)]
+def sampler_LightGCN(params, index):
+    n_users, n_items, emb_dim, A_hat, _ = params
+    users, pos_items, neg_items = index
+    layer = 1
+    
+    user_embeddings = tf.Variable(tf.random_normal([n_users, emb_dim], mean=0.01, stddev=0.02, dtype=tf.float32), name='samp_user_embeddings')
+    item_embeddings = tf.Variable(tf.random_normal([n_items, emb_dim], mean=0.01, stddev=0.02, dtype=tf.float32), name='samp_item_embeddings')
 
-        ## placeholder
-        self.users = tf.placeholder(tf.int32, shape=(None,))
-        self.pos_items = tf.placeholder(tf.int32, shape=(None,))
-        self.neg_items = tf.placeholder(tf.int32, shape=(None,))
-        self.items_in_train_data = tf.placeholder(tf.float32, shape=(None, None))
-        self.top_k = tf.placeholder(tf.int32, shape=(None))
+    ## graph convolution
+    embeddings = tf.concat([user_embeddings, item_embeddings], axis=0)
+    all_embeddings = embeddings
+    for l in range(layer):
+        embeddings = tf.sparse_tensor_dense_matmul(A_hat, embeddings)
+        all_embeddings += embeddings * layer_weight[l + 1]
+    user_all_embeddings, item_all_embeddings = tf.split(all_embeddings, [n_users, n_items], 0)
 
-        ## define trainable parameters
-        if self.if_pretrain:
-            self.user_embeddings = tf.Variable(self.U, name='user_embeddings')
-            self.item_embeddings = tf.Variable(self.V, name='item_embeddings')
-        else:
-            self.user_embeddings = tf.Variable(tf.random_normal([self.n_users, self.emb_dim], mean=0.01, stddev=0.02, dtype=tf.float32), name='user_embeddings')
-            self.item_embeddings = tf.Variable(tf.random_normal([self.n_items, self.emb_dim], mean=0.01, stddev=0.02, dtype=tf.float32), name='item_embeddings')
+    ## lookup
+    u_embeddings = tf.nn.embedding_lookup(user_all_embeddings, users)
+    pos_i_embeddings = tf.nn.embedding_lookup(item_all_embeddings, pos_items)
+    neg_i_embeddings = tf.nn.embedding_lookup(item_all_embeddings, neg_items)
 
-        ## graph convolution
-        self.embeddings = tf.concat([self.user_embeddings, self.item_embeddings], axis=0)
-        self.all_embeddings = self.embeddings
-        for l in range(self.layer):
-            self.embeddings = tf.sparse_tensor_dense_matmul(self.A_hat, self.embeddings)
-            self.all_embeddings += self.embeddings * self.layer_weight[l + 1]
-        self.user_all_embeddings, self.item_all_embeddings = tf.split(self.all_embeddings, [self.n_users, self.n_items], 0)
+    ## var collection
+    var_set = [user_embeddings, item_embeddings]
+    reg_set = [u_embeddings, pos_i_embeddings, neg_i_embeddings]
 
-        ## lookup
-        self.u_embeddings = tf.nn.embedding_lookup(self.user_all_embeddings, self.users)
-        self.pos_i_embeddings = tf.nn.embedding_lookup(self.item_all_embeddings, self.pos_items)
-        self.neg_i_embeddings = tf.nn.embedding_lookup(self.item_all_embeddings, self.neg_items)
+    ## logits
+    samp_pos_scores = inner_product(u_embeddings, pos_i_embeddings)
+    samp_neg_scores = inner_product(u_embeddings, neg_i_embeddings)
 
-        ## logits
-        self.pos_scores = inner_product(self.u_embeddings, self.pos_i_embeddings)
-        self.neg_scores = inner_product(self.u_embeddings, self.neg_i_embeddings)
-
-        ## loss function
-        if self.loss_function == 'BPR': self.loss = bpr_loss(self.pos_scores, self.neg_scores)
-        if self.loss_function == 'CrossEntropy': self.loss = cross_entropy_loss(self.pos_scores, self.neg_scores)
-        if self.loss_function == 'MSE': self.loss = mse_loss(self.pos_scores, self.neg_scores)
-
-        ## regularization
-        self.loss += self.lamda * regularization([self.u_embeddings, self.pos_i_embeddings, self.neg_i_embeddings])
-
-        ## optimizer
-        if self.optimizer == 'SGD': self.opt = tf.train.GradientDescentOptimizer(learning_rate=self.lr)
-        if self.optimizer == 'RMSProp': self.opt = tf.train.RMSPropOptimizer(learning_rate=self.lr)
-        if self.optimizer == 'Adam': self.opt = tf.train.AdamOptimizer(learning_rate=self.lr)
-        if self.optimizer == 'Adagrad': self.opt = tf.train.AdagradOptimizer(learning_rate=self.lr)
-
-        ## update parameters
-        self.var_list = [self.user_embeddings, self.item_embeddings]
-        self.updates = self.opt.minimize(self.loss, var_list=self.var_list)
-
-        ## get top k
-        self.all_ratings = tf.matmul(self.u_embeddings, self.item_all_embeddings, transpose_a=False, transpose_b=True)
-        self.all_ratings += self.items_in_train_data  ## set a very small value for the items appearing in the training set to make sure they are at the end of the sorted list
-        self.top_items = tf.nn.top_k(self.all_ratings, k=self.top_k, sorted=True).indices
+    return samp_pos_scores, samp_neg_scores, var_set, reg_set
