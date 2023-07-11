@@ -7,8 +7,8 @@ import pandas as pd
 from openpyxl import load_workbook
 from openpyxl import Workbook
 import time
-from package.utils.print_save import save_value
-from package.utils.print_save import df2str
+from utils.print_save import save_value
+from utils.print_save import df2str
 import os
 from numpy import *
 import sys

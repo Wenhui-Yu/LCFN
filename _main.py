@@ -1,17 +1,17 @@
 ## author@ Wenhui Yu  email: jianlin.ywh@alibaba-inc.com  2021.02.16
 ## run models: our models (LCFN, LGCN, and SGNN) and baselines
-from package.params.params_common import MODEL
-if MODEL == "MF": from package.params.params_MF import all_para
-if MODEL == "NCF": from package.params.params_NCF import all_para
-if MODEL == "SCF": from package.params.params_SCF import all_para
-if MODEL == "LightGCN": from package.params.params_LightGCN import all_para
-if MODEL == "LGCN": from package.params.params_LGCN import all_para
-from package.tuning.tuning import tuning
-from package.tuning.fine_tuning import fine_tuning
-from package.tuning.cross_tuning import cross_tuning
-from package.tuning.coarse_tuning import coarse_tuning
-from package.tuning import test
-from package.utils.read_data import read_all_data
+from params.params_common import MODEL
+if MODEL == "MF": from params.params_MF import all_para
+if MODEL == "NCF": from params.params_NCF import all_para
+if MODEL == "SCF": from params.params_SCF import all_para
+if MODEL == "LightGCN": from params.params_LightGCN import all_para
+if MODEL == "LGCN": from params.params_LGCN import all_para
+from tuning.tuning import tuning
+from tuning.fine_tuning import fine_tuning
+from tuning.cross_tuning import cross_tuning
+from tuning.coarse_tuning import coarse_tuning
+from tuning.test import test
+from utils.read_data import read_all_data
 import os
 
 if __name__ == '__main__':
