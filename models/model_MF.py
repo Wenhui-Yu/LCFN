@@ -42,7 +42,7 @@ class model_MF(object):
         if self.loss_function == 'BPR': self.loss = bpr_loss(self.pos_scores, self.neg_scores)
         if self.loss_function == 'CrossEntropy': self.loss = cross_entropy_loss(self.pos_scores, self.neg_scores)
         if self.loss_function == 'MSE': self.loss = mse_loss(self.pos_scores, self.neg_scores)
-        if self.loss_function == 'WBPR': self.loss = wbpr_loss(self.pos_scores, self.neg_scores, self.popularity)
+        if self.loss_function == 'WBPR': self.loss = wbpr_loss(self.pos_scores, self.neg_scores, self.popularity, self.neg_items)
         if self.loss_function == 'DLNRS':
             self.loss, self.samp_var = dlnrs_loss([self.pos_scores, self.neg_scores],
                                                   self.sampler,

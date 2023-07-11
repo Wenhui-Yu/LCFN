@@ -1,5 +1,9 @@
 import tensorflow as tf
 from samplers.sampler_MF import *
+from samplers.sampler_NCF import *
+from samplers.sampler_SCF import *
+from samplers.sampler_LightGCN import *
+from samplers.sampler_LGCN import *
 
 def inner_product(users, items):
     scores = tf.reduce_sum(tf.multiply(users, items), axis=1)
@@ -16,6 +20,13 @@ def cross_entropy_loss(pos_scores, neg_scores):
 
 def mse_loss(pos_scores, neg_scores):
     loss = tf.nn.l2_loss(1 - pos_scores) + tf.nn.l2_loss(neg_scores)
+    return loss
+
+def wbpr_loss(pos_scores, neg_scores, popularity, item):
+    popularity = tf.constant(popularity, name='popularity', dtype=tf.float32)
+    weight = tf.nn.embedding_lookup(popularity, item)
+    maxi = tf.log(weight) * tf.log(tf.nn.sigmoid(pos_scores - neg_scores))
+    loss = tf.negative(tf.reduce_sum(maxi))
     return loss
 
 def dlnrs_loss(scores, sampler, params, index):
