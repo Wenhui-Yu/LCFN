@@ -6,13 +6,15 @@ import tensorflow as tf
 from utils.utils import *
 
 def sampler_LGCN(params, index):
-    n_users, n_items, emb_dim, _ = params
+    n_users, n_items, emb_dim, _, graph_emb = params
     users, pos_items, neg_items = index
     layer = 1
+    layer_weight = [1 / (l + 1) for l in range(layer + 1)]
 
+    ## trainable parameter
     user_embeddings = tf.Variable(tf.random_normal([n_users, emb_dim], mean=0.01, stddev=0.02, dtype=tf.float32), name='samp_user_embeddings')
     item_embeddings = tf.Variable(tf.random_normal([n_items, emb_dim], mean=0.01, stddev=0.02, dtype=tf.float32), name='samp_item_embeddings')
-    kernel = [tf.Variable(tf.random_normal([frequency], mean=0.01, stddev=0.02, dtype=tf.float32), name='samp_filters') for l in range(layer)]
+    kernel = [tf.Variable(tf.random_normal([128], mean=0.01, stddev=0.02, dtype=tf.float32), name='samp_filters') for l in range(layer)]
 
     ## convolutional layers definition
     embeddings = tf.concat([user_embeddings, item_embeddings], axis=0)
@@ -32,7 +34,7 @@ def sampler_LGCN(params, index):
     neg_i_embeddings_reg = tf.nn.embedding_lookup(item_embeddings, neg_items)
 
     ## var collection
-    var_set = [user_embeddings, item_embeddings]
+    var_set = [user_embeddings, item_embeddings] + kernel
     reg_set = [u_embeddings_reg, pos_i_embeddings_reg, neg_i_embeddings_reg]
 
     ## logits
@@ -40,3 +42,7 @@ def sampler_LGCN(params, index):
     samp_neg_scores = inner_product(u_embeddings, neg_i_embeddings)
 
     return samp_pos_scores, samp_neg_scores, var_set, reg_set
+
+def inner_product(users, items):
+    scores = tf.reduce_sum(tf.multiply(users, items), axis=1)
+    return scores

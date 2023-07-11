@@ -8,7 +8,9 @@ def sampler_LightGCN(params, index):
     n_users, n_items, emb_dim, A_hat, _ = params
     users, pos_items, neg_items = index
     layer = 1
-    
+    layer_weight = [1 / (l + 1) for l in range(layer + 1)]
+
+    ## trainable parameter
     user_embeddings = tf.Variable(tf.random_normal([n_users, emb_dim], mean=0.01, stddev=0.02, dtype=tf.float32), name='samp_user_embeddings')
     item_embeddings = tf.Variable(tf.random_normal([n_items, emb_dim], mean=0.01, stddev=0.02, dtype=tf.float32), name='samp_item_embeddings')
 
@@ -34,3 +36,7 @@ def sampler_LightGCN(params, index):
     samp_neg_scores = inner_product(u_embeddings, neg_i_embeddings)
 
     return samp_pos_scores, samp_neg_scores, var_set, reg_set
+
+def inner_product(users, items):
+    scores = tf.reduce_sum(tf.multiply(users, items), axis=1)
+    return scores

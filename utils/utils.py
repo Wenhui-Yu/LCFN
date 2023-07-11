@@ -29,16 +29,16 @@ def wbpr_loss(pos_scores, neg_scores, popularity, item):
     loss = tf.negative(tf.reduce_sum(maxi))
     return loss
 
-def dlnrs_loss(scores, sampler, params, index):
+def dlnrs_loss(scores, params, params_sampler, index):
     ## score of predicter
     pos_scores, neg_scores = scores
-
+    sampler, lamba, aux_loss_weight = params
     ## score of sampler
-    if sampler == "MF": samp_pos_scores, samp_neg_scores, var_set, reg_set = MF_sampler(params, index)
-    if sampler == "NCF": samp_pos_scores, samp_neg_scores, var_set, reg_set = NCF_sampler(params, index)
-    if sampler == "SCF": samp_pos_scores, samp_neg_scores, var_set, reg_set = SCF_sampler(params, index)
-    if sampler == "LightGCN": samp_pos_scores, samp_neg_scores, var_set, reg_set = LightGCN_sampler(params, index)
-    if sampler == "LGCN": samp_pos_scores, samp_neg_scores, var_set, reg_set = LGCN_sampler(params, index)
+    if sampler == "MF": samp_pos_scores, samp_neg_scores, var_set, reg_set = sampler_MF(params_sampler, index)
+    if sampler == "NCF": samp_pos_scores, samp_neg_scores, var_set, reg_set = sampler_NCF(params_sampler, index)
+    if sampler == "SCF": samp_pos_scores, samp_neg_scores, var_set, reg_set = sampler_SCF(params_sampler, index)
+    if sampler == "LightGCN": samp_pos_scores, samp_neg_scores, var_set, reg_set = sampler_LightGCN(params_sampler, index)
+    if sampler == "LGCN": samp_pos_scores, samp_neg_scores, var_set, reg_set = sampler_LGCN(params_sampler, index)
     pos_scores, neg_scores = tf.nn.sigmoid(pos_scores), tf.nn.sigmoid(neg_scores)
     samp_pos_scores, samp_neg_scores = tf.nn.sigmoid(samp_pos_scores), tf.nn.sigmoid(samp_neg_scores)
 
@@ -46,10 +46,10 @@ def dlnrs_loss(scores, sampler, params, index):
     neg_loss_predictor = tf.log(1 - neg_scores) + tf.multiply(tf.stop_gradient(samp_neg_scores), tf.log(neg_scores))
     loss_predictor = tf.reduce_sum(pos_loss_predictor) + tf.reduce_sum(neg_loss_predictor)
     pos_loss_sampler = tf.multiply(tf.stop_gradient(pos_scores), tf.log(1 - samp_pos_scores))
-    neg_loss_sampler = aux_loss_weight * tf.multiply(tf.stop_gradient(neg_scores), tf.log(samp_neg_scores)) + tf.log(1 - samp_neg_scores)
+    neg_loss_sampler = (1 - aux_loss_weight) * tf.multiply(tf.stop_gradient(neg_scores), tf.log(samp_neg_scores)) + aux_loss_weight * tf.log(1 - samp_neg_scores)
     loss_sampler = tf.reduce_sum(pos_loss_sampler) + tf.reduce_sum(neg_loss_sampler)
     loss = -(loss_predictor + loss_sampler)
-    loss += params[-1] * regularization(reg_set)
+    loss += lamba * regularization(reg_set)
     return loss, var_set
 
 def MLP(emb, W, b):

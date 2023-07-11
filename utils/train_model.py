@@ -63,4 +63,5 @@ def train_model(para, data, path_excel):
         NDCG_df.loc[epoch + 1] = NDCG
         save_value([[F1_df, 'F1'], [NDCG_df, 'NDCG']], path_excel, first_sheet=False)
         if loss > 10 ** 10: break
+    print()
     return F1_max

@@ -69,9 +69,13 @@ for key, value in file_dict.items():                    # dict.items方法会将
 
     dataset = str(parameter.loc['DATASET',1])       # 保留文件的dataset和model，作为后面输出文件的文件名
     model = str(parameter.loc['MODEL',1])
+    sampler = str(parameter.loc['SAMPLER',1])
+    loss_funtion = str(parameter.loc['LOSS_FUNCTION',1])
     #eta = str(parameter.loc['eta',1])
     #lambda_r = str(parameter.loc['lambda_r',1])
-    path_write = path + '/data_process/' + dataset + '_' + model + '_' + str(int(time.time())) + str(int(random.uniform(100, 900))) + '.xlsx'  # 输出文件的文件路径
+    path_write = path + '/data_process/' + dataset + '_' + model + '_'
+    if loss_funtion == 'DLNRS': path_write += sampler + '_'
+    path_write += str(int(time.time())) + str(int(random.uniform(100, 900))) + '.xlsx'  # 输出文件的文件路径
     #path_write = path + '/data_process/' +dataset+'_'+model+'_eta='+eta+'_lambda='+lambda_r+'_' + str(int(time.time())) + str(int(random.uniform(100, 900))) + '.xlsx'
     save_value([[parameter, 'Parameters']], path_write, first_sheet=True)  # 将参数存进excel
     for sheet in sheets:                                                     # 处理表中的每一个sheet，包括F1和NDCG

@@ -16,11 +16,13 @@ class model_SCF(object):
         self.loss_function = para['LOSS_FUNCTION']
         self.optimizer = para['OPTIMIZER']
         self.sampler = para['SAMPLER']
+        self.aux_loss_weight = para['AUX_LOSS_WEIGHT']
         self.n_users = data['user_num']
         self.n_items = data['item_num']
         self.popularity = data['popularity']
         self.U, self.V = data['pre_train_embeddings']
         self.A_hat = data['sparse_propagation_matrix']
+        self.graph_emb = data['graph_embeddings']
 
         ## placeholder
         self.users = tf.placeholder(tf.int32, shape=(None,))
@@ -68,8 +70,8 @@ class model_SCF(object):
         if self.loss_function == 'WBPR': self.loss = wbpr_loss(self.pos_scores, self.neg_scores, self.popularity, self.neg_items)
         if self.loss_function == 'DLNRS':
             self.loss, self.samp_var = dlnrs_loss([self.pos_scores, self.neg_scores],
-                                                  self.sampler,
-                                                  [self.n_users, self.n_items, self.emb_dim, self.A_hat, self.lamda],
+                                                  [self.sampler, self.lamda, self.aux_loss_weight],
+                                                  [self.n_users, self.n_items, self.emb_dim, self.A_hat, self.graph_emb],
                                                   [self.users, self.pos_items, self.neg_items])
             self.var_list += self.samp_var
 

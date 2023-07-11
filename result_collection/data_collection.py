@@ -40,7 +40,10 @@ for file_name in os.listdir(path_read):     # 读入所有等待被处理的文�
         parameter_df = pd.DataFrame(pd.read_excel(file_p, sheetname=0, index_col=0)) # 读入待处理文件的第一个sheet（这个sheet里存储着实验参数）
         model = parameter_df.loc['MODEL',1]   # 取出model和dataset的值
         dataset = parameter_df.loc['DATASET',1]
+        sampler = parameter_df.loc['SAMPLER', 1]
+        loss_funtion = parameter_df.loc['LOSS_FUNCTION', 1]
         model_dataset = str(dataset)+'_'+str(model) # 用model和dataset组成一个字符串，作为file_dict的key
+        if loss_funtion == 'DLNRS': model_dataset += '_'+str(sampler)
         if file_dict.get(model_dataset) is None:    # 如果这个key不存在，则建一个新的
             file_set = set()
         else:

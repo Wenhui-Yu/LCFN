@@ -16,13 +16,16 @@ class model_NCF(object):
         self.loss_function = para['LOSS_FUNCTION']
         self.optimizer = para['OPTIMIZER']
         self.sampler = para['SAMPLER']
+        self.aux_loss_weight = para['AUX_LOSS_WEIGHT']
         self.n_users = data['user_num']
         self.n_items = data['item_num']
         self.popularity = data['popularity']
         [self.U, self.V] = data['pre_train_embeddings']
-        self.weight_size_list = [2 * self.emb_dim]
+        self.weight_size_list = [self.emb_dim]
         for l in range(self.layer):
             self.weight_size_list.append(max(int(0.5 ** l * 64), 4))
+        self.A_hat = data['sparse_propagation_matrix']
+        self.graph_emb = data['graph_embeddings']
 
         ## placeholder
         self.users = tf.placeholder(tf.int32, shape=(None,))
@@ -47,7 +50,7 @@ class model_NCF(object):
         for l in range(self.layer):
             self.W.append(tf.Variable(tf.random_normal([self.weight_size_list[l], self.weight_size_list[l + 1]], mean=0.01, stddev=0.02, dtype=tf.float32)))
             self.b.append(tf.Variable(tf.random_normal([1, self.weight_size_list[l + 1]], mean=0.01, stddev=0.02, dtype=tf.float32)))
-        self.h = tf.Variable(tf.random_normal([1, self.emb_dim + self.weight_size_list[-1]], mean=0.01, stddev=0.02, dtype=tf.float32), name='h')
+        self.h = tf.Variable(tf.random_normal([1, int(self.emb_dim/2) + self.weight_size_list[-1]], mean=0.01, stddev=0.02, dtype=tf.float32), name='h')
         self.var_list = [self.user_embeddings_GMF, self.item_embeddings_GMF, self.user_embeddings_MLP, self.item_embeddings_MLP, self.h] + self.W + self.b
 
         ## lookup
@@ -69,8 +72,8 @@ class model_NCF(object):
         if self.loss_function == 'WBPR': self.loss = wbpr_loss(self.pos_scores, self.neg_scores, self.popularity, self.neg_items)
         if self.loss_function == 'DLNRS':
             self.loss, self.samp_var = dlnrs_loss([self.pos_scores, self.neg_scores],
-                                                  self.sampler,
-                                                  [self.n_users, self.n_items, self.emb_dim, self.lamda],
+                                                  [self.sampler, self.lamda, self.aux_loss_weight],
+                                                  [self.n_users, self.n_items, self.emb_dim, self.A_hat, self.graph_emb],
                                                   [self.users, self.pos_items, self.neg_items])
             self.var_list += self.samp_var
 
@@ -101,9 +104,9 @@ class model_NCF(object):
     def get_all_rating(self, user_GMF, item_GMF, user_MLP, item_MLP):
         n_user_b = tf.shape(user_GMF)[0]
         n_item_b = tf.shape(item_GMF)[0]
-        user_GMF_b = tf.reshape(tf.tile(user_GMF, [1, n_item_b]), [-1, self.emb_dim])
+        user_GMF_b = tf.reshape(tf.tile(user_GMF, [1, n_item_b]), [-1, int(self.emb_dim/2)])
         item_GMF_b = tf.tile(item_GMF, [n_user_b, 1])
-        user_MLP_b = tf.reshape(tf.tile(user_MLP, [1, n_item_b]), [-1, self.emb_dim])
+        user_MLP_b = tf.reshape(tf.tile(user_MLP, [1, n_item_b]), [-1, int(self.emb_dim/2)])
         item_MLP_b = tf.tile(item_MLP, [n_user_b, 1])
         score = self.predict(user_GMF_b, item_GMF_b, user_MLP_b, item_MLP_b)
         score = tf.reshape(score, [n_user_b, -1])

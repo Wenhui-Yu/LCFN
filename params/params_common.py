@@ -15,3 +15,4 @@ IF_PRETRAIN = [False, True][0]
 TEST_VALIDATION = 'Validation'  # can be changed automatically
 TOP_K = [10, 20, 50, 100]
 SAMPLE_RATE = 1
+AUX_LOSS_WEIGHT = 0

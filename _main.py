@@ -23,7 +23,7 @@ if __name__ == '__main__':
     iter_num_test = 20
     if tuning_method == 'test': all_para['TEST_VALIDATION'] = 'Test'    # if testing the model, we need to read in test set
     data = read_all_data(all_para)                                      # read data
-    path_excel_dir = 'experiment_result/' + all_para['DATASET'] + '_' + all_para['MODEL'] + '_' + all_para['SAMPLER'] + '_'
+    path_excel_dir = 'experiment_result/' + all_para['DATASET'] + '_' + all_para['MODEL'] + '_'
     if all_para['LOSS_FUNCTION'] == 'DLNRS': path_excel_dir += all_para['SAMPLER'] + '_'
 
     ## tuning the model
