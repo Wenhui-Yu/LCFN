@@ -8,11 +8,11 @@ from numpy import *
 import numpy as np
 import json
 
-DATASET = 0                             # 0 for Amazon, 1 for Movielens
+DATASET = 0                             # 0 for Amazon, 1 for KuaiRand
 FREQUENCY_U = [100, 300][DATASET]       # dimensionality of the base of the user graph
 FREQUENCY_I = [50, 200][DATASET]        # dimensionality of the base of the user graph
 IF_WEIGHTED = [False, True][0]         # 0 for uniform weighted, 1 for weighted by the 1/popularity.
-Dataset = ['Amazon', 'Movielens'][DATASET]
+Dataset = ['Amazon', 'KuaiRand'][DATASET]
 tolerant = 0.1 ** 5
 epsilon = 0.1 ** 10
 

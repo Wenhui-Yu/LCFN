@@ -2,9 +2,9 @@
 ## author@Wenhui Yu  2020.06.02
 ## email: jianlin.ywh@alibaba-inc.com
 
-from model_MF import *
-from test_model import *
-from read_data import *
+from package.models.model_MF import *
+from package.utils.test_model import *
+from package.utils.read_data import *
 from print_save import *
 from params import DIR
 
@@ -13,6 +13,7 @@ def train_model(para):
     ## paths of data
     train_path = DIR + 'train_data.json'
     validation_path = DIR + 'validation_data.json'
+    save_embeddings_path = DIR + 'pre_train_embeddings' + str(EMB_DIM) + '.json'
 
     ## Load data
     [train_data, train_data_interaction, user_num, item_num] = read_data(train_path)

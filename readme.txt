@@ -41,7 +41,7 @@ Please follow the steps below:
 
 * We also release our tuning results in folder supplementary_material.
 
-* In the dataset folder, we prodive Amazon and Movielens to conduct our experiments. For each dataset, we split it to three subsets: train_data, validation_data, and test_data. You can use our processed datasets, or construct them from the raw data by running amazon.py and movielens.py. For the raw data please find on:
+* In the dataset folder, we prodive Amazon and KuaiRand to conduct our experiments. For each dataset, we split it to three subsets: train_data, validation_data, and test_data. You can use our processed datasets, or construct them from the raw data by running amazon.py and KuaiRand.py. For the raw data please find on:
 
 1. Amazon 
 http://snap.stanford.edu/data/amazon/productGraph/categoryFiles/reviews_Electronics_5.json.gz

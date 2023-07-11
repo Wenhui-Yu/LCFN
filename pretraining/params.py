@@ -1,10 +1,10 @@
 ## author@Wenhui Yu  2020.06.02
 ## email: jianlin.ywh@alibaba-inc.com
 
-dataset = 0         # 0:Amazon, 1:Movielens
+dataset = 0         # 0:Amazon, 1:KuaiRand
 validate_test = 0   # 0:Validate, 1: Test
 
-DATASET = ['Amazon', 'Movielens'][dataset]
+DATASET = ['Amazon', 'KuaiRand'][dataset]
 MODEL = 'MF'
 LR = [0.05, 0.02][dataset]
 LAMDA = [0.02, 0.01][dataset]

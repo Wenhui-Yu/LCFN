@@ -7,14 +7,14 @@ import pandas as pd
 from openpyxl import load_workbook
 from openpyxl import Workbook
 import time
-from print_save import save_value
-from print_save import df2str
+from package.utils.print_save import save_value
+from package.utils.print_save import df2str
 import os
 from numpy import *
 import sys
 import operator
 
-k = 2           # 这个参数用于标注如果在一组文件中有两个参数发生改变，则输出的表中选top k的那个值
+k = 20           # 这个参数用于标注如果在一组文件中有两个参数发生改变，则输出的表中选top k的那个值
 
 def read_data_from_sheet(path, sheet, colu, ind):
     df = pd.DataFrame(pd.read_excel(path, sheetname=sheet, header=0, index_col=0))
