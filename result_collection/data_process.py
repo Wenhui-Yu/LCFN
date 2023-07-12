@@ -7,8 +7,6 @@ import pandas as pd
 from openpyxl import load_workbook #@x
 from openpyxl import Workbook #@x
 import time
-from utils.print_save import save_value #@x
-from utils.print_save import df2str #@x
 import os
 from numpy import *
 import operator
@@ -17,6 +15,33 @@ top_ave = 5                                 # 设置实验结果要取所有迭�
 
 path = os.path.abspath(os.path.dirname(os.getcwd())) + '/experiment_result'
 emoji = ["(๑‾  ‾๑)","( ˃ ˄ ˂̥̥ ) ","(*/ω＼*)","o(≧口≦)o","╰(*°▽°*)╯","~( ﹁ ﹁ ) ~~","(⊙﹏⊙)","(＠_＠;)"]
+
+def save_value(df_list,path_excel,first_sheet):
+    excelWriter = pd.ExcelWriter(path_excel, engine='openpyxl',mode='a')
+
+    if first_sheet is False:
+        workbook = load_workbook(path_excel)
+        excelWriter.book = workbook
+        exist_sheets = workbook.get_sheet_names()
+        for df in df_list:
+            if df[1] in exist_sheets:
+                workbook.remove_sheet(workbook.get_sheet_by_name(df[1]))
+            df[0].to_excel(excel_writer=excelWriter, sheet_name=df[1],index = True)
+            excelWriter.save()
+    else:
+        for df in df_list:
+            df[0].to_excel(excel_writer=excelWriter, sheet_name=df[1], index=True)
+            excelWriter.save()
+    excelWriter.close()
+
+def df2str(df):
+    df_str = ''
+    for i in range(df.shape[0]):
+        df_list = df.iloc[[i], :].values.tolist()
+        df_list2 = [str(i) for i in df_list]
+        str_temp = ''.join(df_list2)
+        df_str = df_str + str_temp + ','
+    return df_str
 
 def process_metric(df, method, para):       # input：df是指要被处理的dataframe；method有两种选项：max和top；para是method=top时要用到的参数
     output_list = []

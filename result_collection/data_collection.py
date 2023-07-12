@@ -7,14 +7,39 @@ import pandas as pd
 from openpyxl import load_workbook
 from openpyxl import Workbook
 import time
-from utils.print_save import save_value
-from utils.print_save import df2str
 import os
 from numpy import *
 import sys
 import operator
 
 k = 20           # 这个参数用于标注如果在一组文件中有两个参数发生改变，则输出的表中选top k的那个值
+
+def save_value(df_list,path_excel,first_sheet):
+    excelWriter = pd.ExcelWriter(path_excel, engine='openpyxl',mode='a')
+
+    if first_sheet is False:
+        workbook = load_workbook(path_excel)
+        excelWriter.book = workbook
+        exist_sheets = workbook.get_sheet_names()
+        for df in df_list:
+            if df[1] in exist_sheets:
+                workbook.remove_sheet(workbook.get_sheet_by_name(df[1]))
+            df[0].to_excel(excel_writer=excelWriter, sheet_name=df[1],index = True)
+            excelWriter.save()
+    else:
+        for df in df_list:
+            df[0].to_excel(excel_writer=excelWriter, sheet_name=df[1], index=True)
+            excelWriter.save()
+    excelWriter.close()
+
+def df2str(df):
+    df_str = ''
+    for i in range(df.shape[0]):
+        df_list = df.iloc[[i], :].values.tolist()
+        df_list2 = [str(i) for i in df_list]
+        str_temp = ''.join(df_list2)
+        df_str = df_str + str_temp + ','
+    return df_str
 
 def read_data_from_sheet(path, sheet, colu, ind):
     df = pd.DataFrame(pd.read_excel(path, sheetname=sheet, header=0, index_col=0))
