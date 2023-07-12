@@ -2,9 +2,8 @@
 ## author@Wenhui Yu  2020.06.02
 ## email: jianlin.ywh@alibaba-inc.com
 
-from models.model_MF import *
-from utils.test_model import *
-from utils.read_data import *
+from model_MF import *
+from test_model import *
 from print_save import *
 from params import DIR
 
