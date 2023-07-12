@@ -2,6 +2,7 @@
 ## email: jianlin.ywh@alibaba-inc.com
 
 import json
+import random as rd
 def print_params(para):
     for para_name in para:
         print(para_name+':  ',para[para_name])
