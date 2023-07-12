@@ -6,14 +6,18 @@ import tensorflow as tf
 from utils.utils import *
 
 def sampler_LGCN(params, index):
-    n_users, n_items, emb_dim, _, graph_emb = params
+    n_users, n_items, emb_dim, if_pretrain, _, graph_emb, U, V = params
     users, pos_items, neg_items = index
     layer = 1
     layer_weight = [1 / (l + 1) for l in range(layer + 1)]
 
     ## trainable parameter
-    user_embeddings = tf.Variable(tf.random_normal([n_users, emb_dim], mean=0.01, stddev=0.02, dtype=tf.float32), name='samp_user_embeddings')
-    item_embeddings = tf.Variable(tf.random_normal([n_items, emb_dim], mean=0.01, stddev=0.02, dtype=tf.float32), name='samp_item_embeddings')
+    if if_pretrain:
+        user_embeddings = tf.Variable(U, name='samp_user_embeddings')
+        item_embeddings = tf.Variable(V, name='samp_item_embeddings')
+    else:
+        user_embeddings = tf.Variable(tf.random_normal([n_users, emb_dim], mean=0.01, stddev=0.02, dtype=tf.float32), name='samp_user_embeddings')
+        item_embeddings = tf.Variable(tf.random_normal([n_items, emb_dim], mean=0.01, stddev=0.02, dtype=tf.float32), name='samp_item_embeddings')
     kernel = [tf.Variable(tf.random_normal([128], mean=0.01, stddev=0.02, dtype=tf.float32), name='samp_filters') for l in range(layer)]
 
     ## convolutional layers definition

@@ -5,7 +5,7 @@ import tensorflow as tf
 from utils.utils import *
 
 def sampler_NCF(params, index):
-    n_users, n_items, emb_dim, _, _ = params
+    n_users, n_items, emb_dim, if_pretrain, _, _, U, V = params
     users, pos_items, neg_items = index
     layer = 1
     weight_size_list = [emb_dim]
@@ -13,10 +13,16 @@ def sampler_NCF(params, index):
         weight_size_list.append(max(int(0.5 ** l * 64), 4))
 
     ## trainable parameter
-    user_embeddings_GMF = tf.Variable(tf.random_normal([n_users, int(emb_dim/2)], mean=0.01, stddev=0.02, dtype=tf.float32), name='samp_user_embeddings_GMF')
-    item_embeddings_GMF = tf.Variable(tf.random_normal([n_items, int(emb_dim/2)], mean=0.01, stddev=0.02, dtype=tf.float32), name='samp_item_embeddings_GMF')
-    user_embeddings_MLP = tf.Variable(tf.random_normal([n_users, int(emb_dim/2)], mean=0.01, stddev=0.02, dtype=tf.float32), name='samp_user_embeddings_MLP')
-    item_embeddings_MLP = tf.Variable(tf.random_normal([n_items, int(emb_dim/2)], mean=0.01, stddev=0.02, dtype=tf.float32), name='samp_item_embeddings_MLP')
+    if if_pretrain:
+        user_embeddings_GMF = tf.Variable(U[:, : int(emb_dim / 2)], name='samp_user_embeddings_GMF')
+        item_embeddings_GMF = tf.Variable(V[:, : int(emb_dim / 2)], name='samp_item_embeddings_GMF')
+        user_embeddings_MLP = tf.Variable(U[:, int(emb_dim / 2):], name='samp_user_embeddings_MLP')
+        item_embeddings_MLP = tf.Variable(V[:, int(emb_dim / 2):], name='samp_item_embeddings_MLP')
+    else:
+        user_embeddings_GMF = tf.Variable(tf.random_normal([n_users, int(emb_dim/2)], mean=0.01, stddev=0.02, dtype=tf.float32), name='samp_user_embeddings_GMF')
+        item_embeddings_GMF = tf.Variable(tf.random_normal([n_items, int(emb_dim/2)], mean=0.01, stddev=0.02, dtype=tf.float32), name='samp_item_embeddings_GMF')
+        user_embeddings_MLP = tf.Variable(tf.random_normal([n_users, int(emb_dim/2)], mean=0.01, stddev=0.02, dtype=tf.float32), name='samp_user_embeddings_MLP')
+        item_embeddings_MLP = tf.Variable(tf.random_normal([n_items, int(emb_dim/2)], mean=0.01, stddev=0.02, dtype=tf.float32), name='samp_item_embeddings_MLP')
     W = []
     b = []
     for l in range(layer):

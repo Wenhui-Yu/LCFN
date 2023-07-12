@@ -2,9 +2,9 @@
 ## email: jianlin.ywh@alibaba-inc.com
 
 import json
-def print_params(para_name, para):
-    for i in range(len(para)):
-        print(para_name[i]+':  ',para[i])
+def print_params(para):
+    for para_name in para:
+        print(para_name+':  ',para[para_name])
 
 def print_value(value):
     [inter, loss, f1_max, F1, NDCG] = value

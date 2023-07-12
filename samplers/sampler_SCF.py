@@ -5,13 +5,17 @@ import tensorflow as tf
 from utils.utils import *
 
 def sampler_SCF(params, index):
-    n_users, n_items, emb_dim, A_hat, _ = params
+    n_users, n_items, emb_dim, if_pretrain, A_hat, _, U, V = params
     users, pos_items, neg_items = index
     layer = 1
 
     ## trainable parameter
-    user_embeddings = tf.Variable(tf.random_normal([n_users, emb_dim], mean=0.01, stddev=0.02, dtype=tf.float32), name='samp_user_embeddings')
-    item_embeddings = tf.Variable(tf.random_normal([n_items, emb_dim], mean=0.01, stddev=0.02, dtype=tf.float32), name='samp_item_embeddings')
+    if if_pretrain:
+        user_embeddings = tf.Variable(U, name='samp_user_embeddings')
+        item_embeddings = tf.Variable(V, name='samp_item_embeddings')
+    else:
+        user_embeddings = tf.Variable(tf.random_normal([n_users, emb_dim], mean=0.01, stddev=0.02, dtype=tf.float32), name='samp_user_embeddings')
+        item_embeddings = tf.Variable(tf.random_normal([n_items, emb_dim], mean=0.01, stddev=0.02, dtype=tf.float32), name='samp_item_embeddings')
     filters = []
     for l in range(layer):
         filters.append(tf.Variable(tf.random_normal([emb_dim, emb_dim], mean=0.01, stddev=0.02, dtype=tf.float32), name='samp_filters_' + str(l)))

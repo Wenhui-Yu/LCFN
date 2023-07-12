@@ -9,19 +9,21 @@ from print_save import *
 from params import DIR
 
 def train_model(para):
-    [_, _, _, LR, LAMDA, EMB_DIM, BATCH_SIZE, TEST_USER_BATCH, SAMPLE_RATE, N_EPOCH, TOP_K] = para
     ## paths of data
     train_path = DIR + 'train_data.json'
     validation_path = DIR + 'validation_data.json'
-    save_embeddings_path = DIR + 'pre_train_embeddings' + str(EMB_DIM) + '.json'
+    save_embeddings_path = DIR + 'pre_train_embeddings' + str(para['EMB_DIM']) + '.json'
 
     ## Load data
     [train_data, train_data_interaction, user_num, item_num] = read_data(train_path)
     test_data = read_data(validation_path)[0]
-    para_test = [train_data, test_data, user_num, item_num, TOP_K, TEST_USER_BATCH]
+    para_test = [train_data, test_data, user_num, item_num, para['TOP_K'], para['TEST_USER_BATCH']]
+
+    data = {'user_num': user_num, "item_num": item_num, "popularity": 0, "pre_train_embeddings": 0,
+            "graph_embeddings": 0, "sparse_propagation_matrix": 0}
 
     ## define the model
-    model = model_MF(n_users=user_num, n_items=item_num, emb_dim=EMB_DIM, lr=LR, lamda=LAMDA)
+    model = model_MF(data=data, para=para)
 
     config = tf.ConfigProto()
     config.gpu_options.allow_growth = True
@@ -29,18 +31,18 @@ def train_model(para):
     sess.run(tf.global_variables_initializer())
 
     ## split the training samples into batches
-    batches = list(range(0, len(train_data_interaction), BATCH_SIZE))
+    batches = list(range(0, len(train_data_interaction), para['BATCH_SIZE']))
     batches.append(len(train_data_interaction))
 
     ## training iteratively
     F1_max = 0
-    for epoch in range(N_EPOCH):
+    for epoch in range(para['N_EPOCH']):
         for batch_num in range(len(batches)-1):
             train_batch_data = []
             for sample in range(batches[batch_num], batches[batch_num+1]):
                 (user, pos_item) = train_data_interaction[sample]
                 sample_num = 0
-                while sample_num < SAMPLE_RATE:
+                while sample_num < para['SAMPLE_RATE']:
                     neg_item = int(random.uniform(0, item_num))
                     if not (neg_item in train_data[user]):
                         sample_num += 1

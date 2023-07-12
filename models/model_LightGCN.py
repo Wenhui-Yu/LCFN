@@ -66,7 +66,7 @@ class model_LightGCN(object):
         if self.loss_function == 'DLNRS':
             self.loss, self.samp_var = dlnrs_loss([self.pos_scores, self.neg_scores],
                                                   [self.sampler, self.lamda, self.aux_loss_weight],
-                                                  [self.n_users, self.n_items, self.emb_dim, self.A_hat, self.graph_emb],
+                                                  [self.n_users, self.n_items, self.emb_dim, self.if_pretrain, self.A_hat, self.graph_emb, self.U, self.V],
                                                   [self.users, self.pos_items, self.neg_items])
             self.var_list += self.samp_var
 

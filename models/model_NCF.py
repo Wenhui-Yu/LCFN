@@ -36,10 +36,10 @@ class model_NCF(object):
 
         ## define trainable parameters
         if self.if_pretrain:
-            self.user_embeddings_GMF = tf.Variable(self.U, name='user_embeddings_GMF')
-            self.item_embeddings_GMF = tf.Variable(self.V, name='item_embeddings_GMF')
-            self.user_embeddings_MLP = tf.Variable(self.U, name='user_embeddings_MLP')
-            self.item_embeddings_MLP = tf.Variable(self.V, name='item_embeddings_MLP')
+            self.user_embeddings_GMF = tf.Variable(self.U[:, : int(self.emb_dim/2)], name='user_embeddings_GMF')
+            self.item_embeddings_GMF = tf.Variable(self.V[:, : int(self.emb_dim/2)], name='item_embeddings_GMF')
+            self.user_embeddings_MLP = tf.Variable(self.U[:, int(self.emb_dim/2):], name='user_embeddings_MLP')
+            self.item_embeddings_MLP = tf.Variable(self.V[:, int(self.emb_dim/2):], name='item_embeddings_MLP')
         else:
             self.user_embeddings_GMF = tf.Variable(tf.random_normal([self.n_users, int(self.emb_dim/2)], mean=0.01, stddev=0.02, dtype=tf.float32), name='user_embeddings_GMF')
             self.item_embeddings_GMF = tf.Variable(tf.random_normal([self.n_items, int(self.emb_dim/2)], mean=0.01, stddev=0.02, dtype=tf.float32), name='item_embeddings_GMF')
@@ -73,7 +73,7 @@ class model_NCF(object):
         if self.loss_function == 'DLNRS':
             self.loss, self.samp_var = dlnrs_loss([self.pos_scores, self.neg_scores],
                                                   [self.sampler, self.lamda, self.aux_loss_weight],
-                                                  [self.n_users, self.n_items, self.emb_dim, self.A_hat, self.graph_emb],
+                                                  [self.n_users, self.n_items, self.emb_dim, self.if_pretrain, self.A_hat, self.graph_emb, self.U, self.V],
                                                   [self.users, self.pos_items, self.neg_items])
             self.var_list += self.samp_var
 

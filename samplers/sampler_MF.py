@@ -3,7 +3,7 @@
 import tensorflow as tf
 
 def sampler_MF(params, index):
-    n_users, n_items, emb_dim, _, _ = params
+    n_users, n_items, emb_dim, _, _, _, _, _ = params
     users, pos_items, neg_items = index
 
     ## trainable parameter
