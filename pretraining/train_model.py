@@ -52,8 +52,8 @@ def train_model(para):
                                           model.pos_items: train_batch_data[:,1],
                                           model.neg_items: train_batch_data[:,2]})
         F1, NDCG = test_model(sess, model, para_test)
-        if F1[0] > F1_max:
-            F1_max = F1[0]
+        if F1[1] > F1_max:
+            F1_max = F1[1]
             user_embeddings, item_embeddings = sess.run([model.user_embeddings, model.item_embeddings])
         ## print performance
         print_value([epoch + 1, loss, F1_max, F1, NDCG])
