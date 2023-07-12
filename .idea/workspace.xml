@@ -6,6 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="ba66a7a2-028f-4a03-89fb-705458e7bddd" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/result_collection/data_collection.py" beforeDir="false" afterPath="$PROJECT_DIR$/result_collection/data_collection.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -73,7 +74,7 @@
       <recent name="$PROJECT_DIR$" />
     </key>
   </component>
-  <component name="RunManager" selected="Python._main">
+  <component name="RunManager" selected="Python.data_collection">
     <configuration name="_graph_embeddings" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="code" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -171,9 +172,9 @@
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.data_collection" />
         <item itemvalue="Python._main" />
         <item itemvalue="Python._graph_embeddings" />
-        <item itemvalue="Python.data_collection" />
         <item itemvalue="Python.data_process" />
       </list>
     </recent_temporary>
