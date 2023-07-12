@@ -68,7 +68,7 @@ file_dict = dict()                                  # 通过字典存储参数�
 for file_name in os.listdir(path_read):             # 读入所有等待被处理的文件
     if operator.eq(file_name[-5:], '.xlsx') == 1:           # 判断这个文件是不是xlsx文件，如果是，则进行下面的操作（通过这个步骤过滤掉其他后缀的文件以及该目录下的文件夹）
         file_p = path_read + '/' + file_name       # 待处理的xlsx文件的路径
-        parameter_df = pd.DataFrame(pd.read_excel(file_p, sheetname=0,header = None))  # 读入待处理文件的第一个sheet（这个sheet里存储着实验参数），header=None表明在这个表格中并没有表头
+        parameter_df = pd.DataFrame(pd.read_excel(file_p, sheet_name=0,header = None))  # 读入待处理文件的第一个sheet（这个sheet里存储着实验参数），header=None表明在这个表格中并没有表头
         parameter_str = df2str(parameter_df)        # 将实验参数的dataframe转为字符串，作为字典的key
         if file_dict.get(parameter_str) is None:    # 如果字典中这个key还不存在
             file_list = []                          # 新建一个file list，这个list里存储这个key对应的所有文件
