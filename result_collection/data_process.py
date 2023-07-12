@@ -88,7 +88,7 @@ for key, value in file_dict.items():                    # dict.items方法会将
     sheets = list(sheets)
     sheets.sort()
 
-    parameter = pd.DataFrame(pd.read_excel(path_read + '/' + value[0], sheetname=0, header = None , index_col=0)) # 将文件的参数存成dataframe的形式，将第0列设置为index
+    parameter = pd.DataFrame(pd.read_excel(path_read + '/' + value[0], sheet_name=0, header = None , index_col=0)) # 将文件的参数存成dataframe的形式，将第0列设置为index
     parameter.index.name = 'para'                       # 设置dataframe的行名和列名
     parameter.columns.name = 'value'
 
@@ -111,7 +111,7 @@ for key, value in file_dict.items():                    # dict.items方法会将
                 temp_f = load_workbook(path_read + '/' + file_p)
                 temp_sn = temp_f.sheetnames
                 if sheet in temp_sn:
-                    metric = pd.DataFrame(pd.read_excel(path_read + '/' + file_p, sheetname=sheet, header=0, index_col=0)) # 读入某一个文件里的一个sheet
+                    metric = pd.DataFrame(pd.read_excel(path_read + '/' + file_p, sheet_name=sheet, header=0, index_col=0)) # 读入某一个文件里的一个sheet
                     list_max = process_metric(metric,method = 'max',para = top_ave  )             # 处理这个metric，得到F1_max或NDCG_max,得到的值为一行
                     list_top = process_metric(metric, method = 'top', para = top_ave )            # 处理这个metric，得到F1_top或NDCG_top，得到的值为一行
                     df_max = df_max.append(list_max, ignore_index=True)           # 将list_max 和 list_top分别加在对应的dataframe上

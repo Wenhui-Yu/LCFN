@@ -81,7 +81,7 @@ for model_dataset, file_set in file_dict.items():    # 对于每一组model-data
     list_index = []                                   # 存储parameter的index，也就是所有的参数名
     for file_name in file_set:                       # 对所有dataset和model相同的实验结果文件进行处理
         file_p = path_read + '/' + file_name         # 生成文件路径
-        sheets = load_workbook(file_p).sheet_names     # 获取这个文件的所有sheet名，以备后用
+        sheets = load_workbook(file_p).sheetnames     # 获取这个文件的所有sheet名，以备后用
         parameter_df = pd.DataFrame(pd.read_excel(file_p, sheet_name=0, index_col=0))  # 获得这个文件的参数dataframe
         list_index = parameter_df.index               # 获得这个文件的所有参数名
         for index in list_index:                      # 循环处理每一个参数
