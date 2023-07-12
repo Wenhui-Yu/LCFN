@@ -1,7 +1,6 @@
 ## basic baseline MF_BPR
 
 import tensorflow as tf
-from utils.utils import *
 
 class model_MF(object):
     def __init__(self, data, para):
@@ -38,23 +37,15 @@ class model_MF(object):
         self.neg_i_embeddings = tf.nn.embedding_lookup(self.item_embeddings, self.neg_items)
 
         ## logits
-        self.pos_scores = inner_product(self.u_embeddings, self.pos_i_embeddings)
-        self.neg_scores = inner_product(self.u_embeddings, self.neg_i_embeddings)
+        self.pos_scores = self.inner_product(self.u_embeddings, self.pos_i_embeddings)
+        self.neg_scores = self.inner_product(self.u_embeddings, self.neg_i_embeddings)
 
         ## loss function
-        if self.loss_function == 'BPR': self.loss = bpr_loss(self.pos_scores, self.neg_scores)
-        if self.loss_function == 'CrossEntropy': self.loss = cross_entropy_loss(self.pos_scores, self.neg_scores)
-        if self.loss_function == 'MSE': self.loss = mse_loss(self.pos_scores, self.neg_scores)
-        if self.loss_function == 'WBPR': self.loss = wbpr_loss(self.pos_scores, self.neg_scores, self.popularity, self.neg_items)
-        if self.loss_function == 'DLNRS':
-            self.loss, self.samp_var = dlnrs_loss([self.pos_scores, self.neg_scores],
-                                                  [self.sampler, self.lamda, self.aux_loss_weight],
-                                                  [self.n_users, self.n_items, self.emb_dim, self.if_pretrain, self.A_hat, self.graph_emb, self.U, self.V],
-                                                  [self.users, self.pos_items, self.neg_items])
-            self.var_list += self.samp_var
+        if self.loss_function == 'BPR': self.loss = self.bpr_loss(self.pos_scores, self.neg_scores)
+        if self.loss_function == 'CrossEntropy': self.loss = self.cross_entropy_loss(self.pos_scores, self.neg_scores)
 
         ## regularization
-        self.loss += self.lamda * regularization([self.u_embeddings, self.pos_i_embeddings, self.neg_i_embeddings])
+        self.loss += self.lamda * self.regularization([self.u_embeddings, self.pos_i_embeddings, self.neg_i_embeddings])
 
         ## optimizer
         if self.optimizer == 'SGD': self.opt = tf.train.GradientDescentOptimizer(learning_rate=self.lr)
@@ -70,5 +61,21 @@ class model_MF(object):
         self.all_ratings += self.items_in_train_data  ## set a very small value for the items appearing in the training set to make sure they are at the end of the sorted list
         self.top_items = tf.nn.top_k(self.all_ratings, k=self.top_k, sorted=True).indices
 
+    def inner_product(self, users, items):
+        scores = tf.reduce_sum(tf.multiply(users, items), axis=1)
+        return scores
 
+    def bpr_loss(self, pos_scores, neg_scores):
+        maxi = tf.log(tf.nn.sigmoid(pos_scores - neg_scores))
+        loss = tf.negative(tf.reduce_sum(maxi))
+        return loss
 
+    def cross_entropy_loss(self, pos_scores, neg_scores):
+        maxi = tf.log(tf.nn.sigmoid(pos_scores)) + tf.log(1 - tf.nn.sigmoid(neg_scores))
+        loss = tf.negative(tf.reduce_sum(maxi))
+        return loss
+
+    def regularization(self, reg_list):
+        reg = 0
+        for para in reg_list: reg += tf.nn.l2_loss(para)
+        return reg
