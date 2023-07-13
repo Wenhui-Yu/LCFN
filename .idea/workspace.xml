@@ -5,13 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ba66a7a2-028f-4a03-89fb-705458e7bddd" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/pretraining/_hypergraph_embeddings.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/model_LGCN.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/model_LCFN.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/params/params_LGCN.py" beforeDir="false" afterPath="$PROJECT_DIR$/params/params_LCFN.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/params/params_common.py" beforeDir="false" afterPath="$PROJECT_DIR$/params/params_common.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/samplers/sampler_LGCN.py" beforeDir="false" afterPath="$PROJECT_DIR$/samplers/sampler_LCFN.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/read_data.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/read_data.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
