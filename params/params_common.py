@@ -4,7 +4,7 @@
 
 GPU_INDEX = "0"
 DATASET = ['Amazon', 'KuaiRand'][0]
-MODEL = ['MF', 'NCF', 'NGCF', 'LightGCN', 'LGCN'][0]
+MODEL = ['MF', 'NCF', 'NGCF', 'LightGCN', 'LGCN'][2]
 SAMPLER = ['MF', 'NCF', 'NGCF', 'LightGCN', 'LGCN'][0]
 LOSS_FUNCTION = ['CrossEntropy', 'BPR', 'WBPR', 'DLNRS'][0]
 EMB_DIM = 128

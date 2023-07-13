@@ -18,9 +18,10 @@ def sampler_NGCF(params, index):
         item_embeddings = tf.Variable(tf.random_normal([n_items, emb_dim], mean=0.01, stddev=0.02, dtype=tf.float32), name='samp_item_embeddings')
     filters_1 = []
     filters_2 = []
-    for l in range(layer):
-        filters_1.append(tf.Variable((np.random.normal(0, 0.001, (emb_dim, emb_dim)) + np.diag(np.random.normal(1, 0.001, emb_dim))).astype(np.float32), name='samp_filter_1_'+str(l)))
-        filters_2.append(tf.Variable((np.random.normal(0, 0.001, (emb_dim, emb_dim)) + np.diag(np.random.normal(1, 0.001, emb_dim))).astype(np.float32), name='samp_filter_2_'+str(l)))
+    for l in range(self.layer):
+        self.filters_1.append(tf.Variable(tf.random.normal([self.emb_dim, self.emb_dim], mean=0.01, stddev=0.02, dtype=tf.float32), name='filter_1_'+str(l)))
+        self.filters_2.append(tf.Variable(tf.random.normal([self.emb_dim, self.emb_dim], mean=0.01, stddev=0.02, dtype=tf.float32), name='filter_2_'+str(l)))
+
     ## graph convolution
     embeddings = tf.concat([user_embeddings, item_embeddings], axis=0)
     all_embeddings = [embeddings]
@@ -42,7 +43,7 @@ def sampler_NGCF(params, index):
     neg_i_embeddings_reg = tf.nn.embedding_lookup(item_embeddings, neg_items)
 
     ## var collection
-    var_set = [user_embeddings, item_embeddings] + filters
+    var_set = [user_embeddings, item_embeddings] + filters_1 + filters_2
     reg_set = [u_embeddings_reg, pos_i_embeddings_reg, neg_i_embeddings_reg] + filters_1 + filters_2
 
     ## sampler scores

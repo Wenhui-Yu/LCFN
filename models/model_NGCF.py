@@ -41,8 +41,9 @@ class model_NGCF(object):
         self.filters_1 = []
         self.filters_2 = []
         for l in range(self.layer):
-            self.filters_1.append(tf.Variable((np.random.normal(0, 0.001, (self.emb_dim, self.emb_dim)) + np.diag(np.random.normal(1, 0.001, self.emb_dim))).astype(np.float32), name='filter_1_'+str(l)))
-            self.filters_2.append(tf.Variable((np.random.normal(0, 0.001, (self.emb_dim, self.emb_dim)) + np.diag(np.random.normal(1, 0.001, self.emb_dim))).astype(np.float32), name='filter_2_'+str(l)))
+            self.filters_1.append(tf.Variable(tf.random.normal([self.emb_dim, self.emb_dim], mean=0.01, stddev=0.02, dtype=tf.float32), name='filter_1_'+str(l)))
+            self.filters_2.append(tf.Variable(tf.random.normal([self.emb_dim, self.emb_dim], mean=0.01, stddev=0.02, dtype=tf.float32), name='filter_2_'+str(l)))
+        self.var_list = [self.user_embeddings, self.item_embeddings] + self.filters_1 + self.filters_2
 
         ## graph convolution
         self.embeddings = tf.concat([self.user_embeddings, self.item_embeddings], axis=0)
