@@ -33,7 +33,7 @@ def sampler_LCFN(params, index):
     for l in range(layer):
         User_embedding = tf.matmul(tf.matmul(P, tf.diag(user_filters[l])), tf.matmul(P, User_embedding, transpose_a=True, transpose_b=False))
         User_embedding = tf.nn.sigmoid(tf.matmul(User_embedding, transformers[l]))
-        user_all_embeddings += [User_embedding]
+        user_all_embeddings.append(User_embedding)
     user_all_embeddings = tf.concat(user_all_embeddings, 1)
 
     Item_embedding = item_embeddings
@@ -41,7 +41,7 @@ def sampler_LCFN(params, index):
     for l in range(layer):
         Item_embedding = tf.matmul(tf.matmul(Q, tf.diag(item_filters[l])), tf.matmul(Q, Item_embedding, transpose_a=True, transpose_b=False))
         Item_embedding = tf.nn.sigmoid(tf.matmul(Item_embedding, transformers[l]))
-        item_all_embeddings += [Item_embedding]
+        item_all_embeddings.append(Item_embedding)
     item_all_embeddings = tf.concat(item_all_embeddings, 1)
 
     ## lookup

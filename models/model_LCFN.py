@@ -57,7 +57,7 @@ class model_LCFN(object):
         for l in range(self.layer):
             self.User_embedding = tf.matmul(tf.matmul(self.P, tf.diag(self.user_filters[l])), tf.matmul(self.P, self.User_embedding, transpose_a=True, transpose_b=False))
             self.User_embedding = tf.nn.sigmoid(tf.matmul(self.User_embedding, self.transformers[l]))
-            self.user_all_embeddings += [self.User_embedding]
+            self.user_all_embeddings.append(self.User_embedding)
         self.user_all_embeddings = tf.concat(self.user_all_embeddings, 1)
 
         self.Item_embedding = self.item_embeddings
@@ -65,7 +65,7 @@ class model_LCFN(object):
         for l in range(self.layer):
             self.Item_embedding = tf.matmul(tf.matmul(self.Q, tf.diag(self.item_filters[l])), tf.matmul(self.Q, self.Item_embedding, transpose_a=True, transpose_b=False))
             self.Item_embedding = tf.nn.sigmoid(tf.matmul(self.Item_embedding, self.transformers[l]))
-            self.item_all_embeddings += [self.Item_embedding]
+            self.item_all_embeddings.append(self.Item_embedding)
         self.item_all_embeddings = tf.concat(self.item_all_embeddings, 1)
 
         ## lookup
