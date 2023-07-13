@@ -18,17 +18,18 @@ def sampler_NGCF(params, index):
         item_embeddings = tf.Variable(tf.random_normal([n_items, emb_dim], mean=0.01, stddev=0.02, dtype=tf.float32), name='samp_item_embeddings')
     filters_1 = []
     filters_2 = []
-    for l in range(self.layer):
-        self.filters_1.append(tf.Variable(tf.random.normal([self.emb_dim, self.emb_dim], mean=0.01, stddev=0.02, dtype=tf.float32), name='filter_1_'+str(l)))
-        self.filters_2.append(tf.Variable(tf.random.normal([self.emb_dim, self.emb_dim], mean=0.01, stddev=0.02, dtype=tf.float32), name='filter_2_'+str(l)))
+    for l in range(layer):
+        filters_1.append(tf.Variable(tf.random.normal([emb_dim, emb_dim], mean=0.01, stddev=0.02, dtype=tf.float32), name='filter_1_'+str(l)))
+        filters_2.append(tf.Variable(tf.random.normal([emb_dim, emb_dim], mean=0.01, stddev=0.02, dtype=tf.float32), name='filter_2_'+str(l)))
 
     ## graph convolution
     embeddings = tf.concat([user_embeddings, item_embeddings], axis=0)
     all_embeddings = [embeddings]
     for l in range(layer):
-        ## convolution of embedding: (U*U^T+U*\Lambda*U^T)*emb = (I+L)*emb = (2*I-D^{-1}*A)*emb = 2*emb-H_hat*emb
-        embeddings = 2 * embeddings - tf.sparse_tensor_dense_matmul(A_hat, embeddings)
-        embeddings = tf.nn.sigmoid(tf.matmul(embeddings, filters[l]))
+        propagations = tf.sparse_tensor_dense_matmul(A_hat, embeddings)
+        embeddings_1 = propagations + embeddings
+        embeddings_2 = tf.multiply(propagations, embeddings)
+        embeddings = tf.nn.relu(tf.matmul(embeddings_1, filters_1[l]) + tf.matmul(embeddings_2, filters_2[l]))
         all_embeddings.append(embeddings)
     all_embeddings = tf.concat(all_embeddings, 1)
     user_all_embeddings, item_all_embeddings = tf.split(all_embeddings, [n_users, n_items], 0)
