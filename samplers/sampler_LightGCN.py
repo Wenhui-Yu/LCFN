@@ -31,9 +31,13 @@ def sampler_LightGCN(params, index):
     pos_i_embeddings = tf.nn.embedding_lookup(item_all_embeddings, pos_items)
     neg_i_embeddings = tf.nn.embedding_lookup(item_all_embeddings, neg_items)
 
+    u_embeddings_reg = tf.nn.embedding_lookup(user_embeddings, users)
+    pos_i_embeddings_reg = tf.nn.embedding_lookup(item_embeddings, pos_items)
+    neg_i_embeddings_reg = tf.nn.embedding_lookup(item_embeddings, neg_items)
+
     ## var collection
     var_set = [user_embeddings, item_embeddings]
-    reg_set = [u_embeddings, pos_i_embeddings, neg_i_embeddings]
+    reg_set = [u_embeddings_reg, pos_i_embeddings_reg, neg_i_embeddings_reg]
 
     ## logits
     samp_pos_scores = inner_product(u_embeddings, pos_i_embeddings)

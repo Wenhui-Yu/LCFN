@@ -54,6 +54,10 @@ class model_LightGCN(object):
         self.pos_i_embeddings = tf.nn.embedding_lookup(self.item_all_embeddings, self.pos_items)
         self.neg_i_embeddings = tf.nn.embedding_lookup(self.item_all_embeddings, self.neg_items)
 
+        self.u_embeddings_reg = tf.nn.embedding_lookup(self.user_embeddings, self.users)
+        self.pos_i_embeddings_reg = tf.nn.embedding_lookup(self.item_embeddings, self.pos_items)
+        self.neg_i_embeddings_reg = tf.nn.embedding_lookup(self.item_embeddings, self.neg_items)
+
         ## logits
         self.pos_scores = inner_product(self.u_embeddings, self.pos_i_embeddings)
         self.neg_scores = inner_product(self.u_embeddings, self.neg_i_embeddings)
@@ -71,7 +75,7 @@ class model_LightGCN(object):
             self.var_list += self.samp_var
 
         ## regularization
-        self.loss += self.lamda * regularization([self.u_embeddings, self.pos_i_embeddings, self.neg_i_embeddings])
+        self.loss += self.lamda * regularization([self.u_embeddings_reg, self.pos_i_embeddings_reg, self.neg_i_embeddings_reg])
 
         ## optimizer
         if self.optimizer == 'SGD': self.opt = tf.train.GradientDescentOptimizer(learning_rate=self.lr)
