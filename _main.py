@@ -1,11 +1,11 @@
 ## author@ Wenhui Yu  email: jianlin.ywh@alibaba-inc.com  2021.02.16
-## run models: our models (LCFN, LGCN, and SGNN) and baselines
+
 from params.params_common import MODEL
 if MODEL == "MF": from params.params_MF import all_para
 if MODEL == "NCF": from params.params_NCF import all_para
 if MODEL == "NGCF": from params.params_NGCF import all_para
 if MODEL == "LightGCN": from params.params_LightGCN import all_para
-if MODEL == "LGCN": from params.params_LGCN import all_para
+if MODEL == "LCFN": from params.params_LCFN import all_para
 from tuning.tuning import tuning
 from tuning.fine_tuning import fine_tuning
 from tuning.cross_tuning import cross_tuning

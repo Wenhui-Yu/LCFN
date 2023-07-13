@@ -80,10 +80,10 @@ def read_all_data(all_para):
             all_para['IF_PRETRAIN'] = False
 
     ## load pre-trained transform bases for LCFN and SGNN
-    if all_para['SAMPLER'] == 'LGCN': graph_embeddings = read_bases1(graph_embeddings_path, 128)
+    if all_para['SAMPLER'] == 'LCFN': graph_embeddings = read_bases1(graph_embeddings_path, 128)
     # if all_para['SAMPLER'] == 'SCF': sparse_propagation_matrix = propagation_matrix(train_data_interaction, user_num, item_num, 'left_norm')
     if all_para['SAMPLER'] in ['NGCF', 'LightGCN']: sparse_propagation_matrix = propagation_matrix(train_data_interaction, user_num, item_num, 'sym_norm')
-    if all_para['MODEL'] == 'LGCN': graph_embeddings = read_bases1(graph_embeddings_path, all_para['FREQUENCY'])
+    if all_para['MODEL'] == 'LCFN': graph_embeddings = read_bases1(graph_embeddings_path, all_para['FREQUENCY'])
     # if all_para['MODEL'] == 'SCF': sparse_propagation_matrix = propagation_matrix(train_data_interaction, user_num, item_num, 'left_norm')
     if all_para['MODEL'] in ['NGCF', 'LightGCN']: sparse_propagation_matrix = propagation_matrix(train_data_interaction, user_num, item_num, 'sym_norm')
     return train_data, train_data_interaction, popularity, user_num, item_num, test_data, pre_train_embeddings, graph_embeddings, sparse_propagation_matrix

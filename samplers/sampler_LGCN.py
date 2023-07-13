@@ -1,13 +1,13 @@
-## our model: Low-pass Graph Convolutional Network (LGCN)
-## author@Wenhui Yu  2021.01.17
-## email: jianlin.ywh@alibaba-inc.com
 
 import tensorflow as tf
 from utils.utils import *
 
-def sampler_LGCN(params, index):
+def sampler_LCFN(params, index):
     n_users, n_items, emb_dim, if_pretrain, _, graph_emb, U, V = params
     users, pos_items, neg_items = index
+    P, Q = graph_emb
+    frequence_user = int(shape(P)[1])
+    frequence_item = int(shape(Q)[1])
     layer = 1
     layer_weight = [1 / (l + 1) for l in range(layer + 1)]
 
@@ -18,15 +18,30 @@ def sampler_LGCN(params, index):
     else:
         user_embeddings = tf.Variable(tf.random_normal([n_users, emb_dim], mean=0.01, stddev=0.02, dtype=tf.float32), name='samp_user_embeddings')
         item_embeddings = tf.Variable(tf.random_normal([n_items, emb_dim], mean=0.01, stddev=0.02, dtype=tf.float32), name='samp_item_embeddings')
-    kernel = [tf.Variable(tf.random_normal([128], mean=0.01, stddev=0.02, dtype=tf.float32), name='samp_filters') for l in range(layer)]
+    user_filters = []
+    item_filters = []
+    transformers = []
+    for l in range(layer):
+        user_filters.append(tf.Variable(tf.random_normal([frequence_user], mean=1, stddev=0.001, dtype=tf.float32), name='user_filters_' + str(l)))
+        item_filters.append(tf.Variable(tf.random_normal([frequence_item], mean=1, stddev=0.001, dtype=tf.float32), name='item_filters_' + str(l)))
+        transformers.append(tf.Variable(tf.random.normal([emb_dim, emb_dim], mean=0.01, stddev=0.02, dtype=tf.float32), name='transformers_' + str(l)))
 
     ## convolutional layers definition
-    embeddings = tf.concat([user_embeddings, item_embeddings], axis=0)
-    all_embeddings = embeddings
-    for l in range(layer):     ## low-pass graph convolution
-        embeddings = tf.matmul(tf.matmul(graph_emb, tf.diag(kernel[l])), tf.matmul(graph_emb, embeddings, transpose_a=True, transpose_b=False))
-        all_embeddings += embeddings * layer_weight[l + 1]
-    user_all_embeddings, item_all_embeddings = tf.split(all_embeddings, [n_users, n_items], 0)
+    User_embedding = user_embeddings
+    user_all_embeddings = [User_embedding]
+    for l in range(layer):
+        User_embedding = tf.matmul(tf.matmul(P, tf.diag(user_filters[l])), tf.matmul(P, User_embedding, transpose_a=True, transpose_b=False))
+        User_embedding = tf.nn.sigmoid(tf.matmul(User_embedding, transformers[l]))
+        user_all_embeddings += [User_embedding]
+    user_all_embeddings = tf.concat(user_all_embeddings, 1)
+
+    Item_embedding = item_embeddings
+    item_all_embeddings = [Item_embedding]
+    for l in range(layer):
+        Item_embedding = tf.matmul(tf.matmul(Q, tf.diag(item_filters[l])), tf.matmul(Q, Item_embedding, transpose_a=True, transpose_b=False))
+        Item_embedding = tf.nn.sigmoid(tf.matmul(Item_embedding, transformers[l]))
+        item_all_embeddings += [Item_embedding]
+    item_all_embeddings = tf.concat(item_all_embeddings, 1)
 
     ## lookup
     u_embeddings = tf.nn.embedding_lookup(user_all_embeddings, users)
@@ -38,7 +53,7 @@ def sampler_LGCN(params, index):
     neg_i_embeddings_reg = tf.nn.embedding_lookup(item_embeddings, neg_items)
 
     ## var collection
-    var_set = [user_embeddings, item_embeddings] + kernel
+    var_set = [user_embeddings, item_embeddings] + user_filters + item_filters + transformers
     reg_set = [u_embeddings_reg, pos_i_embeddings_reg, neg_i_embeddings_reg]
 
     ## logits

@@ -3,7 +3,7 @@ from samplers.sampler_MF import *
 from samplers.sampler_NCF import *
 from samplers.sampler_NGCF import *
 from samplers.sampler_LightGCN import *
-from samplers.sampler_LGCN import *
+from samplers.sampler_LCFN import *
 
 def inner_product(users, items):
     scores = tf.reduce_sum(tf.multiply(users, items), axis=1)
@@ -38,7 +38,7 @@ def dlnrs_loss(scores, params, params_sampler, index):
     if sampler == "NCF": samp_pos_scores, samp_neg_scores, var_set, reg_set = sampler_NCF(params_sampler, index)
     if sampler == "NGCF": samp_pos_scores, samp_neg_scores, var_set, reg_set = sampler_NGCF(params_sampler, index)
     if sampler == "LightGCN": samp_pos_scores, samp_neg_scores, var_set, reg_set = sampler_LightGCN(params_sampler, index)
-    if sampler == "LGCN": samp_pos_scores, samp_neg_scores, var_set, reg_set = sampler_LGCN(params_sampler, index)
+    if sampler == "LCFN": samp_pos_scores, samp_neg_scores, var_set, reg_set = sampler_LCFN(params_sampler, index)
     pos_scores, neg_scores = tf.nn.sigmoid(pos_scores), tf.nn.sigmoid(neg_scores)
     samp_pos_scores, samp_neg_scores = tf.nn.sigmoid(samp_pos_scores), tf.nn.sigmoid(samp_neg_scores)
 

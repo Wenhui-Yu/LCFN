@@ -1,14 +1,12 @@
-## our model: Low-pass Graph Convolutional Network (LGCN)
-## author@Wenhui Yu  2021.01.17
-## email: jianlin.ywh@alibaba-inc.com
+
 
 import tensorflow as tf
 from utils.utils import *
 
-class model_LGCN(object):
+class model_LCFN(object):
     def __init__(self, data, para):
         ## model hyper-params
-        self.model_name = 'LGCN'
+        self.model_name = 'LCFN'
         self.emb_dim = para['EMB_DIM']
         self.lr = para['LR']
         self.lamda = para['LAMDA']
@@ -16,14 +14,15 @@ class model_LGCN(object):
         self.if_pretrain = para['IF_PRETRAIN']
         self.loss_function = para['LOSS_FUNCTION']
         self.optimizer = para['OPTIMIZER']
-        self.frequency = para['FREQUENCY']
         self.sampler = para['SAMPLER']
         self.aux_loss_weight = para['AUX_LOSS_WEIGHT']
         self.n_users = data['user_num']
         self.n_items = data['item_num']
         self.popularity = data['popularity']
         self.U, self.V = data['pre_train_embeddings']
-        self.graph_emb = data['graph_embeddings']
+        [self.P, self.Q] = data['graph_embeddings']
+        self.frequence_user = int(shape(self.P)[1])
+        self.frequence_item = int(shape(self.Q)[1])
         self.layer_weight = [1 / (l + 1) for l in range(self.layer + 1)]
         self.A_hat = data['sparse_propagation_matrix']
 
@@ -41,16 +40,31 @@ class model_LGCN(object):
         else:
             self.user_embeddings = tf.Variable(tf.random_normal([self.n_users, self.emb_dim], mean=0.01, stddev=0.02, dtype=tf.float32), name='user_embeddings')
             self.item_embeddings = tf.Variable(tf.random_normal([self.n_items, self.emb_dim], mean=0.01, stddev=0.02, dtype=tf.float32), name='item_embeddings')
-        self.kernel = [tf.Variable(tf.random_normal([self.frequency], mean=0.01, stddev=0.02, dtype=tf.float32)) for l in range(self.layer)]
-        self.var_list = [self.user_embeddings, self.item_embeddings] + self.kernel  ## learnable parameter list
+        self.user_filters = []
+        self.item_filters = []
+        self.transformers = []
+        for l in range(self.layer):
+            self.user_filters.append(tf.Variable(tf.random_normal([self.frequence_user], mean=1, stddev=0.001, dtype=tf.float32), name='user_filters_' + str(l)))
+            self.item_filters.append(tf.Variable(tf.random_normal([self.frequence_item], mean=1, stddev=0.001, dtype=tf.float32), name='item_filters_' + str(l)))
+            self.transformers.append(tf.Variable(tf.random.normal([self.emb_dim, self.emb_dim], mean=0.01, stddev=0.02, dtype=tf.float32), name='transformers_' + str(l)))
+        self.var_list = [self.user_embeddings, self.item_embeddings] + self.user_filters + self.item_filters + self.transformers ## learnable parameter list
 
         ## convolutional layers definition
-        self.embeddings = tf.concat([self.user_embeddings, self.item_embeddings], axis=0)
-        self.all_embeddings = self.embeddings
-        for l in range(self.layer):     ## low-pass graph convolution
-            self.embeddings = tf.matmul(tf.matmul(self.graph_emb, tf.diag(self.kernel[l])), tf.matmul(self.graph_emb, self.embeddings, transpose_a=True, transpose_b=False))
-            self.all_embeddings += self.embeddings * self.layer_weight[l + 1]
-        self.user_all_embeddings, self.item_all_embeddings = tf.split(self.all_embeddings, [self.n_users, self.n_items], 0)
+        self.User_embedding = self.user_embeddings
+        self.user_all_embeddings = [self.User_embedding]
+        for l in range(self.layer):
+            self.User_embedding = tf.matmul(tf.matmul(self.P, tf.diag(self.user_filters[l])), tf.matmul(self.P, User_embedding, transpose_a=True, transpose_b=False))
+            self.User_embedding = tf.nn.sigmoid(tf.matmul(self.User_embedding, self.transformers[l]))
+            self.user_all_embeddings += [self.User_embedding]
+        self.user_all_embeddings = tf.concat(self.user_all_embeddings, 1)
+
+        self.Item_embedding = self.item_embeddings
+        self.item_all_embeddings = [self.Item_embedding]
+        for l in range(self.layer):
+            self.Item_embedding = tf.matmul(tf.matmul(self.Q, tf.diag(self.item_filters[l])), tf.matmul(self.Q, Item_embedding, transpose_a=True, transpose_b=False))
+            self.Item_embedding = tf.nn.sigmoid(tf.matmul(self.Item_embedding, self.transformers[l]))
+            self.item_all_embeddings += [self.Item_embedding]
+        self.item_all_embeddings = tf.concat(self.item_all_embeddings, 1)
 
         ## lookup
         self.u_embeddings = tf.nn.embedding_lookup(self.user_all_embeddings, self.users)
