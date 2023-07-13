@@ -1,13 +1,14 @@
 
 import tensorflow as tf
+import numpy as np
 from utils.utils import *
 
 def sampler_LCFN(params, index):
     n_users, n_items, emb_dim, if_pretrain, _, graph_emb, U, V = params
     users, pos_items, neg_items = index
     P, Q = graph_emb
-    frequence_user = int(shape(P)[1])
-    frequence_item = int(shape(Q)[1])
+    frequence_user = int(np.shape(P)[1])
+    frequence_item = int(np.shape(Q)[1])
     layer = 1
     layer_weight = [1 / (l + 1) for l in range(layer + 1)]
 

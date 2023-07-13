@@ -9,6 +9,7 @@ import json
 import numpy as np
 import random as rd
 from utils.dense2sparse import propagation_matrix
+from params.params_LCFN import FREQUENCY_USER, FREQUENCY_ITEM
 
 def read_data(path):
     with open(path) as f:
@@ -55,14 +56,14 @@ def read_bases1(path, fre, _if_norm = False):
 
 def read_all_data(all_para):
     pre_train_embeddings = [0, 0]
-    graph_embeddings, sparse_propagation_matrix = 0, 0
+    hypergraph_embeddings, sparse_propagation_matrix = 0, 0
     ## Paths of data
     DIR = 'dataset/' + all_para['DATASET'] + '/'
     train_path = DIR + 'train_data.json'
     test_path = DIR + 'test_data.json'
     validation_path = DIR + 'validation_data.json'
     popularity_path = DIR + 'popularity.json'
-    graph_embeddings_path = DIR + 'graph_embeddings.json'                         # graph embeddings
+    hypergraph_embeddings_path = DIR + 'hypergraph_embeddings.json'                         # graph embeddings
     pre_train_feature_path = DIR + 'pre_train_embeddings' + str(all_para['EMB_DIM']) + '.json'         # pretrained latent factors
     ## Load data
     ## load training data
@@ -80,10 +81,8 @@ def read_all_data(all_para):
             all_para['IF_PRETRAIN'] = False
 
     ## load pre-trained transform bases for LCFN and SGNN
-    if all_para['SAMPLER'] == 'LCFN': graph_embeddings = read_bases1(graph_embeddings_path, 128)
-    # if all_para['SAMPLER'] == 'SCF': sparse_propagation_matrix = propagation_matrix(train_data_interaction, user_num, item_num, 'left_norm')
+    if all_para['SAMPLER'] == 'LCFN': hypergraph_embeddings = read_bases(hypergraph_embeddings_path, FREQUENCY_USER, FREQUENCY_ITEM)
     if all_para['SAMPLER'] in ['NGCF', 'LightGCN']: sparse_propagation_matrix = propagation_matrix(train_data_interaction, user_num, item_num, 'sym_norm')
-    if all_para['MODEL'] == 'LCFN': graph_embeddings = read_bases1(graph_embeddings_path, all_para['FREQUENCY'])
-    # if all_para['MODEL'] == 'SCF': sparse_propagation_matrix = propagation_matrix(train_data_interaction, user_num, item_num, 'left_norm')
+    if all_para['MODEL'] == 'LCFN': hypergraph_embeddings = read_bases(hypergraph_embeddings_path, all_para['FREQUENCY_USER'], all_para['FREQUENCY_ITEM'])
     if all_para['MODEL'] in ['NGCF', 'LightGCN']: sparse_propagation_matrix = propagation_matrix(train_data_interaction, user_num, item_num, 'sym_norm')
-    return train_data, train_data_interaction, popularity, user_num, item_num, test_data, pre_train_embeddings, graph_embeddings, sparse_propagation_matrix
+    return train_data, train_data_interaction, popularity, user_num, item_num, test_data, pre_train_embeddings, hypergraph_embeddings, sparse_propagation_matrix

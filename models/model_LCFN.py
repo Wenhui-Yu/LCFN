@@ -1,6 +1,7 @@
 
 
 import tensorflow as tf
+import numpy as np
 from utils.utils import *
 
 class model_LCFN(object):
@@ -20,9 +21,10 @@ class model_LCFN(object):
         self.n_items = data['item_num']
         self.popularity = data['popularity']
         self.U, self.V = data['pre_train_embeddings']
-        [self.P, self.Q] = data['graph_embeddings']
-        self.frequence_user = int(shape(self.P)[1])
-        self.frequence_item = int(shape(self.Q)[1])
+        self.graph_emb = data['graph_embeddings']
+        [self.P, self.Q] = self.graph_emb
+        self.frequence_user = int(np.shape(self.P)[1])
+        self.frequence_item = int(np.shape(self.Q)[1])
         self.layer_weight = [1 / (l + 1) for l in range(self.layer + 1)]
         self.A_hat = data['sparse_propagation_matrix']
 
@@ -53,7 +55,7 @@ class model_LCFN(object):
         self.User_embedding = self.user_embeddings
         self.user_all_embeddings = [self.User_embedding]
         for l in range(self.layer):
-            self.User_embedding = tf.matmul(tf.matmul(self.P, tf.diag(self.user_filters[l])), tf.matmul(self.P, User_embedding, transpose_a=True, transpose_b=False))
+            self.User_embedding = tf.matmul(tf.matmul(self.P, tf.diag(self.user_filters[l])), tf.matmul(self.P, self.User_embedding, transpose_a=True, transpose_b=False))
             self.User_embedding = tf.nn.sigmoid(tf.matmul(self.User_embedding, self.transformers[l]))
             self.user_all_embeddings += [self.User_embedding]
         self.user_all_embeddings = tf.concat(self.user_all_embeddings, 1)
@@ -61,7 +63,7 @@ class model_LCFN(object):
         self.Item_embedding = self.item_embeddings
         self.item_all_embeddings = [self.Item_embedding]
         for l in range(self.layer):
-            self.Item_embedding = tf.matmul(tf.matmul(self.Q, tf.diag(self.item_filters[l])), tf.matmul(self.Q, Item_embedding, transpose_a=True, transpose_b=False))
+            self.Item_embedding = tf.matmul(tf.matmul(self.Q, tf.diag(self.item_filters[l])), tf.matmul(self.Q, self.Item_embedding, transpose_a=True, transpose_b=False))
             self.Item_embedding = tf.nn.sigmoid(tf.matmul(self.Item_embedding, self.transformers[l]))
             self.item_all_embeddings += [self.Item_embedding]
         self.item_all_embeddings = tf.concat(self.item_all_embeddings, 1)
