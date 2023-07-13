@@ -1,13 +1,13 @@
-## baseline: Spectral Collaborative Filtering (SCF)
-## Lei Zheng, Chun-Ta Lu, Fei Jiang, Jiawei Zhang, and Philip S. Yu. Spectral collaborative filtering. In Proceedings of the 12th ACM Conference on Recommender Systems, RecSys '18, pages 311-319, 2018.
+## baseline: Neural Graph Collaborative Filtering (NGCF)
+## XiangWang, Xiangnan He, MengWang, Fuli Feng, and Tat-Seng Chua. 2019. Neural Graph Collaborative Filtering. In Proceedings of the 42nd International ACM SIGIR Conference on Research and Development in Information Retrieval (SIGIR '19), 2019.
 
 import tensorflow as tf
 from utils.utils import *
 
-class model_SCF(object):
+class model_NGCF(object):
     def __init__(self, data, para):
         ## model hyper-params
-        self.model_name = 'SCF'
+        self.model_name = 'NGCF'
         self.emb_dim = para['EMB_DIM']
         self.lr = para['LR']
         self.lamda = para['LAMDA']
@@ -38,18 +38,20 @@ class model_SCF(object):
         else:
             self.user_embeddings = tf.Variable(tf.random_normal([self.n_users, self.emb_dim], mean=0.01, stddev=0.02, dtype=tf.float32), name='user_embeddings')
             self.item_embeddings = tf.Variable(tf.random_normal([self.n_items, self.emb_dim], mean=0.01, stddev=0.02, dtype=tf.float32), name='item_embeddings')
-        self.filters = []
+        self.filters_1 = []
+        self.filters_2 = []
         for l in range(self.layer):
-            self.filters.append(tf.Variable(tf.random_normal([self.emb_dim, self.emb_dim], mean=0.01, stddev=0.02, dtype=tf.float32), name='filters_' + str(l)))
-        self.var_list = [self.user_embeddings, self.item_embeddings] + self.filters
+            self.filters_1.append(tf.Variable((np.random.normal(0, 0.001, (self.emb_dim, self.emb_dim)) + np.diag(np.random.normal(1, 0.001, self.emb_dim))).astype(np.float32), name='filter_1_'+str(l)))
+            self.filters_2.append(tf.Variable((np.random.normal(0, 0.001, (self.emb_dim, self.emb_dim)) + np.diag(np.random.normal(1, 0.001, self.emb_dim))).astype(np.float32), name='filter_2_'+str(l)))
 
         ## graph convolution
         self.embeddings = tf.concat([self.user_embeddings, self.item_embeddings], axis=0)
         self.all_embeddings = [self.embeddings]
         for l in range(self.layer):
-            ## convolution of embedding: (U*U^T+U*\Lambda*U^T)*emb = (I+L)*emb = (2*I-D^{-1}*A)*emb = 2*emb-H_hat*emb
-            self.embeddings = 2 * self.embeddings - tf.sparse_tensor_dense_matmul(self.A_hat, self.embeddings)
-            self.embeddings = tf.nn.sigmoid(tf.matmul(self.embeddings, self.filters[l]))
+            self.propagations = tf.sparse_tensor_dense_matmul(self.A_hat, self.embeddings)
+            self.embeddings_1 = self.propagations + self.embeddings
+            self.embeddings_2 = tf.multiply(self.propagations, self.embeddings)
+            self.embeddings = tf.nn.relu(tf.matmul(self.embeddings_1, self.filters_1[l]) + tf.matmul(self.embeddings_2, self.filters_2[l]))
             self.all_embeddings.append(self.embeddings)
         self.all_embeddings = tf.concat(self.all_embeddings, 1)
         self.user_all_embeddings, self.item_all_embeddings = tf.split(self.all_embeddings, [self.n_users, self.n_items], 0)
@@ -58,6 +60,10 @@ class model_SCF(object):
         self.u_embeddings = tf.nn.embedding_lookup(self.user_all_embeddings, self.users)
         self.pos_i_embeddings = tf.nn.embedding_lookup(self.item_all_embeddings, self.pos_items)
         self.neg_i_embeddings = tf.nn.embedding_lookup(self.item_all_embeddings, self.neg_items)
+
+        self.u_embeddings_reg = tf.nn.embedding_lookup(self.user_embeddings, self.users)
+        self.pos_i_embeddings_reg = tf.nn.embedding_lookup(self.item_embeddings, self.pos_items)
+        self.neg_i_embeddings_reg = tf.nn.embedding_lookup(self.item_embeddings, self.neg_items)
 
         ## logits
         self.pos_scores = inner_product(self.u_embeddings, self.pos_i_embeddings)
@@ -76,7 +82,7 @@ class model_SCF(object):
             self.var_list += self.samp_var
 
         ## regularization
-        self.loss += self.lamda * regularization([self.u_embeddings, self.pos_i_embeddings, self.neg_i_embeddings])
+        self.loss += self.lamda * regularization([self.u_embeddings_reg, self.pos_i_embeddings_reg, self.neg_i_embeddings_reg] + self.filters_1 + self.filters_2)
 
         ## optimizer
         if self.optimizer == 'SGD': self.opt = tf.train.GradientDescentOptimizer(learning_rate=self.lr)

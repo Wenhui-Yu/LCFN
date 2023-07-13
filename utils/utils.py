@@ -1,7 +1,7 @@
 import tensorflow as tf
 from samplers.sampler_MF import *
 from samplers.sampler_NCF import *
-from samplers.sampler_SCF import *
+from samplers.sampler_NGCF import *
 from samplers.sampler_LightGCN import *
 from samplers.sampler_LGCN import *
 
@@ -36,7 +36,7 @@ def dlnrs_loss(scores, params, params_sampler, index):
     ## score of sampler
     if sampler == "MF": samp_pos_scores, samp_neg_scores, var_set, reg_set = sampler_MF(params_sampler, index)
     if sampler == "NCF": samp_pos_scores, samp_neg_scores, var_set, reg_set = sampler_NCF(params_sampler, index)
-    if sampler == "SCF": samp_pos_scores, samp_neg_scores, var_set, reg_set = sampler_SCF(params_sampler, index)
+    if sampler == "NGCF": samp_pos_scores, samp_neg_scores, var_set, reg_set = sampler_NGCF(params_sampler, index)
     if sampler == "LightGCN": samp_pos_scores, samp_neg_scores, var_set, reg_set = sampler_LightGCN(params_sampler, index)
     if sampler == "LGCN": samp_pos_scores, samp_neg_scores, var_set, reg_set = sampler_LGCN(params_sampler, index)
     pos_scores, neg_scores = tf.nn.sigmoid(pos_scores), tf.nn.sigmoid(neg_scores)

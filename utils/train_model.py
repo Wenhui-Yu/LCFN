@@ -3,7 +3,7 @@
 
 from models.model_MF import model_MF
 from models.model_NCF import model_NCF
-from models.model_SCF import model_SCF
+from models.model_NGCF import model_NGCF
 from models.model_LightGCN import model_LightGCN
 from models.model_LGCN import model_LGCN
 from utils.test_model import test_model
@@ -23,7 +23,7 @@ def train_model(para, data, path_excel):
     ## Define the model
     if para["MODEL"] == 'MF': model = model_MF(data=data, para=para)
     if para["MODEL"] == 'NCF': model = model_NCF(data=data, para=para)
-    if para["MODEL"] == 'SCF': model = model_SCF(data=data, para=para)
+    if para["MODEL"] == 'NGCF': model = model_NGCF(data=data, para=para)
     if para["MODEL"] == 'LightGCN': model = model_LightGCN(data=data, para=para)
     if para["MODEL"] == 'LGCN': model = model_LGCN(data=data, para=para)
 

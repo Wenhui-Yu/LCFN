@@ -3,7 +3,7 @@
 from params.params_common import MODEL
 if MODEL == "MF": from params.params_MF import all_para
 if MODEL == "NCF": from params.params_NCF import all_para
-if MODEL == "SCF": from params.params_SCF import all_para
+if MODEL == "NGCF": from params.params_NGCF import all_para
 if MODEL == "LightGCN": from params.params_LightGCN import all_para
 if MODEL == "LGCN": from params.params_LGCN import all_para
 from tuning.tuning import tuning

@@ -1,10 +1,10 @@
-## baseline: Spectral Collaborative Filtering (SCF)
-## Lei Zheng, Chun-Ta Lu, Fei Jiang, Jiawei Zhang, and Philip S. Yu. Spectral collaborative filtering. In Proceedings of the 12th ACM Conference on Recommender Systems, RecSys '18, pages 311-319, 2018.
+## baseline: Neural Graph Collaborative Filtering (NGCF)
+## XiangWang, Xiangnan He, MengWang, Fuli Feng, and Tat-Seng Chua. 2019. Neural Graph Collaborative Filtering. In Proceedings of the 42nd International ACM SIGIR Conference on Research and Development in Information Retrieval (SIGIR '19), 2019.
 
 import tensorflow as tf
 from utils.utils import *
 
-def sampler_SCF(params, index):
+def sampler_NGCF(params, index):
     n_users, n_items, emb_dim, if_pretrain, A_hat, _, U, V = params
     users, pos_items, neg_items = index
     layer = 1
@@ -16,10 +16,11 @@ def sampler_SCF(params, index):
     else:
         user_embeddings = tf.Variable(tf.random_normal([n_users, emb_dim], mean=0.01, stddev=0.02, dtype=tf.float32), name='samp_user_embeddings')
         item_embeddings = tf.Variable(tf.random_normal([n_items, emb_dim], mean=0.01, stddev=0.02, dtype=tf.float32), name='samp_item_embeddings')
-    filters = []
+    filters_1 = []
+    filters_2 = []
     for l in range(layer):
-        filters.append(tf.Variable(tf.random_normal([emb_dim, emb_dim], mean=0.01, stddev=0.02, dtype=tf.float32), name='samp_filters_' + str(l)))
-
+        filters_1.append(tf.Variable((np.random.normal(0, 0.001, (emb_dim, emb_dim)) + np.diag(np.random.normal(1, 0.001, emb_dim))).astype(np.float32), name='samp_filter_1_'+str(l)))
+        filters_2.append(tf.Variable((np.random.normal(0, 0.001, (emb_dim, emb_dim)) + np.diag(np.random.normal(1, 0.001, emb_dim))).astype(np.float32), name='samp_filter_2_'+str(l)))
     ## graph convolution
     embeddings = tf.concat([user_embeddings, item_embeddings], axis=0)
     all_embeddings = [embeddings]
@@ -36,9 +37,13 @@ def sampler_SCF(params, index):
     pos_i_embeddings = tf.nn.embedding_lookup(item_all_embeddings, pos_items)
     neg_i_embeddings = tf.nn.embedding_lookup(item_all_embeddings, neg_items)
 
+    u_embeddings_reg = tf.nn.embedding_lookup(user_embeddings, users)
+    pos_i_embeddings_reg = tf.nn.embedding_lookup(item_embeddings, pos_items)
+    neg_i_embeddings_reg = tf.nn.embedding_lookup(item_embeddings, neg_items)
+
     ## var collection
     var_set = [user_embeddings, item_embeddings] + filters
-    reg_set = [u_embeddings, pos_i_embeddings, neg_i_embeddings]
+    reg_set = [u_embeddings_reg, pos_i_embeddings_reg, neg_i_embeddings_reg] + filters_1 + filters_2
 
     ## sampler scores
     samp_pos_scores = inner_product(u_embeddings, pos_i_embeddings)
