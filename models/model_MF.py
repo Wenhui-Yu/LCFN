@@ -10,6 +10,7 @@ class model_MF(object):
         self.emb_dim = para['EMB_DIM']
         self.lr = para['LR']
         self.lamda = para['LAMDA']
+        self.if_pretrain = para['IF_PRETRAIN']
         self.loss_function = para['LOSS_FUNCTION']
         self.optimizer = para['OPTIMIZER']
         self.sampler = para['SAMPLER']
