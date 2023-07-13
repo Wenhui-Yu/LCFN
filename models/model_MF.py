@@ -18,6 +18,7 @@ class model_MF(object):
         self.n_users = data['user_num']
         self.n_items = data['item_num']
         self.popularity = data['popularity']
+        [self.U, self.V] = data['pre_train_embeddings']
         self.A_hat = data['sparse_propagation_matrix']
         self.graph_emb = data['graph_embeddings']
 
