@@ -10,7 +10,7 @@ LAMDA_list = {"Amazon": {"CrossEntropy": 0.01, "BPR": 0.01, "WBPR": 0.01, "DLNRS
               "KuaiRand": {"CrossEntropy": 0.01, "BPR": 0.01, "WBPR": 0.01, "DLNRS": 0.01}}
 LR = LR_list[DATASET][LOSS_FUNCTION]
 LAMDA = LAMDA_list[DATASET][LOSS_FUNCTION]
-OPTIMIZER = ['SGD', 'Adagrad', 'RMSProp', 'Adam'][2]
+OPTIMIZER = ['SGD', 'Adagrad', 'RMSProp', 'Adam'][3]
 LAYER = 2
 
 all_para = {'GPU_INDEX': GPU_INDEX, 'DATASET': DATASET, 'MODEL': MODEL, 'LR': LR, 'LAMDA': LAMDA, 'EMB_DIM': EMB_DIM,
