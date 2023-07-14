@@ -46,9 +46,13 @@ class model_LCFN(object):
         self.item_filters = []
         self.transformers = []
         for l in range(self.layer):
-            self.user_filters.append(tf.Variable(tf.random_normal([self.frequence_user], mean=1, stddev=0.001, dtype=tf.float32), name='user_filters_' + str(l)))
-            self.item_filters.append(tf.Variable(tf.random_normal([self.frequence_item], mean=1, stddev=0.001, dtype=tf.float32), name='item_filters_' + str(l)))
-            self.transformers.append(tf.Variable(tf.random.normal([self.emb_dim, self.emb_dim], mean=0.01, stddev=0.02, dtype=tf.float32), name='transformers_' + str(l)))
+            self.user_filters.append(tf.Variable(tf.random_normal([self.frequence_user], mean=1.0, stddev=0.001, dtype=tf.float32), name='user_filters_' + str(l)))
+            self.item_filters.append(tf.Variable(tf.random_normal([self.frequence_item], mean=1.0, stddev=0.001, dtype=tf.float32), name='item_filters_' + str(l)))
+            self.transformers.append(tf.Variable(
+                tf.random.normal([self.emb_dim, self.emb_dim], mean=0.0, stddev=0.001, dtype=tf.float32) + \
+                tf.diag(tf.random.normal([self.emb_dim], mean=1.0, stddev=0.001, dtype=tf.float32)),
+                name='transformers_' + str(l)
+            ))
         self.var_list = [self.user_embeddings, self.item_embeddings] + self.user_filters + self.item_filters + self.transformers ## learnable parameter list
 
         ## convolutional layers definition

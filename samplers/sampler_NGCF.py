@@ -19,8 +19,16 @@ def sampler_NGCF(params, index):
     filters_1 = []
     filters_2 = []
     for l in range(layer):
-        filters_1.append(tf.Variable(tf.random.normal([emb_dim, emb_dim], mean=0.01, stddev=0.02, dtype=tf.float32), name='filter_1_'+str(l)))
-        filters_2.append(tf.Variable(tf.random.normal([emb_dim, emb_dim], mean=0.01, stddev=0.02, dtype=tf.float32), name='filter_2_'+str(l)))
+        filters_1.append(tf.Variable(
+            tf.random.normal([emb_dim, emb_dim], mean=0.0, stddev=0.001, dtype=tf.float32) + \
+            tf.diag(tf.random.normal([emb_dim], mean=1.0, stddev=0.001, dtype=tf.float32)),
+            name='samp_filter_1_' + str(l)
+        ))
+        filters_2.append(tf.Variable(
+            tf.random.normal([emb_dim, emb_dim], mean=0.0, stddev=0.001, dtype=tf.float32) + \
+            tf.diag(tf.random.normal([emb_dim], mean=1.0, stddev=0.001, dtype=tf.float32)),
+            name='samp_filter_2_' + str(l)
+        ))
 
     ## graph convolution
     embeddings = tf.concat([user_embeddings, item_embeddings], axis=0)

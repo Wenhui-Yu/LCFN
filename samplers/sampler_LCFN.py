@@ -23,9 +23,13 @@ def sampler_LCFN(params, index):
     item_filters = []
     transformers = []
     for l in range(layer):
-        user_filters.append(tf.Variable(tf.random_normal([frequence_user], mean=1, stddev=0.001, dtype=tf.float32), name='user_filters_' + str(l)))
-        item_filters.append(tf.Variable(tf.random_normal([frequence_item], mean=1, stddev=0.001, dtype=tf.float32), name='item_filters_' + str(l)))
-        transformers.append(tf.Variable(tf.random.normal([emb_dim, emb_dim], mean=0.01, stddev=0.02, dtype=tf.float32), name='transformers_' + str(l)))
+        user_filters.append(tf.Variable(tf.random_normal([frequence_user], mean=1.0, stddev=0.001, dtype=tf.float32), name='user_filters_' + str(l)))
+        item_filters.append(tf.Variable(tf.random_normal([frequence_item], mean=1.0, stddev=0.001, dtype=tf.float32), name='item_filters_' + str(l)))
+        transformers.append(tf.Variable(
+            tf.random.normal([emb_dim, emb_dim], mean=0.0, stddev=0.001, dtype=tf.float32) + \
+            tf.diag(tf.random.normal([emb_dim], mean=1.0, stddev=0.001, dtype=tf.float32)),
+            name='transformers_' + str(l)
+        ))
 
     ## convolutional layers definition
     User_embedding = user_embeddings
