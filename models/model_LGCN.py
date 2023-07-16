@@ -4,10 +4,10 @@ import tensorflow as tf
 import numpy as np
 from utils.utils import *
 
-class model_LCFN(object):
+class model_LGCN(object):
     def __init__(self, data, para):
         ## model hyper-params
-        self.model_name = 'LCFN'
+        self.model_name = 'LGCN'
         self.emb_dim = para['EMB_DIM']
         self.lr = para['LR']
         self.lamda = para['LAMDA']
@@ -17,6 +17,7 @@ class model_LCFN(object):
         self.optimizer = para['OPTIMIZER']
         self.sampler = para['SAMPLER']
         self.aux_loss_weight = para['AUX_LOSS_WEIGHT']
+        self.rho = para['RHO']
         self.n_users = data['user_num']
         self.n_items = data['item_num']
         self.popularity = data['popularity']
@@ -90,6 +91,7 @@ class model_LCFN(object):
         if self.loss_function == 'CrossEntropy': self.loss = cross_entropy_loss(self.pos_scores, self.neg_scores)
         if self.loss_function == 'MSE': self.loss = mse_loss(self.pos_scores, self.neg_scores)
         if self.loss_function == 'WBPR': self.loss = wbpr_loss(self.pos_scores, self.neg_scores, self.popularity, self.neg_items)
+        if self.loss_function == 'ShiftMC': self.loss = shift_mc_loss(self.pos_scores, self.neg_scores, self.rho)
         if self.loss_function == 'DLNRS':
             self.loss, self.samp_var = dlnrs_loss([self.pos_scores, self.neg_scores],
                                                   [self.sampler, self.lamda, self.aux_loss_weight],

@@ -5,7 +5,7 @@ from models.model_MF import model_MF
 from models.model_NCF import model_NCF
 from models.model_NGCF import model_NGCF
 from models.model_LightGCN import model_LightGCN
-from models.model_LCFN import model_LCFN
+from models.model_LGCN import model_LGCN
 from utils.test_model import test_model
 from utils.print_save import print_value, save_value
 import tensorflow as tf
@@ -25,7 +25,7 @@ def train_model(para, data, path_excel):
     if para["MODEL"] == 'NCF': model = model_NCF(data=data, para=para)
     if para["MODEL"] == 'NGCF': model = model_NGCF(data=data, para=para)
     if para["MODEL"] == 'LightGCN': model = model_LightGCN(data=data, para=para)
-    if para["MODEL"] == 'LCFN': model = model_LCFN(data=data, para=para)
+    if para["MODEL"] == 'LGCN': model = model_LGCN(data=data, para=para)
 
     config = tf.ConfigProto()
     config.gpu_options.allow_growth = True
