@@ -1,3 +1,6 @@
+## our model: Low-pass Graph Convolutional Network (LGCN)
+## author@Wenhui Yu  2021.01.17
+## email: jianlin.ywh@alibaba-inc.com
 
 import tensorflow as tf
 import numpy as np
