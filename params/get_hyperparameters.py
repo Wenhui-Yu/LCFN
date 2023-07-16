@@ -15,5 +15,5 @@ def get_hyperparameter(x):
                           1,2,5,
                           10,20,50,
                           100,200,500])
-    index = np.argwhere(para_list == x)
+    index = np.argwhere(np.abs(para_list - x) < 1e-10)
     return para_list[index[0][0]-2: index[0][0]+3].tolist()
