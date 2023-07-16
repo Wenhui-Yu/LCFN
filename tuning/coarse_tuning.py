@@ -9,7 +9,7 @@ import numpy as np
 import random as rd
 import time
 
-def coarse_tuning(path_excel_dir, para_name, para, data, lr, lamda, min_num_coarse, max_num_coarse):
+def coarse_tuning(path_excel_dir, para, data, lr, lamda, min_num_coarse, max_num_coarse):
     ## tuning settings
     x_cen, y_cen = 1, 1
     score_matrix = np.zeros((3,3))
@@ -20,9 +20,9 @@ def coarse_tuning(path_excel_dir, para_name, para, data, lr, lamda, min_num_coar
         for x_curr, y_curr in [[x_cen, y_cen], [x_cen - 1, y_cen], [x_cen, y_cen - 1], [x_cen + 1, y_cen], [x_cen, y_cen + 1]]:
             if (num_matrix[x_curr, y_curr] < min_num_coarse or (x_curr == x_cen and y_curr == y_cen)) and (num_matrix[x_curr, y_curr] < 0.5 or score_matrix[x_curr, y_curr] >= 0.7 * score_matrix.max()):
                 para["LR"], para["LAMDA"] = hyper_matrix[x_curr, y_curr]
-                print_params(para_name, para)
+                print_params(para)
                 path_excel = path_excel_dir + str(int(time.time())) + str(int(rd.uniform(100, 900))) + '.xlsx'
-                save_params(para_name, para, path_excel)
+                save_params(para, path_excel)
                 score = train_model(para, data, path_excel)
                 if para["MODEL"] not in ['NGCF', 'LightGCN'] and para["SAMPLER"] not in ['NGCF', 'LightGCN']: tf.reset_default_graph()
                 score_matrix[x_curr, y_curr] = (score_matrix[x_curr, y_curr] * num_matrix[x_curr, y_curr] + score)/(num_matrix[x_curr, y_curr] + 1)
@@ -75,9 +75,9 @@ def coarse_tuning(path_excel_dir, para_name, para, data, lr, lamda, min_num_coar
         for x_curr, y_curr in [[x_cen, y_cen], [x_cen - 1, y_cen], [x_cen, y_cen - 1], [x_cen + 1, y_cen], [x_cen, y_cen + 1]]:
             if (num_matrix[x_curr, y_curr] < min_num_coarse or (x_curr == x_cen and y_curr == y_cen)) and (num_matrix[x_curr, y_curr] < 0.5 or score_matrix[x_curr, y_curr] >= 0.7 * score_matrix.max()):
                 para["LR"], para["LAMDA"] = hyper_matrix[x_curr, y_curr]
-                print_params(para_name, para)
+                print_params(para)
                 path_excel = path_excel_dir + str(int(time.time())) + str(int(rd.uniform(100, 900))) + '.xlsx'
-                save_params(para_name, para, path_excel)
+                save_params(para, path_excel)
                 score = train_model(para, data, path_excel)
                 if para["MODEL"] not in ['NGCF', 'LightGCN'] and para["SAMPLER"] not in ['NGCF', 'LightGCN']: tf.reset_default_graph()
                 score_matrix[x_curr, y_curr] = (score_matrix[x_curr, y_curr] * num_matrix[x_curr, y_curr] + score)/(num_matrix[x_curr, y_curr] + 1)
