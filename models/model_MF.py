@@ -61,6 +61,7 @@ class model_MF(object):
         self.loss += self.lamda * regularization([self.u_embeddings, self.pos_i_embeddings, self.neg_i_embeddings])
 
         ## optimizer
+        if self.loss_function == 'DLNRS': self.optimizer = 'Adam'
         if self.optimizer == 'SGD': self.opt = tf.train.GradientDescentOptimizer(learning_rate=self.lr)
         if self.optimizer == 'RMSProp': self.opt = tf.train.RMSPropOptimizer(learning_rate=self.lr)
         if self.optimizer == 'Adam': self.opt = tf.train.AdamOptimizer(learning_rate=self.lr)
