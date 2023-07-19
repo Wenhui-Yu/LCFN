@@ -1,3 +1,4 @@
+import random
 import json
 
 def write_data(path, data):
@@ -7,15 +8,21 @@ def write_data(path, data):
     f.close()
 
 def dataset_filtering(interaction, core):
-    # filter the cold users and items within 10 interactions
+    # filtering the dataset with core
+    # movielens is filtered by only remaining only users with at least 20 interactions
+    # we further filter the dataset by remaining users and items with at least 20 interactions
     user_id_dic = {}  # record the number of interaction for each user and item
     item_id_dic = {}
-    for (user_id, item_id, time_stamp) in interaction:
-        try: user_id_dic[user_id] += 1
-        except: user_id_dic[user_id] = 1
-        try: item_id_dic[item_id] += 1
-        except: item_id_dic[item_id] = 1
-    print ('# Original training dataset')
+    for (user_id, item_id) in interaction:
+        try:
+            user_id_dic[user_id] += 1
+        except:
+            user_id_dic[user_id] = 1
+        try:
+            item_id_dic[item_id] += 1
+        except:
+            item_id_dic[item_id] = 1
+    print ('#Original dataset')
     print ('  User:', len(user_id_dic), 'Item:', len(item_id_dic), 'Interaction:', len(interaction), 'Sparsity:', 100 - len(interaction) * 100.0 / len(user_id_dic) / len(item_id_dic), '%')
     sort_user = []
     sort_item = []
@@ -25,33 +32,43 @@ def dataset_filtering(interaction, core):
         sort_item.append((item_id, item_id_dic[item_id]))
     sort_user.sort(key=lambda x: x[1])
     sort_item.sort(key=lambda x: x[1])
-    print ('Fitering (core = ' + str(core) + ') ... ', end = 'number of remained interactions: ')
+    print ('Fitering(core = ', core, '...', end = '')
     while sort_user[0][1] < core or sort_item[0][1] < core:
         # find out all users and items with less than core recorders
         user_LessThanCore = set()
         item_LessThanCore = set()
         for pair in sort_user:
-            if pair[1] < core: user_LessThanCore.add(pair[0])
-            else: break
+            if pair[1] < core:
+                user_LessThanCore.add(pair[0])
+            else:
+                break
         for pair in sort_item:
-            if pair[1] < core: item_LessThanCore.add(pair[0])
-            else: break
+            if pair[1] < core:
+                item_LessThanCore.add(pair[0])
+            else:
+                break
+
         # reconstruct the interaction record, remove the cool one
         interaction_filtered = []
-        for (user_id, item_id, time_stamp) in interaction:
+        for (user_id, item_id) in interaction:
             if not (user_id in user_LessThanCore or item_id in item_LessThanCore):
-                interaction_filtered.append((user_id, item_id, time_stamp))
+                interaction_filtered.append((user_id, item_id))
         # update the record
         interaction = interaction_filtered
+
         # count the number of each user and item in new data, check if all cool users and items are removed
         # reset all memory variables
         user_id_dic = {}  # record the number of interaction for each user and item
         item_id_dic = {}
-        for (user_id, item_id, time_stamp) in interaction:
-            try: user_id_dic[user_id] += 1
-            except: user_id_dic[user_id] = 1
-            try: item_id_dic[item_id] += 1
-            except: item_id_dic[item_id] = 1
+        for (user_id, item_id) in interaction:
+            try:
+                user_id_dic[user_id] += 1
+            except:
+                user_id_dic[user_id] = 1
+            try:
+                item_id_dic[item_id] += 1
+            except:
+                item_id_dic[item_id] = 1
 
         sort_user = []
         sort_item = []
@@ -63,16 +80,17 @@ def dataset_filtering(interaction, core):
         sort_item.sort(key=lambda x: x[1])
         print (len(interaction), end = ' ')
     print()
-    print ('# Filtered training dataset')
+    print ('#Filtered dataset')
     print ('  User:', len(user_id_dic), 'Item:', len(item_id_dic), 'Interaction:', len(interaction), 'Sparsity:', 100 - len(interaction) * 100.0 / len(user_id_dic) / len(item_id_dic), '%')
     return interaction
 
 def index_encoding(interaction):
-    # mapping id into number
+    # mapping in into number
     # after filtering the dataset, we need to re-encode the index of users and items
     user_id_set = set()
     item_id_set = set()
-    for (user_id, item_id, time_stamp) in interaction:
+
+    for (user_id, item_id) in interaction:
         user_id_set.add(user_id)
         item_id_set.add(item_id)
     user_num2id = list(user_id_set)
@@ -87,26 +105,46 @@ def index_encoding(interaction):
     for num in range(0, len(item_id_set)):
         item_id2num[item_num2id[num]] = num
     interaction_number = []
-    for (user_id, item_id, time_stamp) in interaction:
+    for (user_id, item_id) in interaction:
         interaction_number.append((user_id2num[user_id], item_id2num[item_id]))
     interaction = interaction_number
-    return interaction, user_id2num, item_id2num
+    return interaction
 
 def dataset_split(Interaction):
-    Interaction = sorted(Interaction, key=lambda x: x[2])
-    length = len(Interaction)
-    return Interaction[: int(0.8 * length)], Interaction[int(0.8 * length): int(0.9 * length)], Interaction[int(0.9 * length):]
-
-def count_data(Interation):
-    user_set = []
-    item_set = []
-    for interaction in Interation:
-        user_set.append(interaction[0])
-        item_set.append(interaction[1])
-    user_set = list(set(user_set))
-    item_set = list(set(item_set))
-    print("# All data (train + validate + test)")
-    print("  User: ", len(user_set), "Item: ", len(item_set), "Interaction: ", len(Interation))
+    user_interaction = []
+    item_interaction = []
+    for interaction in Interaction:
+        while len(user_interaction) <= interaction[0]:
+            user_interaction.append([])
+        while len(item_interaction) <= interaction[1]:
+            item_interaction.append(0)
+        user_interaction[interaction[0]].append(interaction[1])
+        item_interaction[interaction[1]] += 1
+    validation_data = []
+    test_data = []
+    for i in range(len(user_interaction)):
+        validation_data.append([])
+        test_data.append([])
+    #print(item_interaction)
+    for i in range(len(user_interaction)):
+        interactions = user_interaction[i]
+        for ii in range(round(0.1 * len(interactions))):
+            item = int(random.uniform(0, len(interactions)))
+            while item_interaction[interactions[item]] <= cold_thre:
+                #print('aa',cold_thre)
+                item = int(random.uniform(0, len(interactions)))
+            item_interaction[interactions[item]] -= 1
+            validation_data[i].append(interactions[item])
+            interactions.pop(item)
+            item = int(random.uniform(0, len(interactions)))
+            while item_interaction[interactions[item]] <= cold_thre:
+                #print('bb', cold_thre)
+                item = int(random.uniform(0, len(interactions)))
+            item_interaction[interactions[item]] -= 1
+            test_data[i].append(interactions[item])
+            interactions.pop(item)
+    #print(item_interaction)
+    return user_interaction, validation_data, test_data
 
 def get_popularity(Interaction):
     item_num = 0
@@ -119,52 +157,32 @@ def get_popularity(Interaction):
         popularity[interaction[1]] += 1
     return popularity
 
-def get_train_vali_test_data(Interation_train, Interation_validation, Interation_test, user_id2num, item_id2num):
-    user_num = len(user_id2num)
-    train_data = []
-    validation_data = []
-    test_data = []
-    for i in range(user_num):
-        train_data.append([])
-        validation_data.append([])
-        test_data.append([])
-    for interaction in Interation_train:
-        train_data[interaction[0]].append(interaction[1])
-    for interaction in Interation_validation:
-        if interaction[0] in user_id2num and interaction[1] in item_id2num:
-            validation_data[user_id2num[interaction[0]]].append(item_id2num[interaction[1]])
-    for interaction in Interation_test:
-        if interaction[0] in user_id2num and interaction[1] in item_id2num:
-            test_data[user_id2num[interaction[0]]].append(item_id2num[interaction[1]])
-    return train_data, validation_data, test_data
-
 core = 10
-path_read = 'reviews_Electronics_5.json'
+cold_thre = 5  # to avoid cold/cool item (items with less than `cold_thre' records)
+path_read = 'Electronics_5.json'
 path_train = 'train_data.json'
 path_test = 'test_data.json'
 path_validation = 'validation_data.json'
 path_popularity = 'popularity.json'
 
-print('reading data...')
 Interaction = []   #record the interaction
 with open(path_read) as f:
     for line in f:
         line = eval(line)
         user_id = line['reviewerID']
         item_id = line['asin']
-        time_stamp = line['unixReviewTime']
-        Interaction.append((user_id, item_id, time_stamp))  # need to use tuple (user_id, item_id, time_stamp) rather than a list [user_id, item_id] since list is unhashable
-f.close()
-print('processing data')
-count_data(Interaction)
+        # need to use tuple (user_id, item_id) rather than a list [user_id, item_id] since list is unhashable
+        Interaction.append((user_id, item_id))
 Interaction = list(set(Interaction))
+f.close()
+#print(Interaction[0:10])
+Interaction = dataset_filtering(Interaction, core)
+#print(Interaction[0:10])
+Interaction = index_encoding(Interaction)
+#print(Interaction[0:10])
 train_data, validation_data, test_data = dataset_split(Interaction)
-train_data = dataset_filtering(train_data, core)
-train_data, user_id2num, item_id2num = index_encoding(train_data)
-popularity = get_popularity(train_data)
-train_data, validation_data, test_data = get_train_vali_test_data(train_data, validation_data, test_data, user_id2num, item_id2num)
+popularity = get_popularity(data_train)
 
-print("saving data...")
 write_data(path_train, train_data)
 write_data(path_validation, validation_data)
 write_data(path_test, test_data)
