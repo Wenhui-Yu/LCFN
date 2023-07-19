@@ -1,5 +1,6 @@
 from utils.train_model import train_model
 from utils.print_save import print_params, save_params
+from utils.dense2sparse import propagation_matrix
 from params.get_hyperparameters import get_hyperparameter
 import tensorflow as tf
 import numpy as np
@@ -22,7 +23,6 @@ def fine_tuning(path_excel_dir, para, data, lr, lamda, min_num_fine, max_num_fin
             path_excel = path_excel_dir + str(int(time.time())) + str(int(rd.uniform(100, 900))) + '.xlsx'
             save_params(para, path_excel)
             score = train_model(para, data, path_excel)
-            if para["MODEL"] not in ['NGCF', 'LightGCN'] and para["SAMPLER"] not in ['NGCF', 'LightGCN']: tf.reset_default_graph()
             score_matrix[x_curr, y_curr] = (score_matrix[x_curr, y_curr] * num_matrix[x_curr, y_curr] + score) / (num_matrix[x_curr, y_curr] + 1)
             num_matrix[x_curr, y_curr] += 1
             print(score_matrix)
@@ -31,6 +31,9 @@ def fine_tuning(path_excel_dir, para, data, lr, lamda, min_num_fine, max_num_fin
             x_argmax, y_argmax = x_argmax[0], y_argmax[0]
             print('When \eta and \lambda is: ', hyper_matrix[x_argmax, y_argmax])
             print('the model achieves the best performance: ', score_matrix.max())
+            tf.reset_default_graph()
+            if para['MODEL'] in ['NGCF', 'LightGCN'] or para['SAMPLER'] in ['NGCF', 'LightGCN']:
+                data[-1] = propagation_matrix(data[1], data[3], data[4], 'sym_norm')
     while num_matrix[x_cen, y_cen] < max_num_fine or score_matrix.max() != score_matrix[x_cen, y_cen]:
         x_cen, y_cen = np.where(score_matrix == score_matrix.max())
         x_cen, y_cen = x_cen[0], y_cen[0]
@@ -81,7 +84,6 @@ def fine_tuning(path_excel_dir, para, data, lr, lamda, min_num_fine, max_num_fin
                 path_excel = path_excel_dir + str(int(time.time())) + str(int(rd.uniform(100, 900))) + '.xlsx'
                 save_params(para, path_excel)
                 score = train_model(para, data, path_excel)
-                if para["MODEL"] not in ['NGCF', 'LightGCN'] and para["SAMPLER"] not in ['NGCF', 'LightGCN']: tf.reset_default_graph()
                 score_matrix[x_curr, y_curr] = (score_matrix[x_curr, y_curr] * num_matrix[x_curr, y_curr] + score)/(num_matrix[x_curr, y_curr] + 1)
                 num_matrix[x_curr, y_curr] += 1
                 print(score_matrix)
@@ -90,3 +92,6 @@ def fine_tuning(path_excel_dir, para, data, lr, lamda, min_num_fine, max_num_fin
                 x_argmax, y_argmax = x_argmax[0], y_argmax[0]
                 print('When \eta and \lambda is: ', hyper_matrix[x_argmax, y_argmax])
                 print('the model achieves the best performance: ', score_matrix.max())
+                tf.reset_default_graph()
+                if para['MODEL'] in ['NGCF', 'LightGCN'] or para['SAMPLER'] in ['NGCF', 'LightGCN']:
+                    data[-1] = propagation_matrix(data[1], data[3], data[4], 'sym_norm')
