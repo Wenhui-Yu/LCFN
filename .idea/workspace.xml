@@ -192,11 +192,11 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Python.data_collection" />
-      <item itemvalue="Python.data_process" />
-      <item itemvalue="Python.amazon" />
       <item itemvalue="Python._graph_embeddings" />
       <item itemvalue="Python._main" />
+      <item itemvalue="Python.amazon" />
+      <item itemvalue="Python.data_collection" />
+      <item itemvalue="Python.data_process" />
     </list>
     <recent_temporary>
       <list>
