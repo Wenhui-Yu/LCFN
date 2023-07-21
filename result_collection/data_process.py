@@ -34,6 +34,24 @@ def save_value(df_list,path_excel,first_sheet):
             excelWriter.save()
     excelWriter.close()
 
+def save_value_2(df_list,path_excel,first_sheet):
+    excelWriter = pd.ExcelWriter(path_excel, engine='openpyxl',mode='w')
+
+    if first_sheet is False:
+        workbook = load_workbook(path_excel)
+        excelWriter.book = workbook
+        exist_sheets = workbook.get_sheet_names()
+        for df in df_list:
+            if df[1] in exist_sheets:
+                workbook.remove_sheet(workbook.get_sheet_by_name(df[1]))
+            df[0].to_excel(excel_writer=excelWriter, sheet_name=df[1],index = True)
+            excelWriter.save()
+    else:
+        for df in df_list:
+            df[0].to_excel(excel_writer=excelWriter, sheet_name=df[1], index=True)
+            excelWriter.save()
+    excelWriter.close()
+
 def df2str(df):
     df_str = ''
     for i in range(df.shape[0]):
@@ -68,7 +86,7 @@ file_dict = dict()                                  # 通过字典存储参数�
 for file_name in os.listdir(path_read):             # 读入所有等待被处理的文件
     if operator.eq(file_name[-5:], '.xlsx') == 1:           # 判断这个文件是不是xlsx文件，如果是，则进行下面的操作（通过这个步骤过滤掉其他后缀的文件以及该目录下的文件夹）
         file_p = path_read + '/' + file_name       # 待处理的xlsx文件的路径
-        parameter_df = pd.DataFrame(pd.read_excel(file_p, sheetname=0,header = None))  # 读入待处理文件的第一个sheet（这个sheet里存储着实验参数），header=None表明在这个表格中并没有表头
+        parameter_df = pd.DataFrame(pd.read_excel(file_p, sheet_name=0,header = None))  # 读入待处理文件的第一个sheet（这个sheet里存储着实验参数），header=None表明在这个表格中并没有表头
         parameter_str = df2str(parameter_df)        # 将实验参数的dataframe转为字符串，作为字典的key
         if file_dict.get(parameter_str) is None:    # 如果字典中这个key还不存在
             file_list = []                          # 新建一个file list，这个list里存储这个key对应的所有文件
@@ -88,7 +106,7 @@ for key, value in file_dict.items():                    # dict.items方法会将
     sheets = list(sheets)
     sheets.sort()
 
-    parameter = pd.DataFrame(pd.read_excel(path_read + '/' + value[0], sheetname=0, header = None , index_col=0)) # 将文件的参数存成dataframe的形式，将第0列设置为index
+    parameter = pd.DataFrame(pd.read_excel(path_read + '/' + value[0], sheet_name=0, header = None , index_col=0)) # 将文件的参数存成dataframe的形式，将第0列设置为index
     parameter.index.name = 'para'                       # 设置dataframe的行名和列名
     parameter.columns.name = 'value'
 
@@ -102,7 +120,7 @@ for key, value in file_dict.items():                    # dict.items方法会将
     if loss_funtion == 'DLNRS': path_write += sampler + '_'
     path_write += str(int(time.time())) + str(int(random.uniform(100, 900))) + '.xlsx'  # 输出文件的文件路径
     #path_write = path + '/data_process/' +dataset+'_'+model+'_eta='+eta+'_lambda='+lambda_r+'_' + str(int(time.time())) + str(int(random.uniform(100, 900))) + '.xlsx'
-    save_value([[parameter, 'Parameters']], path_write, first_sheet=True)  # 将参数存进excel
+    save_value_2([[parameter, 'Parameters']], path_write, first_sheet=True)  # 将参数存进excel
     for sheet in sheets:                                                     # 处理表中的每一个sheet，包括F1和NDCG
         if operator.eq(sheet, 'Parameters') == 0 and operator.eq(sheet, 'Filename') == 0: # 如果这个sheet不是parameter也不是filename，则进行下面的操作
             df_max = pd.DataFrame()                                          # 存储这个sheet（F1或者NDCG）对应的处理结果，df_max表示这个表里的结果是之前待处理的表的max值合成的
@@ -111,7 +129,7 @@ for key, value in file_dict.items():                    # dict.items方法会将
                 temp_f = load_workbook(path_read + '/' + file_p)
                 temp_sn = temp_f.sheetnames
                 if sheet in temp_sn:
-                    metric = pd.DataFrame(pd.read_excel(path_read + '/' + file_p, sheetname=sheet, header=0, index_col=0)) # 读入某一个文件里的一个sheet
+                    metric = pd.DataFrame(pd.read_excel(path_read + '/' + file_p, sheet_name=sheet, header=0, index_col=0)) # 读入某一个文件里的一个sheet
                     list_max = process_metric(metric,method = 'max',para = top_ave  )             # 处理这个metric，得到F1_max或NDCG_max,得到的值为一行
                     list_top = process_metric(metric, method = 'top', para = top_ave )            # 处理这个metric，得到F1_top或NDCG_top，得到的值为一行
                     df_max = df_max.append(list_max, ignore_index=True)           # 将list_max 和 list_top分别加在对应的dataframe上

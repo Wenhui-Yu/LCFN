@@ -42,7 +42,7 @@ def df2str(df):
     return df_str
 
 def read_data_from_sheet(path, sheet, colu, ind):
-    df = pd.DataFrame(pd.read_excel(path, sheetname=sheet, header=0, index_col=0))
+    df = pd.DataFrame(pd.read_excel(path, sheet_name=sheet, header=0, index_col=0))
     if colu >= 0:
         data = df.loc[ind, colu]
     else:
@@ -62,7 +62,7 @@ for file_name in os.listdir(path_read):     # 读入所有等待被处理的文�
 
     if operator.eq(file_name[-4:], 'xlsx') == 1:    # 判断这个文件是不是xlsx文件，如果是，则进行下面的操作（通过这个步骤过滤掉其他后缀的文件以及该目录下的文件夹）
         file_p = path_read + '/' + file_name  # 待处理的xlsx文件的路径
-        parameter_df = pd.DataFrame(pd.read_excel(file_p, sheetname=0, index_col=0)) # 读入待处理文件的第一个sheet（这个sheet里存储着实验参数）
+        parameter_df = pd.DataFrame(pd.read_excel(file_p, sheet_name=0, index_col=0)) # 读入待处理文件的第一个sheet（这个sheet里存储着实验参数）
         model = parameter_df.loc['MODEL',1]   # 取出model和dataset的值
         dataset = parameter_df.loc['DATASET',1]
         sampler = parameter_df.loc['SAMPLER', 1]
@@ -82,7 +82,7 @@ for model_dataset, file_set in file_dict.items():    # 对于每一组model-data
     for file_name in file_set:                       # 对所有dataset和model相同的实验结果文件进行处理
         file_p = path_read + '/' + file_name         # 生成文件路径
         sheets = load_workbook(file_p).sheetnames     # 获取这个文件的所有sheet名，以备后用
-        parameter_df = pd.DataFrame(pd.read_excel(file_p, sheetname=0, index_col=0))  # 获得这个文件的参数dataframe
+        parameter_df = pd.DataFrame(pd.read_excel(file_p, sheet_name=0, index_col=0))  # 获得这个文件的参数dataframe
         list_index = parameter_df.index               # 获得这个文件的所有参数名
         for index in list_index:                      # 循环处理每一个参数
             if para_dict.get(index) is None:          # 如果这个参数在参数dict里还不存在，则新建一个存着所有参数值的set
@@ -136,7 +136,7 @@ for model_dataset, file_set in file_dict.items():    # 对于每一组model-data
                 for file_name in file_set:
                     if operator.eq(file_name[-4:], 'xlsx') == 1:
                         file_p = path_read + '/' + file_name
-                        parameter_df = pd.DataFrame(pd.read_excel(file_p, sheetname=0, index_col=0))
+                        parameter_df = pd.DataFrame(pd.read_excel(file_p, sheet_name=0, index_col=0))
                         p = parameter_df.loc[index_name, 1]
                         output_df.loc[p] = read_data_from_sheet(file_p, sheet, colu=-1, ind='mean').T
                 output_df = output_df.sort_index()
@@ -153,7 +153,7 @@ for model_dataset, file_set in file_dict.items():    # 对于每一组model-data
                 for file_name in file_set:
                     if operator.eq(file_name[-4:], 'xlsx') == 1:
                         file_p = path_read + '/' + file_name
-                        parameter_df = pd.DataFrame(pd.read_excel(file_p, sheetname=0, index_col=0))
+                        parameter_df = pd.DataFrame(pd.read_excel(file_p, sheet_name=0, index_col=0))
                         p = parameter_df.loc[changed_para[0], 1]
                         q = parameter_df.loc[changed_para[1], 1]
                         output_df.loc[q,p] = read_data_from_sheet(file_p, sheet, colu=k, ind='mean').T
