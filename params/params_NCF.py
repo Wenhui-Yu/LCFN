@@ -4,9 +4,9 @@
 
 from params.params_common import *
 
-LR_list = {"Amazon": {"CrossEntropy": 0.002, "BPR": 0.01, "WBPR": 0.0002, "ShiftMC": 0.01, "DLNRS": 0.02},
+LR_list = {"Amazon": {"CrossEntropy": 0.002, "BPR": 0.01, "WBPR": 0.0002, "ShiftMC": 0.0005, "DLNRS": 0.02},
            "KuaiRand": {"CrossEntropy": 0.02, "BPR": 0.01, "WBPR": 0.00001, "ShiftMC": 0.01, "DLNRS": 0.005}}
-LAMDA_list = {"Amazon": {"CrossEntropy": 0.02, "BPR": 0.01, "WBPR": 0.5, "ShiftMC": 0.01, "DLNRS": 0.02},
+LAMDA_list = {"Amazon": {"CrossEntropy": 0.02, "BPR": 0.01, "WBPR": 0.5, "ShiftMC": 0.2, "DLNRS": 0.02},
               "KuaiRand": {"CrossEntropy": 0.01, "BPR": 0.01, "WBPR": 0.02, "ShiftMC": 0.01, "DLNRS": 0.005}}
 LR = LR_list[DATASET][LOSS_FUNCTION]
 LAMDA = LAMDA_list[DATASET][LOSS_FUNCTION]
