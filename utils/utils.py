@@ -56,8 +56,10 @@ def dlnrs_loss(scores, params, params_sampler, index, mode='pair_wise'):
         neg_loss_predictor = log(1 - neg_scores_sig) + tf.multiply(tf.stop_gradient(samp_neg_scores_sig), log(neg_scores_sig))
         loss_predictor = tf.reduce_sum(pos_loss_predictor) + tf.reduce_sum(neg_loss_predictor)
     if mode == 'pair_wise':
-        maxi = log(tf.nn.sigmoid(pos_scores - neg_scores)) + tf.multiply(tf.stop_gradient(samp_neg_scores), log(tf.nn.sigmoid(neg_scores - pos_scores)))
-        loss_predictor = tf.reduce_sum(tf.multiply(tf.stop_gradient(1 - samp_pos_scores), maxi))
+        maxi = log(tf.nn.sigmoid(pos_scores - neg_scores)) + \
+               tf.multiply(tf.stop_gradient(samp_neg_scores_sig),
+                           log(tf.nn.sigmoid(neg_scores - pos_scores))) # tf.stop_gradient(pos_scores))))
+        loss_predictor = tf.reduce_sum(tf.multiply(tf.stop_gradient(1 - samp_pos_scores_sig), maxi))
     pos_loss_sampler = tf.multiply(tf.stop_gradient(pos_scores_sig), log(1 - samp_pos_scores_sig))
     neg_loss_sampler = (1 - aux_loss_weight) * tf.multiply(tf.stop_gradient(neg_scores_sig), log(samp_neg_scores_sig)) + aux_loss_weight * log(1 - samp_neg_scores_sig)
     loss_sampler = tf.reduce_sum(pos_loss_sampler) + tf.reduce_sum(neg_loss_sampler)
