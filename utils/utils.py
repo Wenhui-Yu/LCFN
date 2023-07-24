@@ -47,6 +47,7 @@ def dlnrs_loss(scores, params, params_sampler, index, mode='pair_wise'):
     if sampler == "NGCF": samp_pos_scores, samp_neg_scores, var_set, reg_set = sampler_NGCF(params_sampler, index)
     if sampler == "LightGCN": samp_pos_scores, samp_neg_scores, var_set, reg_set = sampler_LightGCN(params_sampler, index)
     if sampler == "LGCN": samp_pos_scores, samp_neg_scores, var_set, reg_set = sampler_LGCN(params_sampler, index)
+    pos_neg_diff = tf.nn.sigmoid(pos_scores - neg_scores)
     pos_scores, neg_scores = tf.nn.sigmoid(pos_scores), tf.nn.sigmoid(neg_scores)
     samp_pos_scores, samp_neg_scores = tf.nn.sigmoid(samp_pos_scores), tf.nn.sigmoid(samp_neg_scores)
 
@@ -55,14 +56,14 @@ def dlnrs_loss(scores, params, params_sampler, index, mode='pair_wise'):
         neg_loss_predictor = log(1 - neg_scores) + tf.multiply(tf.stop_gradient(samp_neg_scores), log(neg_scores))
         loss_predictor = tf.reduce_sum(pos_loss_predictor) + tf.reduce_sum(neg_loss_predictor)
     if mode == 'pair_wise':
-        maxi = log(tf.nn.sigmoid(pos_scores - neg_scores)) + tf.multiply(tf.stop_gradient(samp_neg_scores), log(tf.nn.sigmoid(neg_scores - pos_scores)))
+        maxi = log(pos_neg_diff) + tf.multiply(tf.stop_gradient(samp_neg_scores), log(1 - pos_neg_diff))
         loss_predictor = tf.reduce_sum(tf.multiply(tf.stop_gradient(1 - samp_pos_scores), maxi))
     pos_loss_sampler = tf.multiply(tf.stop_gradient(pos_scores), log(1 - samp_pos_scores))
     neg_loss_sampler = (1 - aux_loss_weight) * tf.multiply(tf.stop_gradient(neg_scores), log(samp_neg_scores)) + aux_loss_weight * log(1 - samp_neg_scores)
     loss_sampler = tf.reduce_sum(pos_loss_sampler) + tf.reduce_sum(neg_loss_sampler)
     loss = -(loss_predictor + loss_sampler)
     loss += lamba * regularization(reg_set)
-    return loss, var_set
+    return loss, var_set,
 
 def MLP(emb, W, b):
     for l in range(len(W)):
