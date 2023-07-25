@@ -5,9 +5,9 @@
 from params.params_common import *
 
 LR_list = {"Amazon": {"CrossEntropy": 0.002, "BPR": 0.002, "WBPR": 0.0001, "ShiftMC": 0.002, "DLNRS": 0.002},
-           "KuaiRand": {"CrossEntropy": 0.001, "BPR": 0.002, "WBPR": 0.001, "ShiftMC": 0.005, "DLNRS": 0.002}}
+           "Movielens": {"CrossEntropy": 0.001, "BPR": 0.002, "WBPR": 0.001, "ShiftMC": 0.005, "DLNRS": 0.002}}
 LAMDA_list = {"Amazon": {"CrossEntropy": 0.1, "BPR": 0.05, "WBPR": 0.002, "ShiftMC": 0.1, "DLNRS": 0.05},
-              "KuaiRand": {"CrossEntropy": 0.005, "BPR": 0.002, "WBPR": 5, "ShiftMC": 0.05, "DLNRS": 0.02}}
+              "Movielens": {"CrossEntropy": 0.005, "BPR": 0.002, "WBPR": 5, "ShiftMC": 0.05, "DLNRS": 0.02}}
 LR = LR_list[DATASET][LOSS_FUNCTION]
 LAMDA = LAMDA_list[DATASET][LOSS_FUNCTION]
 OPTIMIZER = ['SGD', 'Adagrad', 'RMSProp', 'Adam'][3]
