@@ -146,6 +146,17 @@ def dataset_split(Interaction):
     #print(item_interaction)
     return user_interaction, validation_data, test_data
 
+def get_popularity(Interaction):
+    item_num = 0
+    for interaction in Interaction:
+        item_num = max(item_num, interaction[1])
+    popularity = []
+    for i in range(item_num + 1):
+        popularity.append(0)
+    for interaction in Interaction:
+        popularity[interaction[1]] += 1
+    return popularity
+
 core = 20
 cold_thre = 15  # to avoid cold/cool item (items with less than `cold_thre' records)
 #path_read = 'ratings.dat'
@@ -153,6 +164,8 @@ path_read = 'u.data'
 path_train = 'train_data.json'
 path_test = 'test_data.json'
 path_validation = 'validation_data.json'
+path_popularity = 'popularity.json'
+
 f = open(path_read, "r")
 data = f.read()
 f.close()
@@ -171,7 +184,9 @@ Interaction = dataset_filtering(Interaction, core)
 Interaction = index_encoding(Interaction)
 #print(Interaction[0:10])
 train_data, validation_data, test_data = dataset_split(Interaction)
+popularity = get_popularity(data_train)
 
 write_data(path_train, train_data)
 write_data(path_validation, validation_data)
 write_data(path_test, test_data)
+write_data(path_popularity, popularity)
