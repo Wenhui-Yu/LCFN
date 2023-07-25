@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="ba66a7a2-028f-4a03-89fb-705458e7bddd" name="Default Changelist" comment="" />
+    <list default="true" id="ba66a7a2-028f-4a03-89fb-705458e7bddd" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/dataset/Movielens/movielens.py" beforeDir="false" afterPath="$PROJECT_DIR$/dataset/Movielens/movielens.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -60,7 +65,7 @@
     &quot;last_opened_file_path&quot;: &quot;/Users/jack/codes/LCFN&quot;
   }
 }</component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Python.movielens">
     <configuration name="_main" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="code" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -84,8 +89,35 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="movielens" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="code" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="$USER_HOME$/opt/anaconda3/envs/tensorflow1.4.1/bin/python3.6" />
+      <option name="SDK_NAME" value="Python 3.6" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/dataset/Movielens" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/dataset/Movielens/movielens.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Python.movielens" />
+      <item itemvalue="Python._main" />
+    </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.movielens" />
         <item itemvalue="Python._main" />
       </list>
     </recent_temporary>
