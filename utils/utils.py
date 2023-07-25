@@ -37,7 +37,7 @@ def shift_mc_loss(pos_scores, neg_scores, rho):
     loss = (tf.nn.l2_loss(1 - pos_scores) - rho * tf.nn.l2_loss(pos_scores)) / (1 - rho) + tf.nn.l2_loss(neg_scores)
     return loss
 
-def dlnrs_loss(scores, params, params_sampler, index, mode='pair_wise'):
+def dlnrs_loss(scores, params, params_sampler, index, mode='point_wise'):
     ## score of predicter
     pos_scores, neg_scores = scores
     sampler, lamba, aux_loss_weight = params
@@ -47,7 +47,6 @@ def dlnrs_loss(scores, params, params_sampler, index, mode='pair_wise'):
     if sampler == "NGCF": samp_pos_scores, samp_neg_scores, var_set, reg_set = sampler_NGCF(params_sampler, index)
     if sampler == "LightGCN": samp_pos_scores, samp_neg_scores, var_set, reg_set = sampler_LightGCN(params_sampler, index)
     if sampler == "LGCN": samp_pos_scores, samp_neg_scores, var_set, reg_set = sampler_LGCN(params_sampler, index)
-    pos_neg_diff = tf.nn.sigmoid(pos_scores - neg_scores)
     pos_scores_sig, neg_scores_sig = tf.nn.sigmoid(pos_scores), tf.nn.sigmoid(neg_scores)
     samp_pos_scores_sig, samp_neg_scores_sig = tf.nn.sigmoid(samp_pos_scores), tf.nn.sigmoid(samp_neg_scores)
 
