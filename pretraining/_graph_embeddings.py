@@ -7,9 +7,9 @@ import scipy.sparse.linalg
 from numpy import *
 import json
 
-DATASET = 0             # 0 for Amazon, 1 for Movielens
+DATASET = 0             # 0 for Amazon, 1 for Movielens, 2 for KuaiRand
 FREQUENCY = 128         # dimensionality of the base
-Dataset = ['Amazon', 'Movielens'][DATASET]
+Dataset = ['Amazon', 'Movielens', 'KuaiRand'][DATASET]
 tolerant = 0.1 ** 5
 epsilon = 0.1 ** 10
 

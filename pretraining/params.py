@@ -4,13 +4,13 @@
 dataset = 0         # 0:Amazon, 1:Movielens
 validate_test = 0   # 0:Validate, 1: Test
 
-DATASET = ['Amazon', 'Movielens'][dataset]
+DATASET = ['Amazon', 'Movielens', 'KuaiRand'][dataset]
 MODEL = 'MF'
 LR = [0.001, 0.02][dataset]
 LAMDA = [0.2, 0.01][dataset]
 EMB_DIM = 128
 BATCH_SIZE = 10000
-TEST_USER_BATCH = {'Amazon': 4096, 'Movielens': 1024}[DATASET]
+TEST_USER_BATCH = 4096
 SAMPLE_RATE = 1
 N_EPOCH = 200
 TOP_K = [10, 20, 50, 100]
