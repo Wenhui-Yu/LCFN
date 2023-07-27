@@ -8,7 +8,7 @@ LR_list = {"Amazon": {"CrossEntropy": 0.0002, "BPR": 0.0002, "WBPR": 0.00001, "S
            "Movielens": {"CrossEntropy": 0.0002, "BPR": 0.0005, "WBPR": 0.0005, "ShiftMC": 0.002, "DLNRS": 0.0005},
            "KuaiRand": {"CrossEntropy": 0.0002, "BPR": 0.0005, "WBPR": 0.0005, "ShiftMC": 0.002, "DLNRS": 0.0005}}
 LAMDA_list = {"Amazon": {"CrossEntropy": 0.01, "BPR": 0.5, "WBPR": 0.0002, "ShiftMC": 0.2, "DLNRS": 0.02},
-              "Movielens": {"CrossEntropy": 0.001, "BPR": 0.02, "WBPR": 0.0005, "ShiftMC": 0.2, "DLNRS": 0.005},
+              "Movielens": {"CrossEntropy": 0.001, "BPR": 0.05, "WBPR": 0.0005, "ShiftMC": 0.2, "DLNRS": 0.005},
               "KuaiRand": {"CrossEntropy": 0.001, "BPR": 0.02, "WBPR": 0.0005, "ShiftMC": 0.2, "DLNRS": 0.005}}
 LR = LR_list[DATASET][LOSS_FUNCTION]
 LAMDA = LAMDA_list[DATASET][LOSS_FUNCTION]

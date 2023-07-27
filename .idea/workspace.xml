@@ -6,14 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="ba66a7a2-028f-4a03-89fb-705458e7bddd" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/params/params_LGCN.py" beforeDir="false" afterPath="$PROJECT_DIR$/params/params_LGCN.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/params/params_LightGCN.py" beforeDir="false" afterPath="$PROJECT_DIR$/params/params_LightGCN.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/params/params_MF.py" beforeDir="false" afterPath="$PROJECT_DIR$/params/params_MF.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/params/params_NCF.py" beforeDir="false" afterPath="$PROJECT_DIR$/params/params_NCF.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/params/params_NGCF.py" beforeDir="false" afterPath="$PROJECT_DIR$/params/params_NGCF.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/params/params_common.py" beforeDir="false" afterPath="$PROJECT_DIR$/params/params_common.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pretraining/_graph_embeddings.py" beforeDir="false" afterPath="$PROJECT_DIR$/pretraining/_graph_embeddings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pretraining/params.py" beforeDir="false" afterPath="$PROJECT_DIR$/pretraining/params.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -34,6 +30,9 @@
         <option value="$PROJECT_DIR$/_main.py" />
       </list>
     </option>
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="100" />
