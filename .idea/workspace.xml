@@ -6,6 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="ba66a7a2-028f-4a03-89fb-705458e7bddd" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/params/params_LightGCN.py" beforeDir="false" afterPath="$PROJECT_DIR$/params/params_LightGCN.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/params/params_MF.py" beforeDir="false" afterPath="$PROJECT_DIR$/params/params_MF.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/params/params_NCF.py" beforeDir="false" afterPath="$PROJECT_DIR$/params/params_NCF.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/params/params_NGCF.py" beforeDir="false" afterPath="$PROJECT_DIR$/params/params_NGCF.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
