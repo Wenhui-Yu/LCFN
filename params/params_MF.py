@@ -12,6 +12,7 @@ LAMDA_list = {"Amazon": {"CrossEntropy": 0.05, "BPR": 0.02, "WBPR": 0.01, "Shift
               "KuaiRand": {"CrossEntropy": 0.01, "BPR": 0.005, "WBPR": 0.00005, "ShiftMC": 0.02, "DLNRS": 0.01}}
 LR = LR_list[DATASET][LOSS_FUNCTION]
 LAMDA = LAMDA_list[DATASET][LOSS_FUNCTION]
+SAMPLER = ['MF', 'NCF', 'NGCF', 'LightGCN', 'LGCN'][0]
 OPTIMIZER = ['SGD', 'Adagrad', 'RMSProp', 'Adam'][0]
 
 all_para = {'GPU_INDEX': GPU_INDEX, 'DATASET': DATASET, 'MODEL': MODEL, 'LR': LR, 'LAMDA': LAMDA, 'EMB_DIM': EMB_DIM,

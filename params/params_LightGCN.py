@@ -12,6 +12,7 @@ LAMDA_list = {"Amazon": {"CrossEntropy": 0.1, "BPR": 0.05, "WBPR": 0.002, "Shift
               "KuaiRand": {"CrossEntropy": 0.005, "BPR": 0.002, "WBPR": 5, "ShiftMC": 0.05, "DLNRS": 0.02}}
 LR = LR_list[DATASET][LOSS_FUNCTION]
 LAMDA = LAMDA_list[DATASET][LOSS_FUNCTION]
+SAMPLER = ['MF', 'NCF', 'NGCF', 'LightGCN', 'LGCN'][0]
 OPTIMIZER = ['SGD', 'Adagrad', 'RMSProp', 'Adam'][3]
 LAYER = 2
 

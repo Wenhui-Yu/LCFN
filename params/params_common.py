@@ -5,7 +5,6 @@
 GPU_INDEX = "0"
 DATASET = ['Amazon', 'Movielens', 'KuaiRand'][0]
 MODEL = ['MF', 'NCF', 'NGCF', 'LightGCN', 'LGCN'][0]
-SAMPLER = ['MF', 'NCF', 'NGCF', 'LightGCN', 'LGCN'][0]
 LOSS_FUNCTION = ['CrossEntropy', 'BPR', 'WBPR', 'ShiftMC', 'DLNRS'][0]
 EMB_DIM = 128
 BATCH_SIZE = 10000
