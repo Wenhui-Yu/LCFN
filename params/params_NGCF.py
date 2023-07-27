@@ -5,10 +5,10 @@
 from params.params_common import *
 
 LR_list = {"Amazon": {"CrossEntropy": 0.0002, "BPR": 0.0002, "WBPR": 0.00001, "ShiftMC": 0.01, "DLNRS": 0.0001},
-           "Movielens": {"CrossEntropy": 0.0002, "BPR": 0.0005, "WBPR": 0.0005, "ShiftMC": 0.002, "DLNRS": 0.0005},
+           "Movielens": {"CrossEntropy": 0.0005, "BPR": 0.0005, "WBPR": 0.0005, "ShiftMC": 0.002, "DLNRS": 0.0005},
            "KuaiRand": {"CrossEntropy": 0.0002, "BPR": 0.0005, "WBPR": 0.0005, "ShiftMC": 0.002, "DLNRS": 0.0005}}
 LAMDA_list = {"Amazon": {"CrossEntropy": 0.01, "BPR": 0.5, "WBPR": 0.0002, "ShiftMC": 0.2, "DLNRS": 0.02},
-              "Movielens": {"CrossEntropy": 0.001, "BPR": 0.05, "WBPR": 0.0005, "ShiftMC": 0.2, "DLNRS": 0.00005},
+              "Movielens": {"CrossEntropy": 0.05, "BPR": 0.05, "WBPR": 0.0005, "ShiftMC": 0.2, "DLNRS": 0.00005},
               "KuaiRand": {"CrossEntropy": 0.001, "BPR": 0.02, "WBPR": 0.0005, "ShiftMC": 0.2, "DLNRS": 0.005}}
 LR = LR_list[DATASET][LOSS_FUNCTION]
 LAMDA = LAMDA_list[DATASET][LOSS_FUNCTION]
