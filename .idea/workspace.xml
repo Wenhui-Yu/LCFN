@@ -65,9 +65,14 @@
   &quot;keyToString&quot;: {
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/jack/codes/LCFN&quot;
+    &quot;last_opened_file_path&quot;: &quot;/Users/jack/codes/LCFN/params&quot;
   }
 }</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/params" />
+    </key>
+  </component>
   <component name="RunManager" selected="Python.data_collection">
     <configuration name="_main" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="code" />
@@ -159,10 +164,10 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Python._main" />
       <item itemvalue="Python.data_collection" />
       <item itemvalue="Python.data_process" />
       <item itemvalue="Python.movielens" />
+      <item itemvalue="Python._main" />
     </list>
     <recent_temporary>
       <list>
